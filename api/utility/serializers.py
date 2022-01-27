@@ -37,6 +37,7 @@ class State_Serializer(serializers.ModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
         }
+        # depth = 2
 
 
 class City_Serializer(serializers.ModelSerializer):
@@ -50,3 +51,4 @@ class City_Serializer(serializers.ModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
         }
+        # depth = 3
