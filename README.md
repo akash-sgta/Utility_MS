@@ -18,7 +18,7 @@ python manage.py createsuperuser
 
 Steps to migrate changes (Windows):
 ```
-python manage.py makemigrations security utilities app_user database --name migration_name
+python manage.py makemigrations access utility --name migration_name
 python manage.py migrate
 ```
 
