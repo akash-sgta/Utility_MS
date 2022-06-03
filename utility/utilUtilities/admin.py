@@ -67,7 +67,7 @@ class State_AdminPanel(admin.ModelAdmin):
         "updated_on",
     )
     ordering = ("country__name", "name")
-    search_fields = "name"
+    search_fields = ["name"]
     empty_value_display = "NULL"
     list_per_page = 25
 
@@ -99,7 +99,7 @@ class City_AdminPanel(admin.ModelAdmin):
         "updated_on",
     )
     ordering = ("state__country__name", "state__name", "name")
-    search_fields = "name"
+    search_fields = ["name"]
     empty_value_display = "NULL"
     list_per_page = 25
 

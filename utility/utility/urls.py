@@ -1,4 +1,7 @@
-"""utility URL Configuration
+# =========================================================================================
+#                                       DOCUMENTATION
+# =========================================================================================
+"""authenticator URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -13,9 +16,27 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
 
+# =========================================================================================
+#                                       LIBRARY
+# =========================================================================================
+from django.contrib import admin
+from django.urls import re_path, include
+from utility.views.checkServer import check_server_status
+
+
+# =========================================================================================
+#                                       CONSTANT
+# =========================================================================================
+
+# =========================================================================================
+#                                       CODE
+# =========================================================================================
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    re_path(r"^django-admin/", admin.site.urls, name="DJANGO_ADMIN"),
+    # ----------------------------------------------------------
+    re_path(r"^checkserver/", check_server_status, name="CHECK_SERVER_STATUS"),
+    # ----------------------------------------------------------
+    re_path(r"^utilities/", include("utilUtilities.urls"), name="UTILITIES"),
+    # re_path(r"^access/", include("authAccess.urls"), name="ACCESS"),
 ]

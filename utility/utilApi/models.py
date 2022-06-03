@@ -5,8 +5,6 @@
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
-from email.policy import default
-from secrets import choice
 from django.core.validators import RegexValidator
 from django.db import models
 from datetime import datetime
@@ -29,23 +27,23 @@ NULL = (None, "", 0)
 SETTINGS_SYSTEM = settings.SYSTEM
 SETTINGS_EMAIL = settings.EMAIL
 # --------------------------------------------------
-IN = "0"
-OUT = "1"
+IN = 0
+OUT = 1
 DIRECTION = [
     (IN, "Inbound"),
     (OUT, "Outbound"),
 ]
-DEV = "0"
-QAS = "1"
-PRD = "2"
+DEV = 0
+QAS = 1
+PRD = 2
 SYSTEM = [
     (DEV, "Development"),
     (QAS, "Quality"),
     (PRD, "Production"),
 ]
-PENDING = "0"
-CREATED = "1"
-REJECTED = "2"
+PENDING = 0
+CREATED = 1
+REJECTED = 2
 STATUS = [
     (PENDING, "Pending"),
     (CREATED, "Created"),

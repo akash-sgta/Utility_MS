@@ -32,10 +32,6 @@ class Country_Serializer(serializers.ModelSerializer):
         }
         depth = 1
 
-    def data(self):
-        data = super(Country_Serializer, self).data
-        return data
-
 
 class State_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -56,10 +52,6 @@ class State_Serializer(serializers.ModelSerializer):
         }
         depth = 1
 
-    def data(self):
-        data = super(State_Serializer, self).data
-        return data
-
 
 class City_Serializer(serializers.ModelSerializer):
     class Meta:
@@ -79,7 +71,3 @@ class City_Serializer(serializers.ModelSerializer):
             "last_update": {"read_only": True},
         }
         depth = 1
-
-    def data(self):
-        data = super(City_Serializer, self).data
-        return data
