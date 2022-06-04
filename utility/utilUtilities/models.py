@@ -9,23 +9,13 @@ from datetime import datetime
 from django.db import models
 from django.conf import settings
 
-from utilUtilities.views.utility import Utility
+# -----------------------------------------
+from utilUtilities.views.utility import Utility, Constant
+from utilApi.models import Api
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
-DEV = 0
-QAS = 1
-PRD = 2
-SYSTEM = [
-    (DEV, "Development"),
-    (QAS, "Quality"),
-    (PRD, "Production"),
-]
-SETTINGS_SYSTEM = settings.SYSTEM
-# -----------------------------------------
-NULL = (None, "", 0)
-# -----------------------------------------
 
 
 # =========================================================================================
@@ -35,7 +25,9 @@ NULL = (None, "", 0)
 
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
-    sys = models.IntegerField(choices=SYSTEM, default=SETTINGS_SYSTEM)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+    )
 
     iso = models.CharField(max_length=3, unique=True, null=True, blank=True)
     isd = models.IntegerField(unique=True)
@@ -45,7 +37,7 @@ class Country(models.Model):
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.created_on in NULL:
+        if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
         self.name = self.name.upper()
         self.iso = self.iso.upper()
@@ -58,7 +50,9 @@ class Country(models.Model):
 
 class State(models.Model):
     id = models.AutoField(primary_key=True)
-    sys = models.IntegerField(choices=SYSTEM, default=SETTINGS_SYSTEM)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+    )
 
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     name = models.CharField(max_length=127, unique=True)
@@ -67,7 +61,7 @@ class State(models.Model):
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.created_on in NULL:
+        if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
         self.name = self.name.upper()
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
@@ -79,7 +73,9 @@ class State(models.Model):
 
 class City(models.Model):
     id = models.AutoField(primary_key=True)
-    sys = models.IntegerField(choices=SYSTEM, default=SETTINGS_SYSTEM)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+    )
 
     state = models.ForeignKey(State, on_delete=models.CASCADE)
     name = models.CharField(max_length=127, unique=True)
@@ -88,7 +84,7 @@ class City(models.Model):
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.created_on in NULL:
+        if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
         self.name = self.name.upper() if self.name not in (None, "") else None
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
@@ -99,6 +95,42 @@ class City(models.Model):
 
 
 # -----------------------------------------
+class Mailer(models.Model):
+    id = models.AutoField(primary_key=True)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+    )
+
+    api = models.ForeignKey(
+        to=Api, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    sender = models.EmailField()
+    receiver = models.TextField()
+
+    type = models.IntegerField(
+        choices=Constant.EMAIL_TYPE, default=Constant.RAW
+    )
+    subject = models.CharField(max_length=63)
+    body = models.TextField()
+
+    status = models.IntegerField(
+        choices=Constant.PENDING, default=Constant.STATUS
+    )
+    reason = models.TextField(null=True, blank=True)
+
+    created_on = models.PositiveBigIntegerField(blank=True, null=True)
+    last_update = models.PositiveBigIntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.created_on in Constant.NULL:
+            self.created_on = Utility.datetimeToEpochMs(datetime.now())
+        self.subject = self.subject.upper()
+        return super(City, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.id}-{self.name}"
+
 
 # -----------------------------------------
 

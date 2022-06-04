@@ -6,16 +6,16 @@
 #                                       LIBRARY
 # =========================================================================================
 from django.contrib import admin
-from django.conf import settings
 
-from utilUtilities.models import Country, State, City
-from utilUtilities.views.utility import Utility
+# -----------------------------------------
+from utilUtilities.models import Country, State, City, Mailer
+from utilUtilities.views.utility import Utility, Constant
 
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
-SETTINGS_SYSTEM = settings.SYSTEM
+
 
 # =========================================================================================
 #                                       CODE
@@ -47,7 +47,7 @@ class Country_AdminPanel(admin.ModelAdmin):
 
     def get_queryset(self, request):
         query = super(Country_AdminPanel, self).get_queryset(request)
-        filtered_query = query.filter(sys=SETTINGS_SYSTEM)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query
 
 
@@ -79,7 +79,7 @@ class State_AdminPanel(admin.ModelAdmin):
 
     def get_queryset(self, request):
         query = super(State_AdminPanel, self).get_queryset(request)
-        filtered_query = query.filter(sys=SETTINGS_SYSTEM)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query
 
 
@@ -111,5 +111,37 @@ class City_AdminPanel(admin.ModelAdmin):
 
     def get_queryset(self, request):
         query = super(City_AdminPanel, self).get_queryset(request)
-        filtered_query = query.filter(sys=SETTINGS_SYSTEM)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
+        return filtered_query
+
+
+# -----------------------------------------
+@admin.register(Mailer)
+class Mailer_AdminPanel(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    list_display_links = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    ordering = ("api", "status")
+    search_fields = ["subject"]
+    empty_value_display = "NULL"
+    list_per_page = 25
+
+    def updated_on(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
+
+    def get_queryset(self, request):
+        query = super(City_AdminPanel, self).get_queryset(request)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query

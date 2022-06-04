@@ -25,7 +25,7 @@ from utilUtilities.views.utility import Utility
 @api_view(["GET"])
 def check_server_status(request):
     data = {
-        "SERVER NAME": Utility.SERVER_NAME[Utility.S_AUTH],
+        "SERVER NAME": settings.SERVER_NAME,
         "SERVER TIME": Utility.datetimeToStr(datetime.now()),
         "SERVER TIMEZONE": settings.TIME_ZONE,
     }

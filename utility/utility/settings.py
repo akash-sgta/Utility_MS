@@ -32,6 +32,7 @@ with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
     ALLOWED_HOSTS = json_secret["ALLOWED_HOSTS"]
     EMAIL = json_secret["ADMIN"]["EMAIL"]
     SYSTEM = json_secret["SYSTEM"]
+    SERVER_NAME = json_secret["SERVER_NAME"]
     del json_secret
 
 try:
@@ -161,7 +162,9 @@ REFRESH_TOKEN_LEN = 255
 ACCESS_TOKEN_LIMIT = (120, "m")
 ACCESS_TOKEN_LEN = 127
 
-REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]
+}
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
