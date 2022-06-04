@@ -17,7 +17,6 @@ class Country_Serializer(serializers.ModelSerializer):
         model = Country
         fields = (
             "id",
-            "sys",
             "isd",
             "iso",
             "name",
@@ -26,7 +25,6 @@ class Country_Serializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "sys": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
@@ -38,7 +36,6 @@ class State_Serializer(serializers.ModelSerializer):
         model = State
         fields = (
             "id",
-            "sys",
             "country",
             "name",
             "created_on",
@@ -46,7 +43,6 @@ class State_Serializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "sys": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
@@ -58,7 +54,6 @@ class City_Serializer(serializers.ModelSerializer):
         model = City
         fields = (
             "id",
-            "sys",
             "state",
             "name",
             "created_on",
@@ -66,7 +61,6 @@ class City_Serializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "sys": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }

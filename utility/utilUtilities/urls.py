@@ -8,7 +8,10 @@
 from django.urls import re_path
 
 # --------------------------------------------------
-from utilUtilities.views.country import CountryView_asUser, CountryView_asAdmin
+from utilUtilities.views.country import (
+    CountryView_asUser,
+    CountryView_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -17,7 +20,7 @@ app_name = "utilUtilities"
 # --------------------------------------------------
 COMA = ","
 # --------------------------------------------------
-COUNTRY_WORD = r"(search){0,1}"
+COUNTRY_WORD = r"(search|id){0,1}"
 COUNTRY_PK = r"[A-Za-z0-9_@,]*"
 # --------------------------------------------------
 

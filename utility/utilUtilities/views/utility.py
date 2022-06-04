@@ -14,113 +14,39 @@ import random
 import math
 from datetime import datetime, timedelta
 
+# ==============================================================================
+#                                       CONSTANT
+# ==============================================================================
+class Constant(object):
+    # --------------------------------------------------
+    STATUS = "STATUS"
+    DATA = "DATA"
+    MESSAGE = "MESSAGE"
+    TIMEZONE = "TIMEZONE"
+    BLANK_LIST = []
+    BLANK_STR = ""
+    RETURN_JSON = {STATUS: False, DATA: BLANK_LIST, MESSAGE: BLANK_STR, TIMEZONE: settings.TIME_ZONE}
+    # --------------------------------------------------
+    SYS = "sys"
+    NULL = (None, "", 0)
+    SETTINGS_SYSTEM = settings.SYSTEM
+    COMA = ","
+    EQUAL = "EQ"
+    EQUAL2 = "="
+    # --------------------------------------------------
+    INVALID_SPARAMS = "INVALID SEARCH PARAMETERS"
+    INVALID_URL = "INVALID URL"
+    INVALID_PAYLOAD = "INVALID DATA POSTED"
+    # --------------------------------------------------
+    METHOD_NOT_ALLOWED = "METHOD NOT ALLOWED"
+    NO_CONTENT = "NO CONTENT FOUND"
+    # --------------------------------------------------
 
+
+# ==============================================================================
+#                                       CODE
+# ==============================================================================
 class Utility(object):
-    # ==========================================================================
-    #                                       CONSTANT
-    # ==========================================================================
-    # TZ = ("GMT", "+ 05:30")
-    # MAINTENANCE = "UNDER MAINTENANCE"
-    # BLANK = ""
-    # SPACE = " "
-    # COLON = ":"
-    # COMA = ","
-    # EQUAL = "EQ"
-    # EQUAL2 = "="
-    # EQUAL_CONTAINS = "__icontains="
-
-    # UTF8 = "utf-8"
-    # REDACTED = "********"
-    # CHECK = "CHECK"
-    # CREATE = "POST"
-    # READ = "GET"
-    # UPDATE = "EDIT"
-    # DELETE = "DELETE"
-    # ADMIN = "ADMIN"
-    # NULL = (None, "", 0)
-    # FNAME = "fname"
-    # LNAME = "lname"
-    # EMAIL = "email"
-    # PHONE = "phone"
-    # SEARCH = "SEARCH"
-    # TRUE = "TRUE"
-    # REFRESH = "REFRESH"
-    # # --------------------------------------------------------------------------
-
-    # # --------------------------------------------------------------------------
-    # S_AUTH = "AUTH"
-    # SERVER_NAME = {
-    #     S_AUTH: "authenticator",
-    # }
-    # # --------------------------------------------------------------------------
-    # DOC_TYPE = (
-    #     (0, "UNIDENTIFIED"),
-    #     (1, "IMAGE"),
-    #     (2, "EXCEL"),
-    #     (3, "PDF"),
-    #     (4, "WORD"),
-    #     (5, "OTHERS"),
-    # )
-    # IMG_SIZE = {"L": "1280x1024", "M": "1024x786", "S": "320x240"}
-    # # --------------------------------------------------------------------------
-    # UNAUTHORISED_ACTION = "UNAUTHORIZED ACTION"
-    # UNAUTHORISED_USER = "UNAUTHORIZED USER"
-    # UNDER_CONSTRUCTION = "UNDER CONSTRUCTION"
-    # ERROR_RT_TIMEOUT = {"ERROR": "REFRESH TOKEN TIMEOUT"}
-    # ERROR_AT_TIMEOUT = {"ERROR": "ACCESS TOKEN TIMEOUT"}
-    # ERROR_PD_REQUIRED = {"ERROR": "PASSWORD REQUIRED"}
-    # # --------------------------------------------------------------------------
-    # INVALID_API = "INVALID API"
-    # INVALID_IDENTITY = "INVALID IDENTITY"
-    # # --------------------------------------------------------------------------
-    # REFRESH_TIMEOUT = "REFRESH TOKEN TIMEOUT"
-    # REFRESH_TOKEN = "url goes here"
-    # # --------------------------------------------------------------------------
-    # INVALID_SKEY = "INVALID SEARCH KEY"
-    # INVALID_PASSWORD = {"ERROR": "INVALID PASSWORD"}
-    # INVALID_DEVICE = {"ERROR": "USER DEVICE MISMATCH"}
-    # INVALID_USER_ID = {"ERROR": "INVALID USER ID"}
-    # INVALID_TOKEN_ENC = {"ERROR": "INVALID TOKEN ENCODING"}
-    # INVALID_AT = {"ERROR": "INVALID ACCESS TOKEN"}
-    # ERROR_ACC_INACTIVE = {"ERROR": "ACCOUNT INACTIVE"}
-    # ERROR_BACKEND = {"ERROR": "BACKEND ERROR"}
-    # CONFLICT_USERNAME = {"ERROR": "USERNAME EXISTS"}
-    # ERROR_AT_GEN = {"ERROR": "ACCESS TOKEN NOT GENERATED"}
-    # # --------------------------------------------------------------------------
-    # KEYS = ["id", "jwt"]
-    # TOKEN_HEADER = ["BEARER", "JWT"]
-    # AUTHORIZATION = "Authorization"
-    # INVALID_API_KEY = {"ERROR": "API Key is invalid"}
-    # # --------------------------------------------------------------------------
-    # INVALID_ID = {"ERROR": "INVALID ID"}
-    # INVALID_FORMATTING = "INVALID FORMATTING"
-    # # --------------------------------------------------------------------------
-    # COUNTRY = "COUNTRY"
-    # STATE = "STATE"
-    # CITY = "CITY"
-    # # --------------------------------------------------------------------------
-    # ERROR_CRUD_C = "CREATE ERROR"
-    # ERROR_CRUD_R = "READ ERROR"
-    # ERROR_CRUD_U = "UPDATE ERROR"
-    # ERROR_CRUD_D = "DELETE ERROR"
-    # # --------------------------------------------------------------------------
-    # U_CITY_NAME_CONF = "u_ city with this name already exists."
-    # U_COUNTRY_NAME_CONF = "u_ country with this name code already exists."
-    # U_COUNTRY_ISD_CONF = "u_ country with this isd already exists."
-    # U_COUNTRY_ISO_CONF = "u_ country with this iso already exists."
-    # U_STATE_NAME_CONF = "u_ state with this name already exists."
-    # # --------------------------------------------------------------------------
-    # SUCCESS_CRUD_C = {"SUCCESS": "[CRUD] CREATE SUCCESSFUL"}
-    # SUCCESS_CRUD_R = {"SUCCESS": "[CRUD] READ SUCCESSFUL"}
-    # SUCCESS_CRUD_U = {"SUCCESS": "[CRUD] UPDATE SUCCESSFUL"}
-    # SUCCESS_CRUD_D = {"SUCCESS": "[CRUD] DELETE SUCCESSFUL"}
-    # --------------------------------------------------------------------------
-
-    # --------------------------------------------------------------------------
-
-    # ==============================================================================
-    #                                       CODE
-    # ==============================================================================
     @staticmethod
     def packToken(token_ser, usage: str):
         token = dict()

@@ -10,47 +10,22 @@ Naming Convention
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
+from copy import deepcopy
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.conf import settings
 
 # --------------------------------------------------
 
 from utilUtilities.models import Country
 from utilUtilities.serializers import Country_Serializer
+from utilUtilities.views.utility import Constant
 
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
-STATUS = "STATUS"
-DATA = "DATA"
-MESSAGE = "MESSAGE"
-TIMEZONE = "TIMEZONE"
-BLANK_LIST = []
-BLANK_STR = ""
-RETURN_JSON = {STATUS: False, DATA: BLANK_LIST, MESSAGE: BLANK_STR, TIMEZONE: settings.TIME_ZONE}
-SYS = "sys"
-# --------------------------------------------------
-NULL = (None, "", 0)
-SETTINGS_SYSTEM = settings.SYSTEM
-COMA = ","
-EQUAL = "EQ"
-EQUAL2 = "="
-CHECK = "CHECK"
-REFRESH = "REFRESH"
-# --------------------------------------------------
-INVALID_URL = "INVALID URL"
-METHOD_NOT_ALLOWED = "METHOD NOT ALLOWED"
-INVALID_SPARAMS = "INVALID SEARCH PARAMETERS"
-NO_CONTENT = "NO CONTENT FOUND"
-INVALID_PAYLOAD = "INVALID DATA POSTED"
-# --------------------------------------------------
-
-# --------------------------------------------------
-
 
 # =========================================================================================
 #                                       CODE
@@ -59,34 +34,37 @@ class CountryView(APIView):
     renderer_classes = [JSONRenderer]
     authentication_classes = []
 
-    KEYS = (
-        "id",
-        "isd",
-        "iso",
-        "name",
-    )
-
     def __init__(self, query1=None, query2=None):
         super(CountryView, self).__init__()
-        self.data_returned = RETURN_JSON.copy()
+        self.DB_KEYS = (
+            "id",
+            "isd",
+            "iso",
+            "name",
+        )
+        self.SR_KEYS = (
+            "ID",
+            "SEARCH",
+        )
+        self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
-        self.query1 = query1.upper() if query1 not in NULL else None
-        self.query2 = query2.upper() if query2 not in NULL else None
+        self.query1 = query1.upper() if query1 not in Constant.NULL else None
+        self.query2 = query2.upper() if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
-        _return = f"sys={SETTINGS_SYSTEM}{COMA}"
-        if self.query2 not in NULL:
-            word = self.query2.split(COMA)
+        _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
+        if self.query2 not in Constant.NULL:
+            word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
-                word[i] = word[i].split(EQUAL)
+                word[i] = word[i].split(Constant.EQUAL)
                 word[i][0] = word[i][0].strip().lower()
                 word[i][1] = word[i][1].strip()
-                if word[i][0] in self.KEYS:
+                if word[i][0] in self.DB_KEYS:
                     if flag:
-                        _return += f"{word[i][0]}__icontains{EQUAL2}'{word[i][1]}'{COMA}"
+                        _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{EQUAL2}'{word[i][1]}'{COMA}"
+                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
         return _return
 
 
@@ -98,7 +76,7 @@ class CountryView_asUser(CountryView):
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        self.data_returned[MESSAGE] = METHOD_NOT_ALLOWED
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
         self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
@@ -110,19 +88,21 @@ class CountryView_asUser(CountryView):
     # =============================================================
     def __read_specific(self) -> None:
         try:
-            country_ref = Country.objects.get(sys=SETTINGS_SYSTEM, id=int(self.query2))
+            country_ref = Country.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
         except Country.DoesNotExist:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         except ValueError:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
             country_ser = Country_Serializer(country_ref, many=False).data
-            self.data_returned[STATUS] = True
-            self.data_returned[DATA].append(country_ser)
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(country_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
@@ -132,57 +112,68 @@ class CountryView_asUser(CountryView):
             if len(country_ref) == 0:
                 raise Country.DoesNotExist
         except Country.DoesNotExist:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = NO_CONTENT
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         else:
             country_ser = Country_Serializer(country_ref, many=True).data
-            self.data_returned[STATUS] = True
-            self.data_returned[DATA] = country_ser
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = country_ser
             self.status_returned = status.HTTP_200_OK
         return
 
     def __read_search(self) -> None:
         try:
-            country_ref = eval(f'Country.objects.filter({self._create_query()}).order_by("id")')
+            country_ref = eval(
+                f'Country.objects.filter({self._create_query()}).order_by("id")'
+            )
             if len(country_ref) == 0:
                 raise Country.DoesNotExist
         except Country.DoesNotExist:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = NO_CONTENT
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         except NameError:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
             country_ser = Country_Serializer(country_ref, many=True).data
-            self.data_returned[STATUS] = True
-            self.data_returned[DATA] = country_ser
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = country_ser
             self.status_returned = status.HTTP_200_OK
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if self.query1 in NULL:
-            if self.query2 in NULL:
-                self.__read_all()
+        flag = True
+        if self.query1 in self.SR_KEYS:
+            if self.query1 == self.SR_KEYS[0]:  # id
+                if self.query2 in Constant.NULL:
+                    self.__read_all()
+                else:
+                    self.__read_specific()
+            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+                if self.query2 in Constant.NULL:
+                    flag = False
+                else:
+                    self.__read_search()
             else:
-                self.__read_specific()
+                flag = False
         else:
-            if self.query2 in NULL:
-                self.data_returned[STATUS] = False
-                self.data_returned[MESSAGE] = INVALID_SPARAMS
-                self.status_returned = status.HTTP_400_BAD_REQUEST
-            else:
-                self.__read_search()
+            flag = False
+
+        if not flag:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
 
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __update_specific(self, data: dict):
-        self.data_returned[STATUS] = False
-        self.data_returned[MESSAGE] = METHOD_NOT_ALLOWED
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
         self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
@@ -193,8 +184,8 @@ class CountryView_asUser(CountryView):
 
     # =============================================================
     def __delete_specific(self):
-        self.data_returned[STATUS] = False
-        self.data_returned[MESSAGE] = METHOD_NOT_ALLOWED
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
         self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
@@ -208,27 +199,28 @@ class CountryView_asAdmin(CountryView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(CountryView_asAdmin, self).__init__(query1=query1, query2=query2)
+        super(CountryView_asAdmin, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        data[SYS] = SETTINGS_SYSTEM
         country_ser = Country_Serializer(data=data)
         if country_ser.is_valid():
             try:
                 country_ser.save()
             except Exception as e:
-                self.data_returned[STATUS] = False
-                self.data_returned[MESSAGE] = str(e)
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = str(e)
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
             else:
                 country_ser = country_ser.data
-                self.data_returned[STATUS] = True
-                self.data_returned[DATA].append(country_ser)
+                self.data_returned[Constant.STATUS] = True
+                self.data_returned[Constant.DATA].append(country_ser)
                 self.status_returned = status.HTTP_201_CREATED
         else:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = country_ser.errors
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = country_ser.errors
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -239,46 +231,51 @@ class CountryView_asAdmin(CountryView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(CountryView_asAdmin, self).get(word=word, pk=pk)
+        return super(CountryView_asAdmin, self).get(
+            request=request, word=word, pk=pk
+        )
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
-        data[SYS] = SETTINGS_SYSTEM
         try:
-            country_ref = Country.objects.get(sys=SETTINGS_SYSTEM, id=int(self.query2))
+            country_ref = Country.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
         except Country.DoesNotExist:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         except ValueError:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            country_ser = Country_Serializer(country_ref, data=data)
+            country_ser = Country_Serializer(
+                instance=country_ref, data=data, partial=True
+            )
             if country_ser.is_valid():
                 try:
                     country_ser.save()
                 except Exception as e:
-                    self.data_returned[STATUS] = False
-                    self.data_returned[MESSAGE] = str(e)
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
                     country_ser = country_ser.data
-                    self.data_returned[STATUS] = True
-                    self.data_returned[DATA].append(country_ser)
+                    self.data_returned[Constant.STATUS] = True
+                    self.data_returned[Constant.DATA].append(country_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
-                self.data_returned[STATUS] = False
-                self.data_returned[MESSAGE] = country_ser.errors
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = country_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
     def put(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if self.query2 in None:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_URL
+        if self.query2 in Constant.NULL:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
             self.__update_specific(data=request.data)
@@ -287,28 +284,30 @@ class CountryView_asAdmin(CountryView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            country_ref = Country.objects.get(sys=SETTINGS_SYSTEM, id=int(self.query2))
+            country_ref = Country.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
         except Country.DoesNotExist:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         except ValueError:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_SPARAMS
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
             country_ser = Country_Serializer(country_ref, many=False).data
             country_ref.delete()
-            self.data_returned[STATUS] = True
-            self.data_returned[DATA].append(country_ser)
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(country_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
     def delete(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if self.query2 in None:
-            self.data_returned[STATUS] = False
-            self.data_returned[MESSAGE] = INVALID_URL
+        if self.query2 in Constant.NULL:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
             self.__delete_specific()
