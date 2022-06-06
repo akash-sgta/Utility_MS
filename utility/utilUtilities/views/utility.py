@@ -5,6 +5,8 @@
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
+from mimetypes import init
+import os
 from django.conf import settings
 from django.core.validators import RegexValidator
 from hashlib import md5
@@ -15,6 +17,7 @@ import random
 import math
 from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
+import aspose.words as aspose
 from schemadict import schemadict
 
 # ==============================================================================
@@ -319,3 +322,40 @@ class Mailer(object):
 
     def prepare(self) -> None:
         pass
+
+
+class Converter(object):
+    QUALITY = 100
+
+    def __init__(self) -> None:
+        super(Converter, self).__init__()
+
+    @staticmethod
+    def genFileName(path: str, final_ext: str) -> str:
+        final_ext = final_ext.lower()
+        path = path.split("/")
+        file_name = path[-1].split(".")
+        if len(file_name) > 1:
+            file_name = (".").join(file_name[:-1])
+        file_name = f"{file_name}.{final_ext}"
+        path[-1] = file_name
+        return ("/").join(path)
+
+    @staticmethod
+    def wordToPdf(self, path: str, img_compression=0) -> bool:
+        try:
+            doc = aspose.Document(os.path.join(path))
+            save_options = aspose.saving.PdfSaveOptions()
+            save_options.image_compression = (
+                aspose.saving.PdfImageCompression.JPEG
+            )
+            save_options.jpeg_quality = Converter.QUALITY - img_compression
+            doc.save(
+                os.path.join(path, Converter.genFileName(path, "PDF")),
+                save_options,
+            )
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            return False
+        else:
+            return True
