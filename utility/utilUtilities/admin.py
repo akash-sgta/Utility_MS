@@ -8,7 +8,7 @@
 from django.contrib import admin
 
 # -----------------------------------------
-from utilUtilities.models import Country, State, City, Mailer
+from utilUtilities.models import Country, State, City, Mailer, Notification
 from utilUtilities.views.utility import Utility, Constant
 
 
@@ -118,6 +118,37 @@ class City_AdminPanel(admin.ModelAdmin):
 # -----------------------------------------
 @admin.register(Mailer)
 class Mailer_AdminPanel(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    list_display_links = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    ordering = ("api", "status")
+    search_fields = ["subject"]
+    empty_value_display = "NULL"
+    list_per_page = 25
+
+    def updated_on(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
+
+    def get_queryset(self, request):
+        query = super(City_AdminPanel, self).get_queryset(request)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
+        return filtered_query
+
+
+@admin.register(Notification)
+class Notificaiton_AdminPanel(admin.ModelAdmin):
 
     list_display = (
         "id",

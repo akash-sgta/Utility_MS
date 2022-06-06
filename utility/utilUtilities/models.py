@@ -107,12 +107,15 @@ class Mailer(models.Model):
 
     sender = models.EmailField()
     receiver = models.TextField()
+    cc = models.TextField()
+    bcc = models.TextField()
 
     type = models.IntegerField(
         choices=Constant.EMAIL_TYPE, default=Constant.RAW
     )
     subject = models.CharField(max_length=63)
     body = models.TextField()
+    attachment = models.TextField()
 
     status = models.IntegerField(
         choices=Constant.PENDING, default=Constant.STATUS
@@ -129,7 +132,41 @@ class Mailer(models.Model):
         return super(City, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id}-{self.name}"
+        return f"{self.id}-{self.subject[:16]}"
+
+
+class Notification(models.Model):
+    id = models.AutoField(primary_key=True)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+    )
+
+    api = models.ForeignKey(
+        to=Api, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    receiver = models.TextField()
+
+    subject = models.CharField(max_length=63)
+    body = models.TextField()
+    attachment = models.TextField()
+
+    status = models.IntegerField(
+        choices=Constant.PENDING, default=Constant.STATUS
+    )
+    reason = models.TextField(null=True, blank=True)
+
+    created_on = models.PositiveBigIntegerField(blank=True, null=True)
+    last_update = models.PositiveBigIntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.created_on in Constant.NULL:
+            self.created_on = Utility.datetimeToEpochMs(datetime.now())
+        self.subject = self.subject.upper()
+        return super(City, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.id}-{self.subject[:16]}"
 
 
 # -----------------------------------------

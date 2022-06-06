@@ -5,11 +5,9 @@
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
-from mimetypes import init
 import os
-from django.conf import settings
-from django.core.validators import RegexValidator
 from hashlib import md5
+from re import sub
 import string
 import json
 import base64
@@ -17,8 +15,14 @@ import random
 import math
 from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
-import aspose.words as aspose
+from aspose import words as aw
 from schemadict import schemadict
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.core.validators import RegexValidator
+
+# --------------------------------------------------
+from utilUtilities.serializers import Mailer_Serializer
 
 # ==============================================================================
 #                                       CONSTANT
@@ -112,26 +116,24 @@ class Constant(object):
     JWT = "JWT"
     TOKEN_ROOT = schemadict(
         {
-            API: {
-                "type": str,
-                "max_len": 255,
-            },
-            USER: {
-                "type": str,
-                "max_len": 255,
-            },
+            API: {"type": str, "max_len": 255},
+            USER: {"type": str, "max_len": 255},
         }
     )
     TOKEN_LEAF = schemadict(
         {
-            ID: {
-                "type": int,
-                ">": 0,
-            },
-            JWT: {
-                "type": str,
-                "max_len": 255,
-            },
+            ID: {"type": int, ">": 0},
+            JWT: {"type": str, "max_len": 255},
+        }
+    )
+    NAME = "NAME"
+    CONTENT = "CONTENT"
+    MIMETYPE = "MIMETYPE"
+    ATTACHMENT = schemadict(
+        {
+            NAME: {"type": str, "max_len": 63},
+            CONTENT: {"type": bytes},
+            MIMETYPE: {"type": str, "max_len": 63},
         }
     )
 
@@ -183,14 +185,15 @@ class Utility(object):
     #               OTHERS
     # --------------------------------------------------
     @staticmethod
-    def log(exp: int, base: int):
+    def log(exp: int, base: int) -> float:
         if exp == 0:
-            return False
-
-        return math.log10(exp) / math.log10(base)
+            _return = False
+        else:
+            _return = math.log10(exp) / math.log10(base)
+        return _return
 
     @staticmethod
-    def isPowerOfTwo(n: int):
+    def isPowerOfTwo(n: int) -> bool:
         if n == 1:
             _return = False
         else:
@@ -200,7 +203,7 @@ class Utility(object):
         return _return
 
     @staticmethod
-    def addToHexadecimal(operand1="0", operand2=1):
+    def addToHexadecimal(operand1="0", operand2=1) -> str:
         return hex(int(("0x" + operand1.lower()), 16) + operand2)[2:]
 
     # --------------------------------------------------
@@ -208,37 +211,57 @@ class Utility(object):
     # --------------------------------------------------
     @staticmethod
     def packTokenEnc(token: str) -> str:
-        crypt = Fernet(Utility.stringToHashHex(Constant.SETTINGS_SECRET))
-        _return = crypt.encrypt(token.encode(Constant.UTF8)).decode(
-            Constant.UTF8
-        )
+        try:
+            key = Utility.stringToHashHex(Constant.SETTINGS_SECRET)
+            token = token.encode(Constant.UTF8)
+            crypt = Fernet(key)
+            _return = crypt.encrypt(token)
+            _return = _return.decode(Constant.UTF8)
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
         return _return
 
     def packTokenDec(token: str) -> str:
-        crypt = Fernet(Utility.stringToHashHex(Constant.SETTINGS_SECRET))
-        _return = crypt.decrypt(token.encode(Constant.UTF8)).decode(
-            Constant.UTF8
-        )
+        try:
+            key = Utility.stringToHashHex(Constant.SETTINGS_SECRET)
+            token = token.encode(Constant.UTF8)
+            crypt = Fernet(key)
+            _return = crypt.decrypt(token)
+            _return = _return.decode(Constant.UTF8)
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
         return _return
 
     @staticmethod
     def stringToHashHex(*args: tuple) -> str:
-        if len(args) == 0:
-            raise KeyError("No arguments passed")
-        else:
-            data = Constant.BLANK_STR.join(args)
-            return Constant.MD5 + md5(data.encode()).hexdigest()
+        try:
+            if len(args) == 0:
+                raise KeyError("No arguments passed")
+            else:
+                data = Constant.BLANK_STR.join(args)
+                _return = Constant.MD5 + md5(data.encode()).hexdigest()
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
+        return _return
 
     @staticmethod
     def randomGenerator(length=225, only_num=False, no_symbol=False) -> str:
-        choices = list()
-        choices.extend(list(string.ascii_lowercase + string.ascii_uppercase))
-        if not only_num:
-            choices.extend(list(string.digits))
-        if not no_symbol:
-            choices.extend(list(string.punctuation))
-        _return = "".join([random.choice(choices) for _ in range(length)])
-
+        try:
+            choices = list()
+            choices.extend(
+                list(string.ascii_lowercase + string.ascii_uppercase)
+            )
+            if not only_num:
+                choices.extend(list(string.digits))
+            if not no_symbol:
+                choices.extend(list(string.punctuation))
+            _return = "".join([random.choice(choices) for _ in range(length)])
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
         return _return
 
     # --------------------------------------------------
@@ -254,39 +277,57 @@ class Utility(object):
         add_months=0,
         add_years=0,
     ) -> int:
-        delta = list()
-        if add_hours > 0:
-            delta.append(timedelta(hours=add_hours))
-        if add_minutes > 0:
-            delta.append(timedelta(minutes=add_minutes))
-        if add_seconds > 0:
-            delta.append(timedelta(seconds=add_seconds))
-        if add_days > 0:
-            delta.append(timedelta(days=add_days))
-        if add_months > 0:
-            delta.append(timedelta(days=add_months * 30))
-        if add_years > 0:
-            delta.append(timedelta(days=add_years * 365))
+        try:
+            delta = list()
+            if add_hours > 0:
+                delta.append(timedelta(hours=add_hours))
+            if add_minutes > 0:
+                delta.append(timedelta(minutes=add_minutes))
+            if add_seconds > 0:
+                delta.append(timedelta(seconds=add_seconds))
+            if add_days > 0:
+                delta.append(timedelta(days=add_days))
+            if add_months > 0:
+                delta.append(timedelta(days=add_months * 30))
+            if add_years > 0:
+                delta.append(timedelta(days=add_years * 365))
 
-        ms_from_epoch = dt
-        for item in delta:
-            ms_from_epoch += item
-        ms_from_epoch = int(ms_from_epoch.timestamp() * 1000)
-
-        return ms_from_epoch
+            _return = dt
+            for item in delta:
+                _return += item
+            _return = int(_return.timestamp() * 1000)
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
+        return _return
 
     @staticmethod
     def epochMsToDatetime(epoch: int) -> datetime:
-        return datetime.fromtimestamp(epoch // 1000)
+        try:
+            datetime.fromtimestamp(epoch // 1000)
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
+        return _return
 
     @staticmethod
     def datetimeToStr(data: datetime) -> str:
-        return data.strftime("%m/%d/%Y, %H:%M:%S")
+        try:
+            data.strftime("%m/%d/%Y, %H:%M:%S")
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
+        return _return
 
     @staticmethod
     def msToStr(data: int) -> str:
-        _return = Utility.epochMsToDatetime(data)
-        return _return.strftime("%m/%d/%Y, %H:%M:%S")
+        try:
+            _return = Utility.epochMsToDatetime(data)
+            _return = _return.strftime("%m/%d/%Y, %H:%M:%S")
+        except Exception as e:
+            print(f"ERROR : {str(e)}")
+            _return = None
+        return _return
 
     # --------------------------------------------------
     #               DICT
@@ -320,8 +361,52 @@ class Mailer(object):
     def __init__(self) -> None:
         super(Mailer, self).__init__()
 
-    def prepare(self) -> None:
-        pass
+    def send(
+        self,
+        subject: str,
+        message: str,
+        from_email: str,
+        to_email: list,
+        bcc_email: list,
+        cc_email: list,
+        attachment: list,
+    ) -> bool:
+        _return = True
+        if (
+            subject not in Constant.NULL
+            and to_email not in Constant.NULL
+            and from_email not in Constant.NULL
+        ):
+            _return = False
+        else:
+            try:
+                email = EmailMessage(
+                    subject=subject.upper(),
+                    body=message,
+                    from_email=from_email,
+                    to=to_email,
+                    bcc=bcc_email,
+                )
+                if len(attachment) > 0:
+                    for att in attachment:
+                        try:
+                            Constant.ATTACHMENT.validate(att)
+                        except Exception as e:
+                            raise e
+                        else:
+                            try:
+                                email.attach(
+                                    filename=att[Constant.NAME],
+                                    content=att[Constant.CONTENT],
+                                    mimetype=att[Constant.MIMETYPE],
+                                )
+                            except Exception as e:
+                                print(f"ERROR : {str(e)}")
+                                _return = False
+            except Exception as e:
+                print(f"ERROR : {str(e)}")
+                _return = False
+            return _return
 
 
 class Converter(object):
@@ -342,20 +427,74 @@ class Converter(object):
         return ("/").join(path)
 
     @staticmethod
-    def wordToPdf(self, path: str, img_compression=0) -> bool:
+    def wordToPdf(path: str, img_compression=0) -> bool:
         try:
-            doc = aspose.Document(os.path.join(path))
-            save_options = aspose.saving.PdfSaveOptions()
-            save_options.image_compression = (
-                aspose.saving.PdfImageCompression.JPEG
+            # convert(input_path=path)
+            doc = aw.Document(os.path.join(BASE_DIR, path))
+            save_options = aw.saving.PdfSaveOptions()
+            save_options.compliance = aw.saving.PdfCompliance.PDF17
+            save_options.image_compression[0] = (
+                aw.saving.PdfImageCompression.JPEG,
             )
             save_options.jpeg_quality = Converter.QUALITY - img_compression
             doc.save(
                 os.path.join(path, Converter.genFileName(path, "PDF")),
                 save_options,
             )
+            _return = True
         except Exception as e:
             print(f"ERROR : {str(e)}")
-            return False
-        else:
-            return True
+            _return = False
+        return _return
+
+
+class BatchJobs(object):
+    def __init__(self) -> None:
+        super(BatchJobs, self).__init__()
+
+    def mail(self) -> None:
+        mailer_ref = Mailer.objects.filter(
+            sys=Constant.SETTINGS_SYSTEM, status=Constant.PENDING
+        )
+        if len(mailer_ser) > 0:
+            mailer_ser = Mailer_Serializer(mailer_ref, many=True).data
+            for i in range(len(mailer_ref)):
+                try:
+                    _attachment = json.loads(mailer_ser[i]["attachment"])
+                    _attachment = _attachment["ATTACHMENT"]
+                except Exception as e:
+                    _attachment = None
+                else:
+                    try:
+                        if not Mailer.send(
+                            subject=mailer_ser[i]["subject"],
+                            message=mailer_ser[i]["body"],
+                            from_email=mailer_ser[i]["sender"],
+                            to_email=mailer_ser[i]["receiver"].split(
+                                Constant.COMA
+                            ),
+                            cc_email=mailer_ser[i]["cc"].split(Constant.COMA),
+                            bcc_email=mailer_ser[i]["bcc"].split(
+                                Constant.COMA
+                            ),
+                            attachment=_attachment,
+                        ):
+                            mailer_ser[i]["status"] = Constant.REJECTED
+                            mailer_ser[i]["reason"] = Constant.INVALID_PAYLOAD
+                            mailer_change_ref = mailer_ref.get(
+                                id=mailer_ser[i]["id"]
+                            )
+                            mailer_change_ser = Mailer_Serializer(
+                                mailer_change_ref, mailer_ser[i]
+                            )
+                            if mailer_change_ser.is_valid():
+                                try:
+                                    mailer_change_ser.save()
+                                except Exception as e:
+                                    print(f"ERROR : {str(e)}")
+                    except Exception as e:
+                        print(f"ERROR : {str(e)}")
+        return
+
+    def notification(self) -> None:
+        return

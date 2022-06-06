@@ -27,12 +27,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
     json_secret = json.load(secret)
-    SECRET_KEY = json_secret["SECRET_KEY"]
-    DEBUG = json_secret["DEBUG"]
-    ALLOWED_HOSTS = json_secret["ALLOWED_HOSTS"]
-    EMAIL = json_secret["ADMIN"]["EMAIL"]
-    SYSTEM = json_secret["SYSTEM"]
-    SERVER_NAME = json_secret["SERVER_NAME"]
+    SECRET_KEY = json_secret["SYSTEM"]["SECRET_KEY"]
+    DEBUG = json_secret["SYSTEM"]["DEBUG"]
+    ALLOWED_HOSTS = json_secret["SYSTEM"]["ALLOWED_HOSTS"]
+    EMAIL_HOST_USER = json_secret["ADMIN"]["EMAIL"]["HOST_USER"]
+    EMAIL_HOST_PASSWORD = json_secret["ADMIN"]["EMAIL"]["HOST_PASSWORD"]
+    SYSTEM = json_secret["SYSTEM"]["ID"]
+    SERVER_NAME = json_secret["SYSTEM"]["SERVER_NAME"]
     del json_secret
 
 try:
