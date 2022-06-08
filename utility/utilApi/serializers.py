@@ -37,7 +37,7 @@ class Request_Serializer(serializers.ModelSerializer):
             "country": {"read_only": True},
             "created_on": {"read_only": True},
         }
-        depth = 1
+        depth = 0
 
 
 class Api_Serializer(serializers.ModelSerializer):
@@ -64,4 +64,4 @@ class Api_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0

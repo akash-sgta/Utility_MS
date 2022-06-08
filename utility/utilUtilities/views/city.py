@@ -58,6 +58,8 @@ class CityView(APIView):
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
                 word[i] = word[i].split(Constant.EQUAL)
+                if len(word[i]) != 2:
+                    raise NameError
                 word[i][0] = word[i][0].strip()
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
@@ -98,6 +100,10 @@ class CityView_asUser(CityView):
         except ValueError:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except TypeError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
             city_ser = City_Serializer(city_ref, many=False).data

@@ -151,7 +151,7 @@ class Mailer_AdminPanel(admin.ModelAdmin):
         return Utility.epochMsToDatetime(obj.last_update)
 
     def get_queryset(self, request):
-        query = super(City_AdminPanel, self).get_queryset(request)
+        query = super(Mailer_AdminPanel, self).get_queryset(request)
         filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query
 
@@ -182,6 +182,6 @@ class Notificaiton_AdminPanel(admin.ModelAdmin):
         return Utility.epochMsToDatetime(obj.last_update)
 
     def get_queryset(self, request):
-        query = super(City_AdminPanel, self).get_queryset(request)
+        query = super(Notificaiton_AdminPanel, self).get_queryset(request)
         filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query

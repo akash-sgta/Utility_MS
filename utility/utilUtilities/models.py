@@ -101,9 +101,7 @@ class Mailer(models.Model):
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    api = models.ForeignKey(
-        to=Api, on_delete=models.SET_NULL, null=True, blank=True
-    )
+    api = models.ForeignKey(to=Api, on_delete=models.SET_NULL, null=True)
 
     sender = models.EmailField()
     receiver = models.TextField()
@@ -114,11 +112,10 @@ class Mailer(models.Model):
         choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW
     )
     subject = models.CharField(max_length=63)
-    body = models.TextField()
-    attachment = models.TextField()
-
+    body = models.TextField(blank=True, null=True)
+    attachment = models.TextField(blank=True, null=True)
     status = models.IntegerField(
-        choices=Constant.PENDING, default=Constant.STATUS
+        choices=Constant.STATUS_CHOICE, default=Constant.PENDING
     )
     reason = models.TextField(null=True, blank=True)
 
@@ -129,7 +126,12 @@ class Mailer(models.Model):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
         self.subject = self.subject.upper()
-        return super(City, self).save(*args, **kwargs)
+        if self.body in Constant.NULL:
+            self.body = None
+        if self.attachment in Constant.NULL:
+            self.attachment = None
+        self.last_update = Utility.datetimeToEpochMs(datetime.now())
+        return super(Mailer, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id}-{self.subject[:16]}"
@@ -141,18 +143,16 @@ class Notification(models.Model):
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    api = models.ForeignKey(
-        to=Api, on_delete=models.SET_NULL, null=True, blank=True
-    )
+    api = models.ForeignKey(to=Api, on_delete=models.SET_NULL, null=True)
 
     receiver = models.TextField()
 
     subject = models.CharField(max_length=63)
-    body = models.TextField()
-    attachment = models.TextField()
+    body = models.TextField(blank=True, null=True)
+    attachment = models.TextField(blank=True, null=True)
 
     status = models.IntegerField(
-        choices=Constant.PENDING, default=Constant.STATUS
+        choices=Constant.STATUS_CHOICE, default=Constant.PENDING
     )
     reason = models.TextField(null=True, blank=True)
 
@@ -163,7 +163,12 @@ class Notification(models.Model):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
         self.subject = self.subject.upper()
-        return super(City, self).save(*args, **kwargs)
+        if self.body in Constant.NULL:
+            self.body = None
+        if self.attachment in Constant.NULL:
+            self.attachment = None
+        self.last_update = Utility.datetimeToEpochMs(datetime.now())
+        return super(Notification, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id}-{self.subject[:16]}"

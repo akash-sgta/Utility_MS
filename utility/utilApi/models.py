@@ -61,7 +61,8 @@ class Api(models.Model):
     isd = models.CharField(null=True, blank=True, max_length=7)
     phone_no = models.IntegerField(unique=True)
     tg_id = models.CharField(max_length=127, blank=True, null=True)
-    name = models.CharField(max_length=127)
+
+    name = models.CharField(max_length=127, unique=True)
     key = models.CharField(max_length=255, blank=True, null=True)
 
     last_update = models.PositiveBigIntegerField(blank=True, null=True)

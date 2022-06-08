@@ -34,7 +34,8 @@ from utilUtilities.views.notification import (
 # =========================================================================================
 app_name = "utilUtilities"
 # --------------------------------------------------
-WORD = r"(search|id){0,1}"
+WORD = r"(search|id){1}"
+ID = r"(id){1}"
 PK = r"[A-Za-z0-9_@,\s]*"
 # --------------------------------------------------
 
@@ -77,18 +78,7 @@ urlpatterns = [
     ),
     # --------------------------------------------------
     re_path(
-        rf"u/city/(?P<word>{WORD})/(?P<pk>{PK})",
-        CityView_asUser.as_view(),
-        name="CITY_AS_USER",
-    ),
-    re_path(
-        rf"a/city/(?P<word>{WORD})/(?P<pk>{PK})",
-        CityView_asAdmin.as_view(),
-        name="CITY_AS_ADMIN",
-    ),
-    # --------------------------------------------------
-    re_path(
-        rf"u/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        rf"u/mailer/(?P<word>{ID})/(?P<pk>{PK})",
         MailerView_asUser.as_view(),
         name="MAILER_AS_USER",
     ),
@@ -99,12 +89,12 @@ urlpatterns = [
     ),
     # --------------------------------------------------
     re_path(
-        rf"u/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        rf"u/notif/(?P<word>{ID})/(?P<pk>{PK})",
         NotificationView_asUser.as_view(),
         name="NOTIFICATION_AS_USER",
     ),
     re_path(
-        rf"a/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        rf"a/notif/(?P<word>{WORD})/(?P<pk>{PK})",
         NotificationView_asAdmin.as_view(),
         name="NOTIFICATION_AS_ADMIN",
     ),

@@ -42,13 +42,13 @@ class NotificationView(APIView):
             "name",
         )
         self.SR_KEYS = (
-            "ID",
-            "SEARCH",
+            "id",
+            "search",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
-        self.query1 = query1.upper() if query1 not in Constant.NULL else None
-        self.query2 = query2.upper() if query2 not in Constant.NULL else None
+        self.query1 = query1.lower() if query1 not in Constant.NULL else None
+        self.query2 = query2.lower() if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
@@ -57,7 +57,9 @@ class NotificationView(APIView):
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
                 word[i] = word[i].split(Constant.EQUAL)
-                word[i][0] = word[i][0].strip().lower()
+                if len(word[i]) != 2:
+                    raise NameError
+                word[i][0] = word[i][0].strip()
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
@@ -77,8 +79,23 @@ class NotificationView_asUser(NotificationView):
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
+        Notification_ser = Notification_Serializer(data=data)
+        if Notification_ser.is_valid():
+            try:
+                Notification_ser.save()
+            except Exception as e:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = str(e)
+                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+            else:
+                Notification_ser = Notification_ser.data
+                self.data_returned[Constant.STATUS] = True
+                self.data_returned[Constant.DATA].append(Notification_ser)
+                self.status_returned = status.HTTP_201_CREATED
+        else:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Notification_ser.errors
+            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
     def post(self, request, word: str, pk: str):
@@ -87,15 +104,35 @@ class NotificationView_asUser(NotificationView):
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
-    def __read_specific(self) -> None:
-        self.data_returned[Constant.STATUS] = False
-        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
+    def _read_specific(self) -> None:
+        try:
+            notification_ref = Notification.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
+        except Notification.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except ValueError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except TypeError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        else:
+            notification_ser = Notification_Serializer(
+                notification_ref, many=False
+            ).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(notification_ser)
+            self.status_returned = status.HTTP_200_OK
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        self.__read_specific()
+        self._read_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -132,36 +169,79 @@ class NotificationView_asAdmin(NotificationView_asUser):
         )
 
     # =============================================================
-    def __create_specific(self, data: dict) -> None:
-        Notification_ser = Notification_Serializer(data=data)
-        if Notification_ser.is_valid():
-            try:
-                Notification_ser.save()
-            except Exception as e:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = str(e)
-                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
-            else:
-                Notification_ser = Notification_ser.data
-                self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(Notification_ser)
-                self.status_returned = status.HTTP_201_CREATED
-        else:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Notification_ser.errors
-            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
-        return
-
     def post(self, request, word: str, pk: str):
-        self.__init__(query1=word, query2=pk)
-        self.__create_specific(data=request.data)
-        return Response(data=self.data_returned, status=self.status_returned)
-
-    # =============================================================
-    def get(self, request, word: str, pk: str):
-        return super(NotificationView_asAdmin, self).get(
+        return super(NotificationView_asAdmin, self).post(
             request=request, word=word, pk=pk
         )
+
+    # =============================================================
+    def __read_all(self) -> None:
+        try:
+            notification_ref = Notification.objects.all().order_by("id")
+            if len(notification_ref) == 0:
+                raise Notification.DoesNotExist
+        except Notification.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        else:
+            notification_ser = Notification_Serializer(
+                notification_ref, many=True
+            ).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = notification_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
+    def __read_search(self) -> None:
+        try:
+            notification_ref = eval(
+                f'Notification.objects.filter({self._create_query()}).order_by("id")'
+            )
+            if len(notification_ref) == 0:
+                raise Notification.DoesNotExist
+        except Notification.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        except NameError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
+        else:
+            notification_ser = Notification_Serializer(
+                notification_ref, many=True
+            ).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = notification_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
+    def get(self, request, word: str, pk: str):
+        self.__init__(query1=word, query2=pk)
+        flag = True
+        if self.query1 in self.SR_KEYS:
+            if self.query1 == self.SR_KEYS[0]:  # id
+                if self.query2 in Constant.NULL:
+                    self.__read_all()
+                else:
+                    self._read_specific()
+            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+                if self.query2 in Constant.NULL:
+                    flag = False
+                else:
+                    self.__read_search()
+            else:
+                flag = False
+        else:
+            flag = False
+
+        if not flag:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
+
+        return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:

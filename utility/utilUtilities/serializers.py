@@ -77,7 +77,7 @@ class Mailer_Serializer(serializers.ModelSerializer):
             "id",
             "api",
             "sender",
-            "reciever",
+            "receiver",
             "cc",
             "bcc",
             "type",
@@ -104,7 +104,7 @@ class Notification_Serializer(serializers.ModelSerializer):
         fields = (
             "id",
             "api",
-            "reciever",
+            "receiver",
             "subject",
             "body",
             "attachment",
