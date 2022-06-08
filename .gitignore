@@ -130,5 +130,6 @@ dmypy.json
 
 # CUSTOM
 *migrations/
-*.json
+*keys.json
+*xml.bkp
 .vscode/

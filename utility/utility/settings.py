@@ -19,22 +19,32 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import os
 import json
+from schemadict import schemadict
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
+from utilData.key import *
+
+# --------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
-    json_secret = json.load(secret)
-    SECRET_KEY = json_secret["SYSTEM"]["SECRET_KEY"]
-    DEBUG = json_secret["SYSTEM"]["DEBUG"]
-    ALLOWED_HOSTS = json_secret["SYSTEM"]["ALLOWED_HOSTS"]
-    EMAIL_HOST_USER = json_secret["ADMIN"]["EMAIL"]["HOST_USER"]
-    EMAIL_HOST_PASSWORD = json_secret["ADMIN"]["EMAIL"]["HOST_PASSWORD"]
-    SYSTEM = json_secret["SYSTEM"]["ID"]
-    SERVER_NAME = json_secret["SYSTEM"]["NAME"]
-    del json_secret
+try:
+    with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
+        json_secret = json.load(secret)
+        if not validateKey(json_secret=json_secret):
+            raise Exception("INVALID KEY FILE")
+        SECRET_KEY = json_secret[K_SYSTEM][K_SECRET_KEY]
+        DEBUG = json_secret[K_SYSTEM][K_DEBUG]
+        ALLOWED_HOSTS = json_secret[K_SYSTEM][K_ALLOWED_HOSTS]
+        SYSTEM = json_secret[K_SYSTEM][K_ID]
+        SERVER_NAME = json_secret[K_SYSTEM][K_NAME]
+        EMAIL_HOST_USER = json_secret[K_ADMIN][K_EMAIL][K_HOST_USER]
+        EMAIL_HOST_PASSWORD = json_secret[K_ADMIN][K_EMAIL][K_HOST_PASSWORD]
+        del json_secret
+except Exception as e:
+    print(f"ERROR : {str(e)}")
+    exit()
 
 try:
     os.mkdir(os.path.join(BASE_DIR, "staticfiles"))

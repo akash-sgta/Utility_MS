@@ -1,0 +1,1817 @@
+{
+	"info": {
+		"_postman_id": "8a37145f-c759-4e8f-babd-4aa055af33e9",
+		"name": "Micro Services",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "15737860"
+	},
+	"item": [
+		{
+			"name": "[PRJ] IAM",
+			"item": [
+				{
+					"name": "[APP] authAccess",
+					"item": [
+						{
+							"name": "[MDL] User",
+							"item": []
+						},
+						{
+							"name": "[MDL] Identity",
+							"item": [
+								{
+									"name": "As_User",
+									"item": [
+										{
+											"name": "create",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"pwd\" : \"12345\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{localhost}}{{authUsers}}identity/",
+													"host": [
+														"{{localhost}}{{authUsers}}identity"
+													],
+													"path": [
+														""
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "create self",
+													"originalRequest": {
+														"method": "POST",
+														"header": [],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n    \"pwd\" : \"12345\"\n}",
+															"options": {
+																"raw": {
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{localhost}}{{authUsers}}identity/",
+															"host": [
+																"{{localhost}}{{authUsers}}identity"
+															],
+															"path": [
+																""
+															]
+														}
+													},
+													"status": "Created",
+													"code": 201,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Date",
+															"value": "Tue, 03 May 2022 11:18:32 GMT"
+														},
+														{
+															"key": "Server",
+															"value": "WSGIServer/0.2 CPython/3.8.10"
+														},
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														},
+														{
+															"key": "Allow",
+															"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+														},
+														{
+															"key": "Vary",
+															"value": "Origin, Cookie"
+														},
+														{
+															"key": "X-Frame-Options",
+															"value": "DENY"
+														},
+														{
+															"key": "Content-Length",
+															"value": "233"
+														},
+														{
+															"key": "X-Content-Type-Options",
+															"value": "nosniff"
+														},
+														{
+															"key": "Referrer-Policy",
+															"value": "same-origin"
+														},
+														{
+															"key": "Cross-Origin-Opener-Policy",
+															"value": "same-origin"
+														}
+													],
+													"cookie": [],
+													"body": "{\n    \"STATUS\": true,\n    \"DATA\": {\n        \"id\": 14,\n        \"uName\": \"0000000000000006\",\n        \"pwd\": \"md5_827ccb0eea8a706c4c34a16891f84e7b\",\n        \"isActive\": false,\n        \"isAdmin\": false,\n        \"user\": null,\n        \"createdOn\": 1651576712875,\n        \"lastUpdate\": 1651576712879,\n        \"GMT\": \"+ 05:30\"\n    },\n    \"MESSAGE\": null\n}"
+												}
+											]
+										},
+										{
+											"name": "read",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{localhost}}{{authUsers}}identity/",
+													"host": [
+														"{{localhost}}{{authUsers}}identity"
+													],
+													"path": [
+														""
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "As_Admin",
+									"item": []
+								}
+							]
+						},
+						{
+							"name": "[SUB] access",
+							"item": [
+								{
+									"name": "signup",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"fName\": \"TEST\",\n    \"mName\": \"TEST\",\n    \"lName\": \"TEST\",\n    \"email\": \"TEST@test.test\",\n    \"phoneNo\": \"+91-8888888888\",\n    \"pwd\": \"walalalalala\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{localhost}}{{authUsers}}access/signup",
+											"host": [
+												"{{localhost}}{{authUsers}}access"
+											],
+											"path": [
+												"signup"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "signin",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": null,\n    \"pwd\": \"12345\",\n    \"uname\": \"0000000000000009\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{localhost}}{{authUsers}}access/signin",
+											"host": [
+												"{{localhost}}{{authUsers}}access"
+											],
+											"path": [
+												"signin"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "signout",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{localhost}}{{authUsers}}access/",
+											"host": [
+												"{{localhost}}{{authUsers}}access"
+											],
+											"path": [
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "check Access",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{localhost}}{{authUsers}}access/",
+											"host": [
+												"{{localhost}}{{authUsers}}access"
+											],
+											"path": [
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "create new user",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fname\" : \"Test\",\n    \"lname\" : \"Test\",\n    \"email\" : \"test@mail.com\",\n    \"phone\" : \"+91-8547142578\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}{{authUsers}}user",
+									"host": [
+										"{{localhost}}{{authUsers}}user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "001 signup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"first_name\" : \"test\",\n    \"middle_nName\" : null,\n    \"last_name\" : \"test\",\n    \"email\" : \"test@test.com\",\n    \"phone_no\" : \"+91-8451215478\",\n    \"user_name\" : null,\n    \"password\" : \"sexyman\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{localhost}}{{authAccess}}signup",
+									"host": [
+										"{{localhost}}{{authAccess}}signup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "[APP] authIdentity",
+					"item": []
+				},
+				{
+					"name": "[APP] authManagement",
+					"item": []
+				},
+				{
+					"name": "checkServerStatus",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{localhost}}{{auth}}/check-server",
+							"host": [
+								"{{localhost}}{{auth}}"
+							],
+							"path": [
+								"check-server"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJpZGVudGl0eSI6IDE3LCAiYWNjZXNzX3Rva2VuIjogInAxd0pmd3pxbDJMZC8sNHdiKjFuZTBuYCV3a09PKFN5XnhjVCs+Z0Ehe0pMcjVzJkNtTz1qLzduWG0yJGheMnpwLSxIcHRCay5sPXNEdF9IQHVxJE8mKH1GfjhVeyhYOkkoUmEjSXdUJ1N5dThSPDQrQiUqQHErX21DL2tvUGMifQ==",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "[PRJ] Utility",
+			"item": [
+				{
+					"name": "[APP] Utilities",
+					"item": [
+						{
+							"name": "[MDL] Country",
+							"item": [
+								{
+									"name": "USER",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/search/nameeqind",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"search",
+														"nameeqind"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update country",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "ADMIN",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/search/nameeqind",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"search",
+														"nameeqind"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create country",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 92,\n    \"iso\": \"pak\",\n    \"name\": \"pakistan\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update country",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"India ka beta\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/4",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+													],
+													"path": [
+														"id",
+														"4"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "[MDL] State",
+							"item": [
+								{
+									"name": "USER",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/search/countryeq2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"search",
+														"countryeq2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "ADMIN",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/search/countryeq2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"search",
+														"countryeq2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"id",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create state",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"country\" : 2,\n    \"name\": \"maharashtra\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update country",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Bengal GG\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "[MDL] City",
+							"item": [
+								{
+									"name": "USER",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/search/nameeq ind",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"search",
+														"nameeq ind"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "ADMIN",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/search/nameeq2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"search",
+														"nameeq2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"state\" : 1,\n    \"name\": \"AHH\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"India ka beta\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "[MDL] Mailer",
+							"item": [
+								{
+									"name": "USER",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/search/nameeq ind",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"search",
+														"nameeq ind"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "ADMIN",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/search/subjecteqtes",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"search",
+														"subjecteqtes"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"id",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"WET puSsy\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "[MDL] Notification",
+							"item": [
+								{
+									"name": "USER",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"id",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/search/nameeq ind",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"search",
+														"nameeq ind"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/1",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "ADMIN",
+									"item": [
+										{
+											"name": "read all",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "read specific",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "search query",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/search/subjecteqtes",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"search",
+														"subjecteqtes"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "delete specific",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/2",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"id",
+														"2"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "create specific",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "update specific",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"body\":\"TEST AHH Gude pok pk\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/3",
+													"host": [
+														"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "checkserver",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8100}}{{check_server}}",
+							"host": [
+								"{{local8100}}{{check_server}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "GG",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local8100",
+			"value": "127.0.0.1:8000",
+			"type": "string"
+		},
+		{
+			"key": "auth_Access",
+			"value": "/access/",
+			"type": "string"
+		},
+		{
+			"key": "auth_Identity",
+			"value": "/identity/",
+			"type": "string"
+		},
+		{
+			"key": "utility_Utilities",
+			"value": "utilities/",
+			"type": "string"
+		},
+		{
+			"key": "check_server",
+			"value": "checkserver/",
+			"type": "string"
+		},
+		{
+			"key": "asUser",
+			"value": "u/",
+			"type": "string"
+		},
+		{
+			"key": "asAdmin",
+			"value": "a/",
+			"type": "string"
+		},
+		{
+			"key": "local8200",
+			"value": "127.0.0.1:8200/",
+			"type": "string"
+		}
+	]
+}
