@@ -7,10 +7,10 @@
 # =========================================================================================
 from datetime import datetime
 from django.db import models
-from django.conf import settings
 
 # -----------------------------------------
-from utilUtilities.views.utility import Utility, Constant
+from utilUtilities.views.utility.utility import Utility
+from utilUtilities.views.utility.constant import Constant
 from utilApi.models import Api
 
 # =========================================================================================
@@ -26,7 +26,7 @@ from utilApi.models import Api
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
     iso = models.CharField(max_length=3, unique=True, null=True, blank=True)
@@ -51,10 +51,10 @@ class Country(models.Model):
 class State(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=127, unique=True)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
@@ -74,10 +74,10 @@ class State(models.Model):
 class City(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    state = models.ForeignKey(State, on_delete=models.CASCADE)
+    state = models.ForeignKey(State, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=127, unique=True)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
@@ -98,7 +98,7 @@ class City(models.Model):
 class Mailer(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
     api = models.ForeignKey(
@@ -111,7 +111,7 @@ class Mailer(models.Model):
     bcc = models.TextField()
 
     type = models.IntegerField(
-        choices=Constant.EMAIL_TYPE, default=Constant.RAW
+        choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW
     )
     subject = models.CharField(max_length=63)
     body = models.TextField()
@@ -138,7 +138,7 @@ class Mailer(models.Model):
 class Notification(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
     api = models.ForeignKey(

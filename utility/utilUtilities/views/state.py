@@ -15,12 +15,13 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.exceptions import FieldError
 
 # --------------------------------------------------
 
 from utilUtilities.models import State
 from utilUtilities.serializers import State_Serializer
-from utilUtilities.views.utility import Constant
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -42,13 +43,13 @@ class StateView(APIView):
             "name",
         )
         self.SR_KEYS = (
-            "ID",
-            "SEARCH",
+            "id",
+            "search",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
-        self.query1 = query1.upper() if query1 not in Constant.NULL else None
-        self.query2 = query2.upper() if query2 not in Constant.NULL else None
+        self.query1 = query1.lower() if query1 not in Constant.NULL else None
+        self.query2 = query2.lower() if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
@@ -57,13 +58,13 @@ class StateView(APIView):
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
                 word[i] = word[i].split(Constant.EQUAL)
-                word[i][0] = word[i][0].strip().lower()
+                word[i][0] = word[i][0].strip()
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
                         _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+                        _return += f"{word[i][0]}{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
         return _return
 
 
@@ -123,19 +124,33 @@ class StateView_asUser(StateView):
 
     def __read_search(self) -> None:
         try:
-            state_ref = eval(
-                f'State.objects.filter({self._create_query()}).order_by("id")'
-            )
+            try:
+                state_ref = eval(
+                    f'State.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    state_ref = eval(
+                        f'State.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(state_ref) == 0:
                 raise State.DoesNotExist
         except State.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
-        except NameError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
             state_ser = State_Serializer(state_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
@@ -152,7 +167,7 @@ class StateView_asUser(StateView):
                     self.__read_all()
                 else:
                     self.__read_specific()
-            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+            elif self.query1 == self.SR_KEYS[1]:  # search
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:

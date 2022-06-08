@@ -24,6 +24,10 @@ from utilUtilities.views.mailer import (
     MailerView_asUser,
     MailerView_asAdmin,
 )
+from utilUtilities.views.notification import (
+    NotificationView_asUser,
+    NotificationView_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -31,7 +35,7 @@ from utilUtilities.views.mailer import (
 app_name = "utilUtilities"
 # --------------------------------------------------
 WORD = r"(search|id){0,1}"
-PK = r"[A-Za-z0-9_@,]*"
+PK = r"[A-Za-z0-9_@,\s]*"
 # --------------------------------------------------
 
 
@@ -86,11 +90,22 @@ urlpatterns = [
     re_path(
         rf"u/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
         MailerView_asUser.as_view(),
-        name="CITY_AS_USER",
+        name="MAILER_AS_USER",
     ),
     re_path(
         rf"a/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
         MailerView_asAdmin.as_view(),
-        name="CITY_AS_ADMIN",
+        name="MAILER_AS_ADMIN",
+    ),
+    # --------------------------------------------------
+    re_path(
+        rf"u/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        NotificationView_asUser.as_view(),
+        name="NOTIFICATION_AS_USER",
+    ),
+    re_path(
+        rf"a/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        NotificationView_asAdmin.as_view(),
+        name="NOTIFICATION_AS_ADMIN",
     ),
 ]

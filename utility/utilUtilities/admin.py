@@ -9,7 +9,8 @@ from django.contrib import admin
 
 # -----------------------------------------
 from utilUtilities.models import Country, State, City, Mailer, Notification
-from utilUtilities.views.utility import Utility, Constant
+from utilUtilities.views.utility.utility import Utility
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -66,7 +67,7 @@ class State_AdminPanel(admin.ModelAdmin):
         "name",
         "updated_on",
     )
-    ordering = ("country__name", "name")
+    ordering = ("country", "name")
     search_fields = ["name"]
     empty_value_display = "NULL"
     list_per_page = 25
@@ -75,7 +76,11 @@ class State_AdminPanel(admin.ModelAdmin):
         return Utility.epochMsToDatetime(obj.last_update)
 
     def country_name(self, obj):
-        return obj.country.name
+        if obj.country in Constant.NULL:
+            _return = None
+        else:
+            _return = obj.country.name
+        return _return
 
     def get_queryset(self, request):
         query = super(State_AdminPanel, self).get_queryset(request)
@@ -107,7 +112,11 @@ class City_AdminPanel(admin.ModelAdmin):
         return Utility.epochMsToDatetime(obj.last_update)
 
     def state_name(self, obj):
-        return obj.state.name
+        if obj.state in Constant.NULL:
+            _return = None
+        else:
+            _return = obj.state.name
+        return _return
 
     def get_queryset(self, request):
         query = super(City_AdminPanel, self).get_queryset(request)

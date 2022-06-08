@@ -20,7 +20,7 @@ from rest_framework.views import APIView
 
 from utilUtilities.models import Country
 from utilUtilities.serializers import Country_Serializer
-from utilUtilities.views.utility import Constant
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -43,13 +43,13 @@ class CountryView(APIView):
             "name",
         )
         self.SR_KEYS = (
-            "ID",
-            "SEARCH",
+            "id",
+            "search",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
-        self.query1 = query1.upper() if query1 not in Constant.NULL else None
-        self.query2 = query2.upper() if query2 not in Constant.NULL else None
+        self.query1 = query1.lower() if query1 not in Constant.NULL else None
+        self.query2 = query2.lower() if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
@@ -58,7 +58,7 @@ class CountryView(APIView):
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
                 word[i] = word[i].split(Constant.EQUAL)
-                word[i][0] = word[i][0].strip().lower()
+                word[i][0] = word[i][0].strip()
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
@@ -153,7 +153,7 @@ class CountryView_asUser(CountryView):
                     self.__read_all()
                 else:
                     self.__read_specific()
-            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+            elif self.query1 == self.SR_KEYS[1]:  # search
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:

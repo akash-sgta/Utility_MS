@@ -9,7 +9,8 @@ from django.db import models
 from datetime import datetime
 
 # --------------------------------------------------
-from utilUtilities.views.utility import Utility, Constant
+from utilUtilities.views.utility.utility import Utility
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -23,7 +24,7 @@ from utilUtilities.views.utility import Utility, Constant
 class Request(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
     email = models.EmailField(unique=True)
@@ -31,7 +32,7 @@ class Request(models.Model):
     phone_no = models.CharField(unique=True, max_length=15)
     tg_id = models.CharField(max_length=127, blank=True, null=True)
     status = models.IntegerField(
-        choices=Constant.STATUS, default=Constant.PENDING
+        choices=Constant.STATUS_CHOICE, default=Constant.PENDING
     )
     reason = models.TextField(null=True, blank=True)
 
@@ -49,16 +50,16 @@ class Request(models.Model):
 class Api(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
-        choices=Constant.SYSTEM, default=Constant.SETTINGS_SYSTEM
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    direction = models.ImageField(
-        choice=Constant.DIRECTION, default=Constant.IN
+    direction = models.IntegerField(
+        choices=Constant.DIRECTION_CHOICE, default=Constant.IN
     )
 
     email = models.EmailField(unique=True)
     isd = models.CharField(null=True, blank=True, max_length=7)
-    phone_no = models.IntegerField(unique=True, max_length=15)
+    phone_no = models.IntegerField(unique=True)
     tg_id = models.CharField(max_length=127, blank=True, null=True)
     name = models.CharField(max_length=127)
     key = models.CharField(max_length=255, blank=True, null=True)

@@ -30,7 +30,7 @@ class Country_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0
 
 
 class State_Serializer(serializers.ModelSerializer):
@@ -48,7 +48,7 @@ class State_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0
 
 
 class City_Serializer(serializers.ModelSerializer):
@@ -66,7 +66,7 @@ class City_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0
 
 
 # -----------------------------------------
@@ -95,10 +95,10 @@ class Mailer_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0
 
 
-class Notificaiton_Serializer(serializers.ModelSerializer):
+class Notification_Serializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = (
@@ -119,4 +119,4 @@ class Notificaiton_Serializer(serializers.ModelSerializer):
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
-        depth = 1
+        depth = 0

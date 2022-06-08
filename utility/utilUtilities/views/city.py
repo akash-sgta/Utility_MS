@@ -15,12 +15,13 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.exceptions import FieldError
 
 # --------------------------------------------------
 
 from utilUtilities.models import City
 from utilUtilities.serializers import City_Serializer
-from utilUtilities.views.utility import Constant
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -42,13 +43,13 @@ class CityView(APIView):
             "name",
         )
         self.SR_KEYS = (
-            "ID",
-            "SEARCH",
+            "id",
+            "search",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
-        self.query1 = query1.upper() if query1 not in Constant.NULL else None
-        self.query2 = query2.upper() if query2 not in Constant.NULL else None
+        self.query1 = query1.lower() if query1 not in Constant.NULL else None
+        self.query2 = query2.lower() if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
@@ -57,7 +58,7 @@ class CityView(APIView):
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
                 word[i] = word[i].split(Constant.EQUAL)
-                word[i][0] = word[i][0].strip().lower()
+                word[i][0] = word[i][0].strip()
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
@@ -87,7 +88,7 @@ class CityView_asUser(CityView):
     # =============================================================
     def __read_specific(self) -> None:
         try:
-            state_ref = City.objects.get(
+            city_ref = City.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
         except City.DoesNotExist:
@@ -99,47 +100,61 @@ class CityView_asUser(CityView):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            state_ser = City_Serializer(state_ref, many=False).data
+            city_ser = City_Serializer(city_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(state_ser)
+            self.data_returned[Constant.DATA].append(city_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
     def __read_all(self) -> None:
         try:
-            state_ref = City.objects.all().order_by("id")
-            if len(state_ref) == 0:
+            city_ref = City.objects.all().order_by("id")
+            if len(city_ref) == 0:
                 raise City.DoesNotExist
         except City.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         else:
-            state_ser = City_Serializer(state_ref, many=True).data
+            city_ser = City_Serializer(city_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = state_ser
+            self.data_returned[Constant.DATA] = city_ser
             self.status_returned = status.HTTP_200_OK
         return
 
     def __read_search(self) -> None:
         try:
-            state_ref = eval(
-                f'City.objects.filter({self._create_query()}).order_by("id")'
-            )
-            if len(state_ref) == 0:
+            try:
+                city_ref = eval(
+                    f'City.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    city_ref = eval(
+                        f'City.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
+            if len(city_ref) == 0:
                 raise City.DoesNotExist
         except City.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
-        except NameError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
-            state_ser = City_Serializer(state_ref, many=True).data
+            city_ser = City_Serializer(city_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = state_ser
+            self.data_returned[Constant.DATA] = city_ser
             self.status_returned = status.HTTP_200_OK
         return
 
@@ -152,7 +167,7 @@ class CityView_asUser(CityView):
                     self.__read_all()
                 else:
                     self.__read_specific()
-            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+            elif self.query1 == self.SR_KEYS[1]:  # search
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:
@@ -202,22 +217,22 @@ class CityView_asAdmin(CityView_asUser):
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        state_ser = City_Serializer(data=data)
-        if state_ser.is_valid():
+        city_ser = City_Serializer(data=data)
+        if city_ser.is_valid():
             try:
-                state_ser.save()
+                city_ser.save()
             except Exception as e:
                 self.data_returned[Constant.STATUS] = False
                 self.data_returned[Constant.MESSAGE] = str(e)
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
             else:
-                state_ser = state_ser.data
+                city_ser = city_ser.data
                 self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(state_ser)
+                self.data_returned[Constant.DATA].append(city_ser)
                 self.status_returned = status.HTTP_201_CREATED
         else:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = state_ser.errors
+            self.data_returned[Constant.MESSAGE] = city_ser.errors
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -235,7 +250,7 @@ class CityView_asAdmin(CityView_asUser):
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            state_ref = City.objects.get(
+            city_ref = City.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
         except City.DoesNotExist:
@@ -247,24 +262,24 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            state_ser = City_Serializer(
-                instance=state_ref, data=data, partial=True
+            city_ser = City_Serializer(
+                instance=city_ref, data=data, partial=True
             )
-            if state_ser.is_valid():
+            if city_ser.is_valid():
                 try:
-                    state_ser.save()
+                    city_ser.save()
                 except Exception as e:
                     self.data_returned[Constant.STATUS] = False
                     self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
-                    state_ser = state_ser.data
+                    city_ser = city_ser.data
                     self.data_returned[Constant.STATUS] = True
-                    self.data_returned[Constant.DATA].append(state_ser)
+                    self.data_returned[Constant.DATA].append(city_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = state_ser.errors
+                self.data_returned[Constant.MESSAGE] = city_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -281,7 +296,7 @@ class CityView_asAdmin(CityView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            state_ref = City.objects.get(
+            city_ref = City.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
         except City.DoesNotExist:
@@ -293,10 +308,10 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            state_ser = City_Serializer(state_ref, many=False).data
-            state_ref.delete()
+            city_ser = City_Serializer(city_ref, many=False).data
+            city_ref.delete()
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(state_ser)
+            self.data_returned[Constant.DATA].append(city_ser)
             self.status_returned = status.HTTP_200_OK
         return
 

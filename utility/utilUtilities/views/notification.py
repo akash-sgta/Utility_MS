@@ -18,9 +18,9 @@ from rest_framework.views import APIView
 
 # --------------------------------------------------
 
-from utilUtilities.models import Notificaiton
-from utilUtilities.serializers import Notificaiton_Serializer
-from utilUtilities.views.utility import Constant
+from utilUtilities.models import Notification
+from utilUtilities.serializers import Notification_Serializer
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
@@ -30,12 +30,12 @@ from utilUtilities.views.utility import Constant
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
-class NotificaitonView(APIView):
+class NotificationView(APIView):
     renderer_classes = [JSONRenderer]
     authentication_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(NotificaitonView, self).__init__()
+        super(NotificationView, self).__init__()
         self.DB_KEYS = (
             "id",
             "country",
@@ -67,11 +67,11 @@ class NotificaitonView(APIView):
         return _return
 
 
-class NotificaitonView_asUser(NotificaitonView):
+class NotificationView_asUser(NotificationView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(NotificaitonView_asUser, self).__init__(
+        super(NotificationView_asUser, self).__init__(
             query1=query1, query2=query2
         )
 
@@ -123,32 +123,32 @@ class NotificaitonView_asUser(NotificaitonView):
         return Response(data=self.data_returned, status=self.status_returned)
 
 
-class NotificaitonView_asAdmin(NotificaitonView_asUser):
+class NotificationView_asAdmin(NotificationView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(NotificaitonView_asAdmin, self).__init__(
+        super(NotificationView_asAdmin, self).__init__(
             query1=query1, query2=query2
         )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        notificaiton_ser = Notificaiton_Serializer(data=data)
-        if notificaiton_ser.is_valid():
+        Notification_ser = Notification_Serializer(data=data)
+        if Notification_ser.is_valid():
             try:
-                notificaiton_ser.save()
+                Notification_ser.save()
             except Exception as e:
                 self.data_returned[Constant.STATUS] = False
                 self.data_returned[Constant.MESSAGE] = str(e)
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
             else:
-                notificaiton_ser = notificaiton_ser.data
+                Notification_ser = Notification_ser.data
                 self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(notificaiton_ser)
+                self.data_returned[Constant.DATA].append(Notification_ser)
                 self.status_returned = status.HTTP_201_CREATED
         else:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = notificaiton_ser.errors
+            self.data_returned[Constant.MESSAGE] = Notification_ser.errors
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -159,17 +159,17 @@ class NotificaitonView_asAdmin(NotificaitonView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(NotificaitonView_asAdmin, self).get(
+        return super(NotificationView_asAdmin, self).get(
             request=request, word=word, pk=pk
         )
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            notificaiton_ref = Notificaiton.objects.get(
+            Notification_ref = Notification.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Notificaiton.DoesNotExist:
+        except Notification.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -178,24 +178,24 @@ class NotificaitonView_asAdmin(NotificaitonView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            notificaiton_ser = Notificaiton_Serializer(
-                instance=notificaiton_ref, data=data, partial=True
+            Notification_ser = Notification_Serializer(
+                instance=Notification_ref, data=data, partial=True
             )
-            if notificaiton_ser.is_valid():
+            if Notification_ser.is_valid():
                 try:
-                    notificaiton_ser.save()
+                    Notification_ser.save()
                 except Exception as e:
                     self.data_returned[Constant.STATUS] = False
                     self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
-                    notificaiton_ser = notificaiton_ser.data
+                    Notification_ser = Notification_ser.data
                     self.data_returned[Constant.STATUS] = True
-                    self.data_returned[Constant.DATA].append(notificaiton_ser)
+                    self.data_returned[Constant.DATA].append(Notification_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = notificaiton_ser.errors
+                self.data_returned[Constant.MESSAGE] = Notification_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -212,10 +212,10 @@ class NotificaitonView_asAdmin(NotificaitonView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            notificaiton_ref = Notificaiton.objects.get(
+            Notification_ref = Notification.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Notificaiton.DoesNotExist:
+        except Notification.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -224,12 +224,12 @@ class NotificaitonView_asAdmin(NotificaitonView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            notificaiton_ser = Notificaiton_Serializer(
-                notificaiton_ref, many=False
+            Notification_ser = Notification_Serializer(
+                Notification_ref, many=False
             ).data
-            notificaiton_ref.delete()
+            Notification_ref.delete()
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(notificaiton_ser)
+            self.data_returned[Constant.DATA].append(Notification_ser)
             self.status_returned = status.HTTP_200_OK
         return
 

@@ -12,7 +12,7 @@ from rest_framework import status
 from datetime import datetime
 from django.conf import settings
 
-from utilUtilities.views.utility import Utility
+from utilUtilities.views.utility.utility import Utility
 
 
 # =========================================================================================

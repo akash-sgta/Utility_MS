@@ -33,7 +33,7 @@ with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
     EMAIL_HOST_USER = json_secret["ADMIN"]["EMAIL"]["HOST_USER"]
     EMAIL_HOST_PASSWORD = json_secret["ADMIN"]["EMAIL"]["HOST_PASSWORD"]
     SYSTEM = json_secret["SYSTEM"]["ID"]
-    SERVER_NAME = json_secret["SYSTEM"]["SERVER_NAME"]
+    SERVER_NAME = json_secret["SYSTEM"]["NAME"]
     del json_secret
 
 try:
@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # ------------------------------------------------------------------------
     "utilUtilities",
-    # "utilApi",
+    "utilApi",
 ]
 
 MIDDLEWARE = [

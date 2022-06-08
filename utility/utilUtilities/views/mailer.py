@@ -20,7 +20,7 @@ from rest_framework.views import APIView
 
 from utilUtilities.models import Mailer
 from utilUtilities.serializers import Mailer_Serializer
-from utilUtilities.views.utility import Constant, Utility
+from utilUtilities.views.utility.constant import Constant
 
 
 # =========================================================================================
