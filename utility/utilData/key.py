@@ -19,6 +19,9 @@ K_ADMIN = "ADMIN"
 K_EMAIL = "EMAIL"
 K_HOST_USER = "HOST_USER"
 K_HOST_PASSWORD = "HOST_PASSWORD"
+K_HOST_PORT = "K_HOST_PORT"
+K_TELEGRAM = "TELEGRAM"
+K_KEY = "KEY"
 
 SCHEMA_SYSTEM = schemadict(
     {
@@ -55,11 +58,29 @@ SCHEMA_ADMIN_EMAIL = schemadict(
             "type": str,
             "max_len": 255,
         },
+        K_HOST_PORT: {
+            "type": int,
+        },
+    }
+)
+SCHEMA_ADMIN_TG = schemadict(
+    {
+        K_NAME: {
+            "type": str,
+            "max_len": 63,
+        },
+        K_KEY: {
+            "type": str,
+            "max_len": 255,
+        },
     }
 )
 SCHEMA_ADMIN = schemadict(
     {
         K_EMAIL: {
+            "type": dict,
+        },
+        K_TELEGRAM: {
             "type": dict,
         },
     }
@@ -86,6 +107,7 @@ def validateKey(json_secret: dict) -> bool:
         SCHEMA_SYSTEM.validate(json_secret[K_SYSTEM])
         SCHEMA_ADMIN.validate(json_secret[K_ADMIN])
         SCHEMA_ADMIN_EMAIL.validate(json_secret[K_ADMIN][K_EMAIL])
+        SCHEMA_ADMIN_TG.validate(json_secret[K_ADMIN][K_TELEGRAM])
     except Exception as e:
         print(f"ERROR : {str(e)}")
         return False

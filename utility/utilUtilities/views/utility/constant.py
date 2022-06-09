@@ -37,8 +37,11 @@ class Constant(object):
     #               SYSTEM PARAMS
     # --------------------------------------------------
     SETTINGS_SYSTEM = settings.SYSTEM
-    SETTINGS_EMAIL = settings.EMAIL_HOST_USER
+    SETTINGS_EMAIL_EMAIL = settings.EMAIL_HOST_USER
+    SETTINGS_EMAIL_PASSWORD = settings.EMAIL_HOST_PASSWORD
+    SETTINGS_EMAIL_PORT = settings.EMAIL_HOST_PORT
     SETTINGS_SECRET = settings.SECRET_KEY
+    SETTINGS_TG_KEY = settings.TELEGRAM_KEY
     # --------------------------------------------------
     #               INVALID
     # --------------------------------------------------
@@ -57,6 +60,7 @@ class Constant(object):
     EQUAL2 = "="
     MD5 = "md5_"
     UTF8 = "utf-8"
+    ATTACHMENT = "ATTACHMENT"
     # --------------------------------------------------
     #               VALIDATOR
     # --------------------------------------------------
