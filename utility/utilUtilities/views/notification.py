@@ -21,12 +21,13 @@ from rest_framework.views import APIView
 from utilUtilities.models import Notification
 from utilUtilities.serializers import Notification_Serializer
 from utilUtilities.views.utility.constant import Constant
-from utilUtilities.views.utility.batchJob import BatchJob
+from utilUtilities.views.utility.batchJob import BatchJob, TGBot
 
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
+BOT_THREAD = TGBot()
 
 # =========================================================================================
 #                                       CODE
@@ -46,6 +47,7 @@ class NotificationView(APIView):
             "id",
             "search",
             "trigger",
+            "bot",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -240,17 +242,26 @@ class NotificationView_asAdmin(NotificationView_asUser):
                     flag = False
                 else:
                     try:
-                        status = int(self.query2)
+                        _status = int(self.query2)
                     except ValueError:
-                        status = Constant.PENDING
+                        _status = Constant.PENDING
                     finally:
-                        self.query2 = f"statuseq{status}"
+                        self.query2 = f"statuseq{_status}"
                         self.__read_search()
                         # ---------------------------------
                         batch_thread = BatchJob(
-                            mailer=False, api=1, status=status
+                            mailer=False, api=1, status=_status
                         )
                         batch_thread.start()
+            elif self.query1 == self.SR_KEYS[3]:  # bot
+                if not BOT_THREAD.is_alive():
+                    BOT_THREAD.start()
+                else:
+                    self.data_returned[Constant.DATA] = {
+                        "POLLS": BOT_THREAD.stop()
+                    }
+                self.data_returned[Constant.STATUS] = True
+                self.status_returned = status.HTTP_202_ACCEPTED
             else:
                 flag = False
         else:

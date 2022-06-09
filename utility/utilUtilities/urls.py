@@ -38,6 +38,7 @@ WORD = r"(search|id){1}"
 ID = r"(id){1}"
 PK = r"[A-Za-z0-9_@,\s]*"
 WORD_2 = r"(search|id|trigger){1}"
+WORD_3 = r"(search|id|trigger|bot){1}"
 # --------------------------------------------------
 
 
@@ -95,7 +96,7 @@ urlpatterns = [
         name="NOTIFICATION_AS_USER",
     ),
     re_path(
-        rf"a/notif/(?P<word>{WORD_2})/(?P<pk>{PK})",
+        rf"a/notif/(?P<word>{WORD_3})/(?P<pk>{PK})",
         NotificationView_asAdmin.as_view(),
         name="NOTIFICATION_AS_ADMIN",
     ),

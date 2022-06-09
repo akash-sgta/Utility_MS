@@ -145,9 +145,21 @@ class BatchJob(Thread):
         else:
             return True
 
-    def run(self) -> None:
+    def run(self) -> bool:
         if self.mailer:
             _return = self._mailer(api=self.api, status=self.status)
         else:
             _return = self._notif(api=self.api, status=self.status)
         return _return
+
+
+class TGBot(Thread):
+    def __init__(self) -> None:
+        self.tg_ref = None
+
+    def run(self) -> bool:
+        self.tg_ref = Telegram_Util()
+        return self.tg_ref.run()
+
+    def stop(self) -> int:
+        return self.tg_ref.changeStatus(status=False)

@@ -5,6 +5,7 @@
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
+from time import sleep
 from telegram.ext import *
 from telegram import *
 
@@ -25,6 +26,8 @@ class Telegram_Util(Bot):
         self.updater = Updater(token=self.API_KEY, use_context=True)
         self.dispatcher = self.updater.dispatcher
         self.footer = Constant.FOOTER
+        self.status = True
+        self.count = 0
         super(Telegram_Util, self).__init__(token=self.API_KEY)
 
     def __start(self, update, CallbackContext) -> None:
@@ -66,6 +69,10 @@ class Telegram_Util(Bot):
         )
         return
 
+    def changeStatus(self, status=True) -> int:
+        self.__status = status
+        return self.count
+
     def send(self, chat_id: str, message: str) -> str:
         message += f"\n\n\n\n{self.footer}"
         try:
@@ -79,10 +86,18 @@ class Telegram_Util(Bot):
             return None
 
     def run(self):
+        self.count = 0
         try:
             self.__add_handlers()
-            self.updater.start_polling()
+            while True:
+                if self.__status:
+                    if self.count < 1:
+                        self.updater.start_polling(poll_interval=15)
+                        print("POLLING STARTED...")
+                        self.count += 1
+                else:
+                    self.updater.stop()
+                    raise Exception("Manual Break Triggered")
+                sleep(60)
         except Exception as e:
             print(f"ERROR : {str(e)}")
-        else:
-            print("POLLING STARTED...")
