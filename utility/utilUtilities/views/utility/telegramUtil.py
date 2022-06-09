@@ -15,6 +15,7 @@ from utilUtilities.views.utility.constant import Constant
 #                                       CONSTANT
 # ==============================================================================
 
+
 # ==============================================================================
 #                                       CODE
 # ==============================================================================
@@ -23,7 +24,7 @@ class Telegram_Util(Bot):
         self.API_KEY = Constant.SETTINGS_TG_KEY
         self.updater = Updater(token=self.API_KEY, use_context=True)
         self.dispatcher = self.updater.dispatcher
-        self.footer = "THIS IS AN UNMONITORED MAILBOX, DO NOT REPLY\n"
+        self.footer = Constant.FOOTER
         super(Telegram_Util, self).__init__(token=self.API_KEY)
 
     def __start(self, update, CallbackContext) -> None:
@@ -65,7 +66,7 @@ class Telegram_Util(Bot):
         )
         return
 
-    def send(self, chat_id: str, message: str) -> bool:
+    def send(self, chat_id: str, message: str) -> str:
         message += f"\n\n\n\n{self.footer}"
         try:
             self.send_message(
@@ -73,10 +74,9 @@ class Telegram_Util(Bot):
                 text=message,
             )
         except Exception as e:
-            print(f"ERROR : {str(e)}")
-            return False
+            return str(e)
         else:
-            return True
+            return None
 
     def run(self):
         try:

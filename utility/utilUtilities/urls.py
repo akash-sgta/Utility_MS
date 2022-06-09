@@ -37,6 +37,7 @@ app_name = "utilUtilities"
 WORD = r"(search|id){1}"
 ID = r"(id){1}"
 PK = r"[A-Za-z0-9_@,\s]*"
+WORD_2 = r"(search|id|trigger){1}"
 # --------------------------------------------------
 
 
@@ -83,7 +84,7 @@ urlpatterns = [
         name="MAILER_AS_USER",
     ),
     re_path(
-        rf"a/mailer/(?P<word>{WORD})/(?P<pk>{PK})",
+        rf"a/mailer/(?P<word>{WORD_2})/(?P<pk>{PK})",
         MailerView_asAdmin.as_view(),
         name="MAILER_AS_ADMIN",
     ),
@@ -94,7 +95,7 @@ urlpatterns = [
         name="NOTIFICATION_AS_USER",
     ),
     re_path(
-        rf"a/notif/(?P<word>{WORD})/(?P<pk>{PK})",
+        rf"a/notif/(?P<word>{WORD_2})/(?P<pk>{PK})",
         NotificationView_asAdmin.as_view(),
         name="NOTIFICATION_AS_ADMIN",
     ),

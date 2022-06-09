@@ -51,6 +51,7 @@ class Constant(object):
     # --------------------------------------------------
     #               OTHERS
     # --------------------------------------------------
+    FOOTER = "THIS IS AN UNMONITORED MAILBOX, DO NOT REPLY\n"
     METHOD_NOT_ALLOWED = "METHOD NOT ALLOWED"
     NO_CONTENT = "NO CONTENT FOUND"
     SYS = "sys"
@@ -87,10 +88,12 @@ class Constant(object):
     PENDING = 0
     DONE = 1
     REJECTED = 2
+    PARTIAL = 3
     STATUS_CHOICE = [
         (PENDING, "Pending"),
         (DONE, "Done"),
         (REJECTED, "Rejected"),
+        (PARTIAL, "Partial"),
     ]
     RAW = 0
     HTML = 1

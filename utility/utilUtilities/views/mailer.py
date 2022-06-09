@@ -21,6 +21,7 @@ from rest_framework.views import APIView
 from utilUtilities.models import Mailer
 from utilUtilities.serializers import Mailer_Serializer
 from utilUtilities.views.utility.constant import Constant
+from utilUtilities.views.utility.batchJob import BatchJob
 
 
 # =========================================================================================
@@ -44,6 +45,7 @@ class MailerView(APIView):
         self.SR_KEYS = (
             "id",
             "search",
+            "trigger",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -216,11 +218,29 @@ class MailerView_asAdmin(MailerView_asUser):
                     self.__read_all()
                 else:
                     self._read_specific()
-            elif self.query1.lower() == self.SR_KEYS[1]:  # search
+            elif self.query1 == self.SR_KEYS[1]:  # search
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:
                     self.__read_search()
+            elif self.query1 == self.SR_KEYS[2]:  # trigger
+                try:
+                    self.query2 = int(self.query2)
+                except ValueError:
+                    flag = False
+                else:
+                    try:
+                        status = int(self.query2)
+                    except ValueError:
+                        status = Constant.PENDING
+                    finally:
+                        self.query2 = f"statuseq{status}"
+                        self.__read_search()
+                        # ---------------------------------
+                        batch_thread = BatchJob(
+                            mailer=True, api=1, status=status
+                        )
+                        batch_thread.start()
             else:
                 flag = False
         else:

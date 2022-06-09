@@ -9,12 +9,12 @@ from yagmail import SMTP
 
 # --------------------------------------------------
 from utilUtilities.views.utility.constant import Constant
-from utilUtilities.serializers import Mailer_Serializer
-from utilUtilities.models import Mailer
+
 
 # ==============================================================================
 #                                       CONSTANT
 # ==============================================================================
+
 
 # ==============================================================================
 #                                       CODE
@@ -26,9 +26,11 @@ class Mailer_Util(object):
         super(Mailer_Util, self).__init__()
         self.password = Constant.SETTINGS_EMAIL_PASSWORD
         self.sender = Constant.SETTINGS_EMAIL_EMAIL
-        self.footer = "THIS IS AN UNMONITORED MAILBOX, DO NOT REPLY\n"
+        self.footer = Constant.FOOTER
 
-    def send(self, receiver: str, subject: str, message: str) -> bool:
+    def send(
+        self, receiver: list, cc: list, bcc: list, subject: str, message: str
+    ) -> None:
         try:
             subject = subject.upper()
             message += f"\n\n\n\n{self.footer}"
@@ -37,9 +39,10 @@ class Mailer_Util(object):
                     to=receiver,
                     subject=subject,
                     contents=message,
+                    cc=cc,
+                    bcc=bcc,
                 )
         except Exception as e:
-            print(f"ERROR : {str(e)}")
-            return False
+            return str(e)
         else:
-            return True
+            return None

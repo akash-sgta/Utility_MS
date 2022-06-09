@@ -42,8 +42,8 @@ try:
         EMAIL_HOST_USER = json_secret[K_ADMIN][K_EMAIL][K_HOST_USER]
         EMAIL_HOST_PASSWORD = json_secret[K_ADMIN][K_EMAIL][K_HOST_PASSWORD]
         EMAIL_HOST_PORT = json_secret[K_ADMIN][K_EMAIL][K_HOST_PORT]
-        TELEGRAM_NAME = json_secret[K_ADMIN][K_EMAIL][K_NAME]
-        TELEGRAM_KEY = json_secret[K_ADMIN][K_EMAIL][K_KEY]
+        TELEGRAM_NAME = json_secret[K_ADMIN][K_TELEGRAM][K_NAME]
+        TELEGRAM_KEY = json_secret[K_ADMIN][K_TELEGRAM][K_KEY]
         del json_secret
 except Exception as e:
     print(f"ERROR : {str(e)}")
