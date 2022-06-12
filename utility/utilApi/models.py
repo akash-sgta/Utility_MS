@@ -27,7 +27,7 @@ class Request(models.Model):
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     isd = models.CharField(null=True, blank=True, max_length=7)
     phone_no = models.CharField(unique=True, max_length=15)
     tg_id = models.CharField(max_length=127, blank=True, null=True)
@@ -57,9 +57,9 @@ class Api(models.Model):
         choices=Constant.DIRECTION_CHOICE, default=Constant.IN
     )
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField()
     isd = models.CharField(null=True, blank=True, max_length=7)
-    phone_no = models.IntegerField(unique=True)
+    phone_no = models.IntegerField()
     tg_id = models.CharField(max_length=127, blank=True, null=True)
 
     name = models.CharField(max_length=127, unique=True)

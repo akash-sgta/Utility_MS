@@ -22,7 +22,6 @@ class Request_Serializer(serializers.ModelSerializer):
         model = Request
         fields = (
             "id",
-            "sys",
             "email",
             "country",
             "phone_no",
@@ -45,7 +44,6 @@ class Api_Serializer(serializers.ModelSerializer):
         model = Api
         fields = (
             "id",
-            "sys",
             "direction",
             "email",
             "country",

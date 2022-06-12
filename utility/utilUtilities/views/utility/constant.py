@@ -24,19 +24,20 @@ class Constant(object):
     STATUS = "STATUS"
     DATA = "DATA"
     MESSAGE = "MESSAGE"
-    TIMEZONE = "TIMEZONE"
+    SETTINGS_TIMEZONE = "TIMEZONE"
     BLANK_LIST = []
     BLANK_STR = ""
     RETURN_JSON = {
         STATUS: False,
         DATA: BLANK_LIST,
         MESSAGE: BLANK_STR,
-        TIMEZONE: settings.TIME_ZONE,
+        SETTINGS_TIMEZONE: settings.TIME_ZONE,
     }
     # --------------------------------------------------
     #               SYSTEM PARAMS
     # --------------------------------------------------
     SETTINGS_SYSTEM = settings.SYSTEM
+    SETTINGS_SYSTEM_NAME = settings.SERVER_NAME
     SETTINGS_EMAIL_EMAIL = settings.EMAIL_HOST_USER
     SETTINGS_EMAIL_PASSWORD = settings.EMAIL_HOST_PASSWORD
     SETTINGS_EMAIL_PORT = settings.EMAIL_HOST_PORT
@@ -101,9 +102,11 @@ class Constant(object):
         (RAW, "Raw"),
         (HTML, "HTML"),
     ]
-    IN = 0
-    OUT = 1
+    SELF = 0
+    IN = 1
+    OUT = 2
     DIRECTION_CHOICE = [
+        (SELF, "Self"),
         (IN, "Inbound"),
         (OUT, "Outbound"),
     ]

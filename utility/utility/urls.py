@@ -1,7 +1,8 @@
 # =========================================================================================
 #                                       DOCUMENTATION
 # =========================================================================================
-"""authenticator URL Configuration
+"""
+utility URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.0/topics/http/urls/
@@ -35,8 +36,10 @@ from utility.views.checkServer import check_server_status
 urlpatterns = [
     re_path(r"^django-admin/", admin.site.urls, name="DJANGO_ADMIN"),
     # ----------------------------------------------------------
-    re_path(r"^checkserver/", check_server_status, name="CHECK_SERVER_STATUS"),
+    re_path(
+        r"^checkserver/", check_server_status, name="CHECK_SERVER_STATUS"
+    ),
     # ----------------------------------------------------------
     re_path(r"^utilities/", include("utilUtilities.urls"), name="UTILITIES"),
-    # re_path(r"^access/", include("authAccess.urls"), name="ACCESS"),
+    re_path(r"^api/", include("utilApi.urls"), name="API"),
 ]

@@ -155,11 +155,10 @@ class BatchJob(Thread):
 
 class TGBot(Thread):
     def __init__(self) -> None:
-        self.tg_ref = None
-
-    def run(self) -> bool:
         self.tg_ref = Telegram_Util()
+
+    def run(self) -> None:
         return self.tg_ref.run()
 
-    def stop(self) -> int:
-        return self.tg_ref.changeStatus(status=False)
+    def stop(self) -> None:
+        return self.tg_ref.stop()

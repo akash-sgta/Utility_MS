@@ -104,6 +104,7 @@ class NotificationView_asUser(NotificationView):
 
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
+        # TODO : Get Api number from request_headers
         self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
@@ -237,29 +238,22 @@ class NotificationView_asAdmin(NotificationView_asUser):
                     self.__read_search()
             elif self.query1 == self.SR_KEYS[2]:  # trigger
                 try:
-                    self.query2 = int(self.query2)
-                except ValueError:
-                    flag = False
-                else:
-                    try:
-                        _status = int(self.query2)
-                    except ValueError:
-                        _status = Constant.PENDING
-                    finally:
-                        self.query2 = f"statuseq{_status}"
-                        self.__read_search()
-                        # ---------------------------------
-                        batch_thread = BatchJob(
-                            mailer=False, api=1, status=_status
-                        )
-                        batch_thread.start()
+                    _status = int(self.query2)
+                except Exception as e:
+                    _status = Constant.PENDING
+                finally:
+                    self.query2 = f"statuseq{_status}"
+                    self.__read_search()
+                    # ---------------------------------
+                    batch_thread = BatchJob(
+                        mailer=False, api=1, status=_status
+                    )
+                    batch_thread.start()
             elif self.query1 == self.SR_KEYS[3]:  # bot
                 if not BOT_THREAD.is_alive():
                     BOT_THREAD.start()
                 else:
-                    self.data_returned[Constant.DATA] = {
-                        "POLLS": BOT_THREAD.stop()
-                    }
+                    BOT_THREAD.stop()
                 self.data_returned[Constant.STATUS] = True
                 self.status_returned = status.HTTP_202_ACCEPTED
             else:

@@ -11,17 +11,18 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
+from math import fabs
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.exceptions import FieldError
 
 # --------------------------------------------------
 
-from utilUtilities.models import Mailer
-from utilUtilities.serializers import Mailer_Serializer
+from utilApi.models import Api
+from utilApi.serializers import Api_Serializer
 from utilUtilities.views.utility.constant import Constant
-from utilUtilities.views.utility.batchJob import BatchJob
 
 
 # =========================================================================================
@@ -31,21 +32,20 @@ from utilUtilities.views.utility.batchJob import BatchJob
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
-class MailerView(APIView):
+class ApiView(APIView):
     renderer_classes = [JSONRenderer]
     authentication_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(MailerView, self).__init__()
+        super(ApiView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "subject",
-            "sender",
+            "country",
+            "name",
         )
         self.SR_KEYS = (
             "id",
             "search",
-            "trigger",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -71,46 +71,30 @@ class MailerView(APIView):
         return _return
 
 
-class MailerView_asUser(MailerView):
+class ApiView_asUser(ApiView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(MailerView_asUser, self).__init__(query1=query1, query2=query2)
+        super(ApiView_asUser, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        mailer_ser = Mailer_Serializer(data=data)
-        if mailer_ser.is_valid():
-            try:
-                mailer_ser.save()
-            except Exception as e:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = str(e)
-                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
-            else:
-                mailer_ser = mailer_ser.data
-                self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(mailer_ser)
-                self.status_returned = status.HTTP_201_CREATED
-        else:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = mailer_ser.errors
-            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        # TODO : Get Api number from request_headers
         self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def _read_specific(self) -> None:
         try:
-            mailer_ref = Mailer.objects.get(
+            api_ref = Api.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Mailer.DoesNotExist:
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -123,15 +107,31 @@ class MailerView_asUser(MailerView):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            mailer_ser = Mailer_Serializer(mailer_ref, many=False).data
+            api_ser = Api_Serializer(api_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(mailer_ser)
+            self.data_returned[Constant.DATA].append(api_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        self._read_specific()
+        flag = True
+        if self.query1 in self.SR_KEYS:
+            if self.query1 == self.SR_KEYS[0]:  # id
+                if self.query2 in Constant.NULL:
+                    flag = False
+                else:
+                    self.__read_specific()
+            else:
+                flag = False
+        else:
+            flag = False
+
+        if not flag:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
+
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -159,54 +159,88 @@ class MailerView_asUser(MailerView):
         return Response(data=self.data_returned, status=self.status_returned)
 
 
-class MailerView_asAdmin(MailerView_asUser):
+class ApiView_asAdmin(ApiView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(MailerView_asAdmin, self).__init__(query1=query1, query2=query2)
+        super(ApiView_asAdmin, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
+    def __create_specific(self, data: dict) -> None:
+        api_ser = Api_Serializer(data=data)
+        if api_ser.is_valid():
+            try:
+                api_ser.save()
+            except Exception as e:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = str(e)
+                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+            else:
+                api_ser = api_ser.data
+                self.data_returned[Constant.STATUS] = True
+                self.data_returned[Constant.DATA].append(api_ser)
+                self.status_returned = status.HTTP_201_CREATED
+        else:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = api_ser.errors
+            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+        return
+
     def post(self, request, word: str, pk: str):
-        return super(MailerView_asAdmin, self).post(
-            request=request, word=word, pk=pk
-        )
+        self.__init__(query1=word, query2=pk)
+        self.__create_specific(data=request.data)
+        return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __read_all(self) -> None:
         try:
-            mailer_ref = Mailer.objects.all().order_by("id")
-            if len(mailer_ref) == 0:
-                raise Mailer.DoesNotExist
-        except Mailer.DoesNotExist:
+            api_ref = Api.objects.all().order_by("id")
+            if len(api_ref) == 0:
+                raise Api.DoesNotExist
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         else:
-            mailer_ser = Mailer_Serializer(mailer_ref, many=True).data
+            api_ser = Api_Serializer(api_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = mailer_ser
+            self.data_returned[Constant.DATA] = api_ser
             self.status_returned = status.HTTP_200_OK
         return
 
     def __read_search(self) -> None:
         try:
-            mailer_ref = eval(
-                f'Mailer.objects.filter({self._create_query()}).order_by("id")'
-            )
-            if len(mailer_ref) == 0:
-                raise Mailer.DoesNotExist
-        except Mailer.DoesNotExist:
+            try:
+                api_ref = eval(
+                    f'Api.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    api_ref = eval(
+                        f'Api.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
+            if len(api_ref) == 0:
+                raise Api.DoesNotExist
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
-        except NameError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
-            mailer_ser = Mailer_Serializer(mailer_ref, many=True).data
+            api_ser = Api_Serializer(api_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = mailer_ser
+            self.data_returned[Constant.DATA] = api_ser
             self.status_returned = status.HTTP_200_OK
         return
 
@@ -224,19 +258,6 @@ class MailerView_asAdmin(MailerView_asUser):
                     flag = False
                 else:
                     self.__read_search()
-            elif self.query1 == self.SR_KEYS[2]:  # trigger
-                try:
-                    _status = int(self.query2)
-                except Exception as e:
-                    _status = Constant.PENDING
-                finally:
-                    self.query2 = f"statuseq{_status}"
-                    self.__read_search()
-                    # ---------------------------------
-                    batch_thread = BatchJob(
-                        mailer=True, api=1, status=_status
-                    )
-                    batch_thread.start()
             else:
                 flag = False
         else:
@@ -252,10 +273,10 @@ class MailerView_asAdmin(MailerView_asUser):
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            mailer_ref = Mailer.objects.get(
+            api_ref = Api.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Mailer.DoesNotExist:
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -264,24 +285,24 @@ class MailerView_asAdmin(MailerView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            mailer_ser = Mailer_Serializer(
-                instance=mailer_ref, data=data, partial=True
+            api_ser = Api_Serializer(
+                instance=api_ref, data=data, partial=True
             )
-            if mailer_ser.is_valid():
+            if api_ser.is_valid():
                 try:
-                    mailer_ser.save()
+                    api_ser.save()
                 except Exception as e:
                     self.data_returned[Constant.STATUS] = False
                     self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
-                    mailer_ser = mailer_ser.data
+                    api_ser = api_ser.data
                     self.data_returned[Constant.STATUS] = True
-                    self.data_returned[Constant.DATA].append(mailer_ser)
+                    self.data_returned[Constant.DATA].append(api_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = mailer_ser.errors
+                self.data_returned[Constant.MESSAGE] = api_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -298,10 +319,10 @@ class MailerView_asAdmin(MailerView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            mailer_ref = Mailer.objects.get(
+            api_ref = Api.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Mailer.DoesNotExist:
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -310,10 +331,10 @@ class MailerView_asAdmin(MailerView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            mailer_ser = Mailer_Serializer(mailer_ref, many=False).data
-            mailer_ref.delete()
+            api_ser = Api_Serializer(api_ref, many=False).data
+            api_ref.delete()
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(mailer_ser)
+            self.data_returned[Constant.DATA].append(api_ser)
             self.status_returned = status.HTTP_200_OK
         return
 

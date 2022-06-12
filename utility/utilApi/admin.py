@@ -9,10 +9,7 @@ from django.contrib import admin
 
 # -------------------------------------------------
 
-from utilApi.models import (
-    Request,
-    Api,
-)
+from utilApi.models import Request, Api
 from utilUtilities.views.utility.utility import Utility
 
 

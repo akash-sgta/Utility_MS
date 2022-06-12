@@ -53,6 +53,9 @@ class CountryView(APIView):
         return
 
     def _create_query(self, flag=True) -> str:
+        """
+        Create args string for filter() from the provided search query
+        """
         _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
         if self.query2 not in Constant.NULL:
             word = self.query2.split(Constant.COMA)
