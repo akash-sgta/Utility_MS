@@ -5,6 +5,7 @@
 # =========================================================================================
 #                                       LIBRARY
 # =========================================================================================
+from re import compile
 from schemadict import schemadict
 from django.conf import settings
 from django.core.validators import RegexValidator
@@ -75,6 +76,10 @@ class Constant(object):
         regex=r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
         message="Email Id is invalid.",
     )
+    RE_EMAIL = compile(
+        pattern=r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$"
+    )
+    RE_TG = compile(pattern=r"^[0-9]+$")
     # --------------------------------------------------
     #               CHOICES + SCHEMAS
     # --------------------------------------------------

@@ -11,22 +11,17 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
-from math import fabs
-import re
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.core.exceptions import FieldError
 
 # --------------------------------------------------
 
-from utilApi.models import Request
-from utilApi.serializers import Request_Serializer
-from utilUtilities.views.mailer import MailerView_asUser
-from utilUtilities.views.notification import NotificationView_asUser
+from utilUtilities.models import Telegram
+from utilUtilities.serializers import Telegram_Serializer
 from utilUtilities.views.utility.constant import Constant
-from utility.utilUtilities.views.utility.utility import Utility
+from utilUtilities.views.utility.batchJob import BatchJob
 
 
 # =========================================================================================
@@ -36,20 +31,21 @@ from utility.utilUtilities.views.utility.utility import Utility
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
-class RequestView(APIView):
+class TelegramView(APIView):
     renderer_classes = [JSONRenderer]
     authentication_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(RequestView, self).__init__()
+        super(TelegramView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "country",
-            "name",
+            "subject",
+            "sender",
         )
         self.SR_KEYS = (
             "id",
             "search",
+            "trigger",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -75,45 +71,48 @@ class RequestView(APIView):
         return _return
 
 
-class RequestView_asUser(RequestView):
+class TelegramView_asUser(TelegramView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(RequestView_asUser, self).__init__(query1=query1, query2=query2)
+        super(TelegramView_asUser, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
-    def _create_specific(self, data: dict) -> None:
-        request_ser = Request_Serializer(data=data)
-        if request_ser.is_valid():
+    def __create_specific(self, data: dict) -> None:
+        telegram_ser = Telegram_Serializer(data=data)
+        if telegram_ser.is_valid():
             try:
-                request_ser.save()
+                telegram_ser.save()
             except Exception as e:
                 self.data_returned[Constant.STATUS] = False
                 self.data_returned[Constant.MESSAGE] = str(e)
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
             else:
-                request_ser = request_ser.data
+                telegram_ser = telegram_ser.data
                 self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(request_ser)
+                self.data_returned[Constant.DATA].append(telegram_ser)
                 self.status_returned = status.HTTP_201_CREATED
         else:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = request_ser.errors
+            self.data_returned[Constant.MESSAGE] = telegram_ser.errors
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        self._create_specific(data=request.data)
+        # TODO : Get Api number from request_headers
+        self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def _read_specific(self) -> None:
         try:
-            request_ref = Request.objects.get(
+            telegram_ref = Telegram.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Request.DoesNotExist:
+        except Telegram.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -126,31 +125,15 @@ class RequestView_asUser(RequestView):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            request_ser = Request_Serializer(request_ref, many=False).data
+            telegram_ser = Telegram_Serializer(telegram_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(request_ser)
+            self.data_returned[Constant.DATA].append(telegram_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self._read_specific()
-            else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
-
+        self._read_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -178,70 +161,56 @@ class RequestView_asUser(RequestView):
         return Response(data=self.data_returned, status=self.status_returned)
 
 
-class RequestView_asAdmin(RequestView_asUser):
+class TelegramView_asAdmin(TelegramView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(RequestView_asAdmin, self).__init__(
+        super(TelegramView_asAdmin, self).__init__(
             query1=query1, query2=query2
         )
 
     # =============================================================
     def post(self, request, word: str, pk: str):
-        return super(RequestView_asAdmin, self).post(
+        return super(TelegramView_asAdmin, self).post(
             request=request, word=word, pk=pk
         )
 
     # =============================================================
     def __read_all(self) -> None:
         try:
-            request_ref = Request.objects.all().order_by("id")
-            if len(request_ref) == 0:
-                raise Request.DoesNotExist
-        except Request.DoesNotExist:
+            telegram_ref = Telegram.objects.all().order_by("id")
+            if len(telegram_ref) == 0:
+                raise Telegram.DoesNotExist
+        except Telegram.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         else:
-            request_ser = Request_Serializer(request_ref, many=True).data
+            telegram_ser = Telegram_Serializer(telegram_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = request_ser
+            self.data_returned[Constant.DATA] = telegram_ser
             self.status_returned = status.HTTP_200_OK
         return
 
     def __read_search(self) -> None:
         try:
-            try:
-                request_ref = eval(
-                    f'Request.objects.filter({self._create_query()}).order_by("id")'
-                )
-            except NameError:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
-                self.status_returned = status.HTTP_400_BAD_REQUEST
-            except FieldError:
-                try:
-                    request_ref = eval(
-                        f'Request.objects.filter({self._create_query(flag=False)}).order_by("id")'
-                    )
-                except NameError:
-                    self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
-                    self.status_returned = status.HTTP_400_BAD_REQUEST
-            if len(request_ref) == 0:
-                raise Request.DoesNotExist
-        except Request.DoesNotExist:
+            telegram_ref = eval(
+                f'Telegram.objects.filter({self._create_query()}).order_by("id")'
+            )
+            if len(telegram_ref) == 0:
+                raise Telegram.DoesNotExist
+        except Telegram.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
+        except NameError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
-            request_ser = Request_Serializer(request_ref, many=True).data
+            telegram_ser = Telegram_Serializer(telegram_ref, many=True).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = request_ser
+            self.data_returned[Constant.DATA] = telegram_ser
             self.status_returned = status.HTTP_200_OK
         return
 
@@ -259,6 +228,19 @@ class RequestView_asAdmin(RequestView_asUser):
                     flag = False
                 else:
                     self.__read_search()
+            elif self.query1 == self.SR_KEYS[2]:  # trigger
+                try:
+                    _status = int(self.query2)
+                except Exception as e:
+                    _status = Constant.PENDING
+                finally:
+                    self.query2 = f"statuseq{_status}"
+                    self.__read_search()
+                    # ---------------------------------
+                    batch_thread = BatchJob(
+                        telegram=True, api=1, status=_status
+                    )
+                    batch_thread.start()
             else:
                 flag = False
         else:
@@ -274,10 +256,10 @@ class RequestView_asAdmin(RequestView_asUser):
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            request_ref = Request.objects.get(
+            telegram_ref = Telegram.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Request.DoesNotExist:
+        except Telegram.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -286,24 +268,24 @@ class RequestView_asAdmin(RequestView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            request_ser = Request_Serializer(
-                instance=request_ref, data=data, partial=True
+            telegram_ser = Telegram_Serializer(
+                instance=telegram_ref, data=data, partial=True
             )
-            if request_ser.is_valid():
+            if telegram_ser.is_valid():
                 try:
-                    request_ser.save()
+                    telegram_ser.save()
                 except Exception as e:
                     self.data_returned[Constant.STATUS] = False
                     self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
-                    request_ser = request_ser.data
+                    telegram_ser = telegram_ser.data
                     self.data_returned[Constant.STATUS] = True
-                    self.data_returned[Constant.DATA].append(request_ser)
+                    self.data_returned[Constant.DATA].append(telegram_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = request_ser.errors
+                self.data_returned[Constant.MESSAGE] = telegram_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -320,10 +302,10 @@ class RequestView_asAdmin(RequestView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            request_ref = Request.objects.get(
+            telegram_ref = Telegram.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except Request.DoesNotExist:
+        except Telegram.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -332,10 +314,10 @@ class RequestView_asAdmin(RequestView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            request_ser = Request_Serializer(request_ref, many=False).data
-            request_ref.delete()
+            telegram_ser = Telegram_Serializer(telegram_ref, many=False).data
+            telegram_ref.delete()
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(request_ser)
+            self.data_returned[Constant.DATA].append(telegram_ser)
             self.status_returned = status.HTTP_200_OK
         return
 

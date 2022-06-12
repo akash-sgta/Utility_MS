@@ -68,6 +68,34 @@ class Utility(object):
     #               OTHERS
     # --------------------------------------------------
     @staticmethod
+    def emailListGen(emails: str) -> list:
+        """
+        Generate a list of emails after checking validity
+        """
+        emails = emails.split(Constant.COMA)
+        for i in len(emails):
+            emails[i] = emails[i].strip()
+            if Constant.RE_EMAIL.fullmatch(string=emails[i]):
+                emails[i] = emails[i].upper()
+            else:
+                emails[i] = None
+        emails.remove(None)
+        return emails
+
+    @staticmethod
+    def tgUserListGen(users: str) -> list:
+        """
+        Generate a list of tg user id(s) after checking validity
+        """
+        users = users.split(Constant.COMA)
+        for i in len(users):
+            users[i] = users[i].strip()
+            if not Constant.RE_TG.fullmatch(string=users[i]):
+                users[i] = None
+        users.remove(None)
+        return users
+
+    @staticmethod
     def log(exp: int, base: int) -> float:
         if exp == 0:
             _return = False

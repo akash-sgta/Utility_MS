@@ -6,7 +6,9 @@
 #                                       LIBRARY
 # =========================================================================================
 from datetime import datetime
+from lib2to3.pgen2.token import COMMA
 from django.db import models
+from django.dispatch import receiver
 
 # -----------------------------------------
 from utilUtilities.views.utility.utility import Utility
@@ -95,7 +97,7 @@ class City(models.Model):
 
 
 # -----------------------------------------
-class Mailer(models.Model):
+class Notification(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
@@ -103,21 +105,12 @@ class Mailer(models.Model):
 
     api = models.ForeignKey(to=Api, on_delete=models.SET_NULL, null=True)
 
-    sender = models.EmailField()
-    receiver = models.TextField()
-    cc = models.TextField()
-    bcc = models.TextField()
-
-    type = models.IntegerField(
-        choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW
-    )
     subject = models.CharField(max_length=63)
     body = models.TextField(blank=True, null=True)
     attachment = models.TextField(blank=True, null=True)
-    status = models.IntegerField(
-        choices=Constant.STATUS_CHOICE, default=Constant.PENDING
+    type = models.IntegerField(
+        choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW
     )
-    reason = models.TextField(null=True, blank=True)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
@@ -137,19 +130,18 @@ class Mailer(models.Model):
         return f"{self.id}-{self.subject[:16]}"
 
 
-class Notification(models.Model):
+class Mailer(models.Model):
     id = models.AutoField(primary_key=True)
     sys = models.IntegerField(
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
-
-    api = models.ForeignKey(to=Api, on_delete=models.SET_NULL, null=True)
+    notification = models.ForeignKey(
+        Notification, on_delete=models.CASCADE, null=False
+    )
 
     receiver = models.TextField()
-
-    subject = models.CharField(max_length=63)
-    body = models.TextField(blank=True, null=True)
-    attachment = models.TextField(blank=True, null=True)
+    cc = models.TextField(null=True, blank=True)
+    bcc = models.TextField(null=True, blank=True)
 
     status = models.IntegerField(
         choices=Constant.STATUS_CHOICE, default=Constant.PENDING
@@ -162,16 +154,46 @@ class Notification(models.Model):
     def save(self, *args, **kwargs):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
-        self.subject = self.subject.upper()
-        if self.body in Constant.NULL:
-            self.body = None
-        if self.attachment in Constant.NULL:
-            self.attachment = None
+        self.receiver = Constant.COMA.join(
+            Utility.emailListGen(self.receiver)
+        )
+        self.cc = Constant.COMA.join(Utility.emailListGen(self.cc))
+        self.bcc = Constant.COMA.join(Utility.emailListGen(self.bcc))
+        self.last_update = Utility.datetimeToEpochMs(datetime.now())
+        return super(Mailer, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.id}-{self.notification.subject[:16]}"
+
+
+class Telegram(models.Model):
+    id = models.AutoField(primary_key=True)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
+    )
+    notification = models.ForeignKey(
+        Notification, on_delete=models.CASCADE, null=False
+    )
+
+    receiver = models.TextField(null=False, blank=False)
+
+    status = models.IntegerField(
+        choices=Constant.STATUS_CHOICE, default=Constant.PENDING
+    )
+    reason = models.TextField(null=True, blank=True)
+
+    created_on = models.PositiveBigIntegerField(blank=True, null=True)
+    last_update = models.PositiveBigIntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.created_on in Constant.NULL:
+            self.created_on = Utility.datetimeToEpochMs(datetime.now())
+        self.receiver = Constant.COMA.join(Utility.tgUserListGen(self.cc))
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
         return super(Notification, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.id}-{self.subject[:16]}"
+        return f"{self.id}-{self.notification.subject[:16]}"
 
 
 # -----------------------------------------

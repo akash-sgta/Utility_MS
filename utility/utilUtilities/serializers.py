@@ -9,7 +9,14 @@
 from rest_framework import serializers
 
 # -----------------------------------------
-from utilUtilities.models import Country, State, City, Mailer, Notification
+from utilUtilities.models import (
+    Country,
+    State,
+    City,
+    Notification,
+    Mailer,
+    Telegram,
+)
 
 # --------------------------------------------------------------------------
 # CODE
@@ -70,22 +77,16 @@ class City_Serializer(serializers.ModelSerializer):
 
 
 # -----------------------------------------
-class Mailer_Serializer(serializers.ModelSerializer):
+class Notification_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = Mailer
+        model = Notification
         fields = (
             "id",
             "api",
-            "sender",
-            "receiver",
-            "cc",
-            "bcc",
-            "type",
             "subject",
             "body",
             "attachment",
-            "status",
-            "reason",
+            "type",
             "created_on",
             "last_update",
         )
@@ -98,16 +99,15 @@ class Mailer_Serializer(serializers.ModelSerializer):
         depth = 0
 
 
-class Notification_Serializer(serializers.ModelSerializer):
+class Mailer_Serializer(serializers.ModelSerializer):
     class Meta:
-        model = Notification
+        model = Mailer
         fields = (
             "id",
-            "api",
+            "notification",
             "receiver",
-            "subject",
-            "body",
-            "attachment",
+            "cc",
+            "bcc",
             "status",
             "reason",
             "created_on",
@@ -115,7 +115,27 @@ class Notification_Serializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "api": {"read_only": True},
+            "created_on": {"read_only": True},
+            "last_update": {"read_only": True},
+        }
+        depth = 0
+
+
+class Telegram_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = Telegram
+        fields = (
+            "id",
+            "api",
+            "notificaiton",
+            "receiver",
+            "status",
+            "reason",
+            "created_on",
+            "last_update",
+        )
+        extra_kwargs = {
+            "id": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }

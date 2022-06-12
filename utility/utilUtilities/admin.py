@@ -8,7 +8,14 @@
 from django.contrib import admin
 
 # -----------------------------------------
-from utilUtilities.models import Country, State, City, Mailer, Notification
+from utilUtilities.models import (
+    Country,
+    State,
+    City,
+    Mailer,
+    Notification,
+    Telegram,
+)
 from utilUtilities.views.utility.utility import Utility
 from utilUtilities.views.utility.constant import Constant
 
@@ -125,37 +132,6 @@ class City_AdminPanel(admin.ModelAdmin):
 
 
 # -----------------------------------------
-@admin.register(Mailer)
-class Mailer_AdminPanel(admin.ModelAdmin):
-
-    list_display = (
-        "id",
-        "api",
-        "subject",
-        "status",
-        "updated_on",
-    )
-    list_display_links = (
-        "id",
-        "api",
-        "subject",
-        "status",
-        "updated_on",
-    )
-    ordering = ("api", "status")
-    search_fields = ["subject"]
-    empty_value_display = "NULL"
-    list_per_page = 25
-
-    def updated_on(self, obj):
-        return Utility.epochMsToDatetime(obj.last_update)
-
-    def get_queryset(self, request):
-        query = super(Mailer_AdminPanel, self).get_queryset(request)
-        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
-        return filtered_query
-
-
 @admin.register(Notification)
 class Notificaiton_AdminPanel(admin.ModelAdmin):
 
@@ -183,5 +159,73 @@ class Notificaiton_AdminPanel(admin.ModelAdmin):
 
     def get_queryset(self, request):
         query = super(Notificaiton_AdminPanel, self).get_queryset(request)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
+        return filtered_query
+
+
+@admin.register(Mailer)
+class Mailer_AdminPanel(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    list_display_links = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    ordering = ("api", "status")
+    search_fields = ["notification__subject"]
+    empty_value_display = "NULL"
+    list_per_page = 25
+
+    def updated_on(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
+
+    def subject(self, obj):
+        return obj.notification.subject
+
+    def get_queryset(self, request):
+        query = super(Mailer_AdminPanel, self).get_queryset(request)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
+        return filtered_query
+
+
+@admin.register(Telegram)
+class Telegram_AdminPanel(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    list_display_links = (
+        "id",
+        "api",
+        "subject",
+        "status",
+        "updated_on",
+    )
+    ordering = ("api", "status")
+    search_fields = ["notification__subject"]
+    empty_value_display = "NULL"
+    list_per_page = 25
+
+    def updated_on(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
+
+    def subject(self, obj):
+        return obj.notification.subject
+
+    def get_queryset(self, request):
+        query = super(Telegram_AdminPanel, self).get_queryset(request)
         filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query
