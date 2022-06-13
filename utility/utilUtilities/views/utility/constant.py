@@ -50,6 +50,8 @@ class Constant(object):
     INVALID_SPARAMS = "INVALID SEARCH PARAMETERS"
     INVALID_URL = "INVALID URL"
     INVALID_PAYLOAD = "INVALID DATA POSTED"
+    INVALID_TOKEN = "INVALID API TOKEN"
+    INVALID_CRED = "INVALID API CREDENTIALS"
     # --------------------------------------------------
     #               OTHERS
     # --------------------------------------------------
@@ -59,11 +61,15 @@ class Constant(object):
     SYS = "sys"
     NULL = (None, "", 0)
     COMA = ","
+    SPACE = " "
     EQUAL = "eq"
     EQUAL2 = "="
     MD5 = "md5_"
     UTF8 = "utf-8"
     ATTACHMENT = "ATTACHMENT"
+    AUTHORIZATION = "Authorization"
+    BEARER = "Bearer"
+    JWT = "Jwt"
     # --------------------------------------------------
     #               VALIDATOR
     # --------------------------------------------------

@@ -64,6 +64,17 @@ class Utility(object):
                 _return = None
         return _return
 
+    @staticmethod
+    def unpackTokenLeaf(data: str) -> dict:
+        _return = Utility.b64ToDict(data)
+        if _return not in Constant.NULL:
+            try:
+                Constant.TOKEN_LEAF.validate(_return)
+            except Exception as e:
+                print(f"ERROR : {str(e)}")
+                _return = None
+        return _return
+
     # --------------------------------------------------
     #               OTHERS
     # --------------------------------------------------

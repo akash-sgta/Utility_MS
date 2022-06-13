@@ -22,6 +22,7 @@ from django.core.exceptions import FieldError
 from utilUtilities.models import City
 from utilUtilities.serializers import City_Serializer
 from utilUtilities.views.utility.constant import Constant
+from utility.views.authenricator import Authenticator
 
 
 # =========================================================================================
@@ -33,7 +34,7 @@ from utilUtilities.views.utility.constant import Constant
 # =========================================================================================
 class CityView(APIView):
     renderer_classes = [JSONRenderer]
-    authentication_classes = []
+    authentication_classes = [Authenticator]
 
     def __init__(self, query1=None, query2=None):
         super(CityView, self).__init__()

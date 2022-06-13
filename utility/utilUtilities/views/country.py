@@ -21,6 +21,7 @@ from rest_framework.views import APIView
 from utilUtilities.models import Country
 from utilUtilities.serializers import Country_Serializer
 from utilUtilities.views.utility.constant import Constant
+from utility.views.authenricator import Authenticator
 
 
 # =========================================================================================
@@ -32,7 +33,7 @@ from utilUtilities.views.utility.constant import Constant
 # =========================================================================================
 class CountryView(APIView):
     renderer_classes = [JSONRenderer]
-    authentication_classes = []
+    authentication_classes = [Authenticator]
 
     def __init__(self, query1=None, query2=None):
         super(CountryView, self).__init__()

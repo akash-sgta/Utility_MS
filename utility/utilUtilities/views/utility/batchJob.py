@@ -9,10 +9,10 @@ from re import compile
 from threading import Thread
 
 # --------------------------------------------------
-from utilUtilities.models import Mailer, Notification
+from utilUtilities.models import Mailer, Telegram
 from utilUtilities.serializers import (
     Mailer_Serializer,
-    Notification_Serializer,
+    Telegram_Serializer,
 )
 from utilUtilities.views.utility.mailerUtil import Mailer_Util
 from utilUtilities.views.utility.telegramUtil import Telegram_Util
@@ -92,30 +92,30 @@ class BatchJob(Thread):
         else:
             return True
 
-    def _notif(self, api: int, status: int) -> bool:
+    def _tg(self, api: int, status: int) -> bool:
         try:
-            notif_ref = Notification.objects.filter(
+            tg_ref = Telegram.objects.filter(
                 sys=Constant.SETTINGS_SYSTEM,
                 api=api,
                 status=status,
             )
-            if len(notif_ref) == 0:
+            if len(tg_ref) == 0:
                 return True
             else:
-                notif_ser = Notification_Serializer(notif_ref, many=True).data
-                for i in range(len(notif_ref)):
+                tg_ser = Telegram_Serializer(tg_ref, many=True).data
+                for i in range(len(tg_ref)):
                     # filter user id list
-                    receivers = notif_ser[i]["receiver"].split(Constant.COMA)
+                    receivers = tg_ser[i]["receiver"].split(Constant.COMA)
                     util = []
                     for j in range(len(receivers)):
                         if not EMAIL_REGEX.fullmatch(receivers[j]):
                             receivers[j] = None
                             continue
-                        # Send notificaiton
+                        # Send tg
                         ret = Telegram_Util.send(
                             receiver=receivers,
-                            subject=notif_ser[i]["subject"],
-                            message=notif_ser[i]["body"],
+                            subject=tg_ser[i]["subject"],
+                            message=tg_ser[i]["body"],
                         )
                         if ret not in Constant.NULL:
                             util.append((receivers[j], ret))
@@ -124,19 +124,17 @@ class BatchJob(Thread):
                     receivers.remove(None)
                     # Check errors
                     if util not in Constant.NULL:
-                        notif_ser[i]["reason"] = util
+                        tg_ser[i]["reason"] = util
                         if len(receivers) == len(util):
-                            notif_ser[i]["status"] = Constant.REJECTED
+                            tg_ser[i]["status"] = Constant.REJECTED
                         else:
-                            notif_ser[i]["status"] = Constant.PARTIAL
+                            tg_ser[i]["status"] = Constant.PARTIAL
                     else:
-                        notif_ser[i]["status"] = Constant.DONE
-                    notif_ser_new = Notification_Serializer(
-                        notif_ref[i], notif_ser[i]
-                    )
+                        tg_ser[i]["status"] = Constant.DONE
+                    tg_ser_new = Telegram_Serializer(tg_ref[i], tg_ser[i])
                     try:
-                        if notif_ser_new.is_valid():
-                            notif_ser_new.save()
+                        if tg_ser_new.is_valid():
+                            tg_ser_new.save()
                     except Exception as e:
                         print(f"ERROR : {str(e)}")
         except Exception as e:
@@ -149,7 +147,7 @@ class BatchJob(Thread):
         if self.mailer:
             _return = self._mailer(api=self.api, status=self.status)
         else:
-            _return = self._notif(api=self.api, status=self.status)
+            _return = self._tg(api=self.api, status=self.status)
         return _return
 
 

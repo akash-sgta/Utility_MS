@@ -22,6 +22,7 @@ from django.core.exceptions import FieldError
 from utilUtilities.models import State
 from utilUtilities.serializers import State_Serializer
 from utilUtilities.views.utility.constant import Constant
+from utility.views.authenricator import Authenticator
 
 
 # =========================================================================================
@@ -33,7 +34,7 @@ from utilUtilities.views.utility.constant import Constant
 # =========================================================================================
 class StateView(APIView):
     renderer_classes = [JSONRenderer]
-    authentication_classes = []
+    authentication_classes = [Authenticator]
 
     def __init__(self, query1=None, query2=None):
         super(StateView, self).__init__()

@@ -102,7 +102,6 @@ class TelegramView_asUser(TelegramView):
 
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        # TODO : Get Api number from request_headers
         self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
