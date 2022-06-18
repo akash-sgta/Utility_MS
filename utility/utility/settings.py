@@ -24,13 +24,13 @@ from schemadict import schemadict
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
-from utilData.key import *
+from data.key import *
 
 # --------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 try:
-    with open(os.path.join(BASE_DIR, "utilData", "keys.json"), "r") as secret:
+    with open(os.path.join(BASE_DIR, "data", "keys.json"), "r") as secret:
         json_secret = json.load(secret)
         if not validateKey(json_secret=json_secret):
             raise Exception("INVALID KEY FILE")
@@ -64,8 +64,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # ------------------------------------------------------------------------
-    "utilUtilities",
-    "utilApi",
+    "utilities",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -105,7 +105,7 @@ WSGI_APPLICATION = "utility.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-DB_PATH = os.path.join(BASE_DIR, "utilData", "db.sqlite3")
+DB_PATH = os.path.join(BASE_DIR, "data", "db.sqlite3")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",

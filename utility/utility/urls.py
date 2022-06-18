@@ -23,8 +23,10 @@ Including another URLconf
 # =========================================================================================
 from django.contrib import admin
 from django.urls import re_path, include
-from utility.views.checkServer import check_server_status
 
+# --------------------------------
+from utility.views.checkServer import check_server_status
+from utility.views.token import token
 
 # =========================================================================================
 #                                       CONSTANT
@@ -34,12 +36,32 @@ from utility.views.checkServer import check_server_status
 #                                       CODE
 # =========================================================================================
 urlpatterns = [
-    re_path(r"^django-admin/", admin.site.urls, name="DJANGO_ADMIN"),
-    # ----------------------------------------------------------
     re_path(
-        r"^checkserver/", check_server_status, name="CHECK_SERVER_STATUS"
+        r"^django-admin/",
+        admin.site.urls,
+        name="DJANGO_ADMIN",
     ),
     # ----------------------------------------------------------
-    re_path(r"^utilities/", include("utilUtilities.urls"), name="UTILITIES"),
-    re_path(r"^api/", include("utilApi.urls"), name="API"),
+    re_path(
+        r"^checkserver/",
+        check_server_status,
+        name="CHECK_SERVER_STATUS",
+    ),
+    re_path(
+        r"^token/(?P<word>(enc){0,1})/(?P<pk>(1|2){1})",
+        token,
+        name="TOKEN",
+    ),
+    # ----------------------------------------------------------
+    re_path(
+        r"^utilities/",
+        include("utilities.urls"),
+        name="UTILITIES",
+    ),
+    re_path(
+        r"^api/",
+        include("api.urls"),
+        name="API",
+    ),
+    # ----------------------------------------------------------
 ]
