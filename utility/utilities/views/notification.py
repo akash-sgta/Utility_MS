@@ -22,6 +22,8 @@ from utilities.models import Notification
 from utilities.serializers import Notification_Serializer
 from utilities.views.utility.constant import Constant
 from utilities.views.utility.batchJob import BatchJob, TGBot
+from utilities.views.mailer import MailerView_asUser
+from utilities.views.telegram import TelegramView_asUser
 
 
 # =========================================================================================
@@ -40,8 +42,8 @@ class NotificationView(APIView):
         super(NotificationView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "country",
-            "name",
+            "api",
+            "subject",
         )
         self.SR_KEYS = (
             "id",
@@ -56,7 +58,7 @@ class NotificationView(APIView):
         return
 
     def _create_query(self, flag=True) -> str:
-        _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
+        query = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
         if self.query2 not in Constant.NULL:
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
@@ -67,10 +69,10 @@ class NotificationView(APIView):
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
-                        _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+                        query += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
-        return _return
+                        query += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+        return query
 
 
 class NotificationView_asUser(NotificationView):
@@ -96,6 +98,8 @@ class NotificationView_asUser(NotificationView):
                 self.data_returned[Constant.STATUS] = True
                 self.data_returned[Constant.DATA].append(Notification_ser)
                 self.status_returned = status.HTTP_201_CREATED
+                # Mailer -- Telegram Post
+
         else:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Notification_ser.errors
@@ -104,7 +108,8 @@ class NotificationView_asUser(NotificationView):
 
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        # TODO : Get Api number from request_headers
+        # request.data["api"] = request.user.id
+        request.data["api"] = None
         self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
@@ -224,47 +229,48 @@ class NotificationView_asAdmin(NotificationView_asUser):
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    self.__read_all()
+        try:
+            if self.query1 in self.SR_KEYS:
+                if self.query1 == self.SR_KEYS[0]:  # id
+                    if self.query2 in Constant.NULL:
+                        self.__read_all()
+                    else:
+                        self._read_specific()
+                elif self.query1.lower() == self.SR_KEYS[1]:  # search
+                    if self.query2 in Constant.NULL:
+                        raise Exception(Constant.INVALID_SPARAMS)
+                    else:
+                        self.__read_search()
+                elif self.query1 == self.SR_KEYS[2]:  # trigger
+                    try:
+                        _status = int(self.query2)
+                    except Exception as e:
+                        _status = Constant.PENDING
+                    finally:
+                        self.query2 = f"statuseq{_status}"
+                        self.__read_search()
+                        # ---------------------------------
+                        batch_thread = BatchJob(
+                            mailer=False, api=1, status=_status
+                        )
+                        batch_thread.start()
+                    self.status_returned = status.HTTP_202_ACCEPTED
+                elif self.query1 == self.SR_KEYS[3]:  # bot
+                    if not BOT_THREAD.is_alive():
+                        BOT_THREAD.start()
+                    else:
+                        BOT_THREAD.stop()
+                    self.status_returned = status.HTTP_202_ACCEPTED
                 else:
-                    self._read_specific()
-            elif self.query1.lower() == self.SR_KEYS[1]:  # search
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self.__read_search()
-            elif self.query1 == self.SR_KEYS[2]:  # trigger
-                try:
-                    _status = int(self.query2)
-                except Exception as e:
-                    _status = Constant.PENDING
-                finally:
-                    self.query2 = f"statuseq{_status}"
-                    self.__read_search()
-                    # ---------------------------------
-                    batch_thread = BatchJob(
-                        mailer=False, api=1, status=_status
-                    )
-                    batch_thread.start()
-            elif self.query1 == self.SR_KEYS[3]:  # bot
-                if not BOT_THREAD.is_alive():
-                    BOT_THREAD.start()
-                else:
-                    BOT_THREAD.stop()
-                self.data_returned[Constant.STATUS] = True
-                self.status_returned = status.HTTP_202_ACCEPTED
+                    raise Exception(Constant.INVALID_SPARAMS)
             else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
+                raise Exception(Constant.INVALID_SPARAMS)
+        except Exception as e:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.data_returned[Constant.MESSAGE] = str(e)
             self.status_returned = status.HTTP_400_BAD_REQUEST
+        else:
+            self.data_returned[Constant.STATUS] = True
 
         return Response(data=self.data_returned, status=self.status_returned)
 
