@@ -113,24 +113,69 @@ class ApiView_asUser(ApiView):
             self.status_returned = status.HTTP_200_OK
         return
 
-    def get(self, request, word: str, pk: str):
-        self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self.__read_specific()
-            else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
+    def _read_search(self) -> None:
+        try:
+            try:
+                api_ref = eval(
+                    f'Api.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    api_ref = eval(
+                        f'Api.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
+            if len(api_ref) == 0:
+                raise Api.DoesNotExist
+        except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        else:
+            api_ser = Api_Serializer(api_ref, many=True).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = api_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
+    def get(self, request, word: str, pk: str, internal: bool = False):
+        self.__init__(query1=word, query2=pk)
+        if not internal:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+            self.status_returned = status.HTTP_403_FORBIDDEN
+        else:
+            try:
+                if self.query1 in self.SR_KEYS:
+                    if self.query1 == self.SR_KEYS[0]:  # id
+                        if self.query2 in Constant.NULL:
+                            raise Exception(Constant.INVALID_SPARAMS)
+                        else:
+                            self._read_specific()
+                    elif self.query1 == self.SR_KEYS[1]:  # search:
+                        if self.query2 in Constant.NULL:
+                            raise Exception(Constant.INVALID_SPARAMS)
+                        else:
+                            self._read_search()
+                    else:
+                        raise Exception(Constant.INVALID_SPARAMS)
+                else:
+                    raise Exception(Constant.INVALID_SPARAMS)
+            except Exception as e:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = str(e)
+                self.status_returned = status.HTTP_400_BAD_REQUEST
 
         return Response(data=self.data_returned, status=self.status_returned)
 
@@ -208,42 +253,6 @@ class ApiView_asAdmin(ApiView_asUser):
             self.status_returned = status.HTTP_200_OK
         return
 
-    def __read_search(self) -> None:
-        try:
-            try:
-                api_ref = eval(
-                    f'Api.objects.filter({self._create_query()}).order_by("id")'
-                )
-            except NameError:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
-                self.status_returned = status.HTTP_400_BAD_REQUEST
-            except FieldError:
-                try:
-                    api_ref = eval(
-                        f'Api.objects.filter({self._create_query(flag=False)}).order_by("id")'
-                    )
-                except NameError:
-                    self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
-                    self.status_returned = status.HTTP_400_BAD_REQUEST
-            if len(api_ref) == 0:
-                raise Api.DoesNotExist
-        except Api.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
-            self.status_returned = status.HTTP_204_NO_CONTENT
-        else:
-            api_ser = Api_Serializer(api_ref, many=True).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = api_ser
-            self.status_returned = status.HTTP_200_OK
-        return
-
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         flag = True
@@ -257,7 +266,7 @@ class ApiView_asAdmin(ApiView_asUser):
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:
-                    self.__read_search()
+                    self._read_search()
             else:
                 flag = False
         else:

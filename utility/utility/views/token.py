@@ -47,11 +47,6 @@ def encToken(token_dict: dict, enc: bool = False) -> tuple:
         )
     except Exception as e:
         return e
-
-    if details in Constant.NULL:
-        ret_data[Constant.STATUS] = False
-        ret_data[Constant.MESSAGE] = details
-        ret_status = status.HTTP_400_BAD_REQUEST
     else:
         ret_data[Constant.STATUS] = True
         ret_data[Constant.DATA] = token_str
@@ -74,11 +69,6 @@ def decToken(token_str: dict, enc: bool = False) -> dict:
         )
     except Exception as e:
         return e
-
-    if details in Constant.NULL:
-        ret_data[Constant.STATUS] = False
-        ret_data[Constant.MESSAGE] = details
-        ret_status = status.HTTP_400_BAD_REQUEST
     else:
         ret_data[Constant.STATUS] = True
         ret_data[Constant.DATA] = token_dict
@@ -104,11 +94,11 @@ def token(request, word: str, pk: int):
         else:
             if word.upper() == ENC:
                 ret_data, ret_status = decToken(
-                    token_dict=request.data, enc=True
+                    token_str=request.data, enc=True
                 )
             else:
                 ret_data, ret_status = decToken(
-                    token_dict=request.data, enc=False
+                    token_str=request.data, enc=False
                 )
     except Exception as e:
         ret_data[Constant.STATUS] = False

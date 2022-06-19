@@ -98,10 +98,14 @@ class MailerView_asUser(MailerView):
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
-    def post(self, request, word: str, pk: str):
+    def post(self, request, word: str, pk: str, internal: bool = False):
         self.__init__(query1=word, query2=pk)
-        # TODO : Get Api number from request_headers
-        self.__create_specific(data=request.data)
+        if not internal:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+            self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
+        else:
+            self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================

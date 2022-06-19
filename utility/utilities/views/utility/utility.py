@@ -29,7 +29,7 @@ class Utility(object):
     #               DICT
     # --------------------------------------------------
     @staticmethod
-    def dictToB64(self, data: dict) -> str:
+    def dictToB64(data: dict) -> str:
         """
         Dict to B64 String
         ------------------
@@ -48,7 +48,7 @@ class Utility(object):
         return b64_str
 
     @staticmethod
-    def b64ToDict(self, data: str) -> dict:
+    def b64ToDict(data: str) -> dict:
         """
         B64 String to Dict
         ------------------
@@ -70,7 +70,7 @@ class Utility(object):
     #               CRYPT
     # --------------------------------------------------
     @staticmethod
-    def encryptString(self, data: str, key: str) -> str:
+    def encryptString(data: str, key: str) -> str:
         """
         Enc - AES encryption
         --------------------
@@ -79,7 +79,8 @@ class Utility(object):
         3. Decode Byte_String => String
         """
         try:
-            key = Utility.stringToHashHex(key)
+            key[:32].encode(Constant.UTF8)
+            key = base64.urlsafe_b64encode(key)
             crypt = Fernet(key)
             # --------------------
             token_enc = data.encode(Constant.UTF8)
@@ -89,7 +90,7 @@ class Utility(object):
             raise e
         return token_enc
 
-    def decryptString(self, data: str, key: str) -> str:
+    def decryptString(data: str, key: str) -> str:
         """
         Dec - AES decryption
         --------------------
@@ -98,7 +99,8 @@ class Utility(object):
         3. Decode Byte_String to String
         """
         try:
-            key = Utility.stringToHashHex(key)
+            key = key[:32].encode(Constant.UTF8)
+            key = base64.urlsafe_b64encode(key)
             crypt = Fernet(key)
             # --------------------
             token_dec = data.encode(Constant.UTF8)
@@ -109,7 +111,7 @@ class Utility(object):
         return token_dec
 
     @staticmethod
-    def stringToHashHex(self, *args: tuple) -> str:
+    def stringToHashHex(*args: tuple) -> str:
         """
         Generate Hex Hash
         --------------------
@@ -132,7 +134,6 @@ class Utility(object):
 
     @staticmethod
     def randomGenerator(
-        self,
         length: int = 225,
         only_num: bool = False,
         no_symbol: bool = False,
@@ -162,7 +163,6 @@ class Utility(object):
     # --------------------------------------------------
     @staticmethod
     def packToken(
-        self,
         api_ser: dict = None,
         user_ser: dict = None,
         token: dict = None,
@@ -221,7 +221,7 @@ class Utility(object):
         return token_dict
 
     @staticmethod
-    def unpackToken(self, data: str, enc: bool = False) -> dict:
+    def unpackToken(data: str, enc: bool = False) -> dict:
         """
         Token - Encrypted B64 String to Dict
         ------------------------------------
@@ -232,6 +232,8 @@ class Utility(object):
                     data=data,
                     key=Constant.SETTINGS_SECRET,
                 )
+            else:
+                token_b64 = data
             token_dict = Utility.b64ToDict(token_b64)
             Constant.TOKEN_ROOT.validate(token_dict)
             token_dict[Constant.API] = Utility.b64ToDict(
@@ -256,7 +258,7 @@ class Utility(object):
     #               OTHERS
     # --------------------------------------------------
     @staticmethod
-    def emailListGen(self, emails: str) -> list:
+    def emailListGen(emails: str) -> list:
         """
         Generate - List of valid emails
         -------------------------------
@@ -272,7 +274,7 @@ class Utility(object):
         return emails
 
     @staticmethod
-    def tgUserListGen(self, users: str) -> list:
+    def tgUserListGen(users: str) -> list:
         """
         Generate - List of valid telegram ids
         -------------------------------------

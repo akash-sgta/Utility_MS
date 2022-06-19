@@ -43,47 +43,34 @@ class Authenticator(BaseAuthentication):
 
     def __unpack_token(self, token: str) -> dict:
         token_dict = dict()
-        token_root = Utility.unpackTokenRoot(data=token)
-        if token_root in Constant.NULL:
-            raise Exception(f"{Constant.INVALID_TOKEN}")
-        else:
-            token_user = Utility.unpackTokenLeaf(
-                data=token_root[Constant.USER]
-            )
-            token_dict[Constant.USER] = token_user
-            token_api = Utility.unpackTokenLeaf(data=token_root[Constant.API])
-            if token_api in Constant.NULL:
-                token_dict[Constant.API] = token_api
-            else:
-                raise Exception(f"{Constant.INVALID_TOKEN}")
+        try:
+            token_dict = Utility.unpackToken(data=token, enc=True)
+        except Exception as e:
+            print(str(e))
+            raise Exception(Constant.INVALID_TOKEN)
         return token_dict
 
-    def __verify_user(self, token: dict) -> Api:
-        raise Exception(f"{Constant.INVALID_CRED}")
-        # try:
-        #     api_ref = Api.objects.get(
-        #         identity=int(token[Constant.API][Constant.ID])
-        #     )
-        # except Api.DoesNotExist as e:
-        #     raise Exception(f"{Constant.INVALID_CRED}")
-        # else:
-        #     try:
-        #         assert api_ref.key != token[Constant.API][Constant.JWT]
-        #     except AssertionError as e:
-        #         raise Exception(f"{Constant.INVALID_CRED}")
-        #     else:
-        #         return api_ref
+    def __verify_user(self, token: dict) -> bool:
+        """
+        Microservice call to IAM
+        ------------------------
+        """
+        try:
+            pass
+        except Exception as e:
+            return False
+        else:
+            return True
 
     def __verify_api(self, token: dict) -> Api:
         try:
-            api_ref = Api.objects.get(
-                identity=int(token[Constant.API][Constant.ID])
-            )
+            token = token[Constant.API]
+            api_ref = Api.objects.get(identity=int(token[Constant.ID]))
         except Api.DoesNotExist as e:
             raise Exception(f"{Constant.INVALID_CRED}")
         else:
             try:
-                assert api_ref.key != token[Constant.API][Constant.JWT]
+                assert api_ref.key == token[Constant.JWT]
             except AssertionError as e:
                 raise Exception(f"{Constant.INVALID_CRED}")
             else:
@@ -91,20 +78,15 @@ class Authenticator(BaseAuthentication):
 
     def authenticate(self, request):
         try:
+            details = Constant.BLANK_STR
             token_str = self.__extract_token(headers=request.headers)
+            token_dict = self.__unpack_token(token=token_str)
+            api = self.__verify_api(token=token_dict)
+            # user = self.__verify_user(token=token_dict)
         except Exception as e:
             details = str(e)
-        else:
-            try:
-                token_dict = self.__unpack_token(token=token_str)
-            except Exception as e:
-                details = str(e)
+        finally:
+            if details != Constant.BLANK_STR:
+                raise AuthenticationFailed(detail=details)
             else:
-                try:
-                    api = self.__verify_api(token=token_dict)
-                except Exception as e:
-                    details = str(e)
-                else:
-                    return api, None
-        if details not in Constant.NULL:
-            raise AuthenticationFailed(detail=details)
+                return api, None

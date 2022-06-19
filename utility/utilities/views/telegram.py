@@ -21,12 +21,13 @@ from rest_framework.views import APIView
 from utilities.models import Telegram
 from utilities.serializers import Telegram_Serializer
 from utilities.views.utility.constant import Constant
-from utilities.views.utility.batchJob import BatchJob
+from utilities.views.utility.batchJob import BatchJob, TGBot
 
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
+BOT_THREAD = TGBot()
 
 # =========================================================================================
 #                                       CODE
@@ -40,12 +41,12 @@ class TelegramView(APIView):
         self.DB_KEYS = (
             "id",
             "subject",
-            "sender",
         )
         self.SR_KEYS = (
             "id",
             "search",
             "trigger",
+            "bot",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -215,40 +216,48 @@ class TelegramView_asAdmin(TelegramView_asUser):
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    self.__read_all()
+        try:
+            if self.query1 in self.SR_KEYS:
+                if self.query1 == self.SR_KEYS[0]:  # id
+                    if self.query2 in Constant.NULL:
+                        self.__read_all()
+                    else:
+                        self._read_specific()
+                elif self.query1.lower() == self.SR_KEYS[1]:  # search
+                    if self.query2 in Constant.NULL:
+                        raise Exception(Constant.INVALID_SPARAMS)
+                    else:
+                        self.__read_search()
+                elif self.query1 == self.SR_KEYS[2]:  # trigger
+                    try:
+                        _status = int(self.query2)
+                    except Exception as e:
+                        _status = Constant.PENDING
+                    finally:
+                        self.query2 = f"statuseq{_status}"
+                        self.__read_search()
+                        # ---------------------------------
+                        batch_thread = BatchJob(
+                            mailer=False, api=1, status=_status
+                        )
+                        batch_thread.start()
+                    self.status_returned = status.HTTP_202_ACCEPTED
+                elif self.query1 == self.SR_KEYS[3]:  # bot
+                    if not BOT_THREAD.is_alive():
+                        BOT_THREAD.start()
+                    else:
+                        BOT_THREAD.stop()
+                    self.status_returned = status.HTTP_202_ACCEPTED
                 else:
-                    self._read_specific()
-            elif self.query1 == self.SR_KEYS[1]:  # search
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self.__read_search()
-            elif self.query1 == self.SR_KEYS[2]:  # trigger
-                try:
-                    _status = int(self.query2)
-                except Exception as e:
-                    _status = Constant.PENDING
-                finally:
-                    self.query2 = f"statuseq{_status}"
-                    self.__read_search()
-                    # ---------------------------------
-                    batch_thread = BatchJob(
-                        telegram=True, api=1, status=_status
-                    )
-                    batch_thread.start()
+                    raise Exception(Constant.INVALID_SPARAMS)
             else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
+                raise Exception(Constant.INVALID_SPARAMS)
+        except Exception as e:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.data_returned[Constant.MESSAGE] = str(e)
             self.status_returned = status.HTTP_400_BAD_REQUEST
+        else:
+            self.data_returned[Constant.STATUS] = True
 
         return Response(data=self.data_returned, status=self.status_returned)
 

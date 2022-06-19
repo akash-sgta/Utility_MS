@@ -16,6 +16,7 @@ from utilities.models import (
     Notification,
     Mailer,
     Telegram,
+    UrlShort,
 )
 
 # --------------------------------------------------------------------------
@@ -131,6 +132,27 @@ class Telegram_Serializer(serializers.ModelSerializer):
             "receiver",
             "status",
             "reason",
+            "created_on",
+            "last_update",
+        )
+        extra_kwargs = {
+            "id": {"read_only": True},
+            "created_on": {"read_only": True},
+            "last_update": {"read_only": True},
+        }
+        depth = 0
+
+
+# -----------------------------------------
+class UrlShort_Serializer(serializers.ModelSerializer):
+    class Meta:
+        model = UrlShort
+        fields = (
+            "id",
+            "key",
+            "model",
+            "type",
+            "query",
             "created_on",
             "last_update",
         )

@@ -1,0 +1,1930 @@
+{
+	"info": {
+		"_postman_id": "98aa248d-9ec0-43c9-969e-7ce66e218286",
+		"name": "Utilities_MS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[APP] Utilities",
+			"item": [
+				{
+					"name": "[MDL] Country",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/search/nameeqind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"search",
+												"nameeqind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update country",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}country/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}country"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/search/nameeqind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"search",
+												"nameeqind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create country",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 92,\n    \"iso\": \"pak\",\n    \"name\": \"pakistan\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update country",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"India ka beta\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}country/id/4",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}country"
+											],
+											"path": [
+												"id",
+												"4"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] State",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/search/countryeq2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"search",
+												"countryeq2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/search/countryeq2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"search",
+												"countryeq2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create state",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"country\" : 2,\n    \"name\": \"maharashtra\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update country",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Bengal GG\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}state/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}state"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] City",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/search/nameeq ind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"search",
+												"nameeq ind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 91,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"isd\": 92,\n    \"iso\": \"IND\",\n    \"name\": \"INDIA\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/search/nameeq2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"search",
+												"nameeq2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"state\" : 1,\n    \"name\": \"AHH\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"India ka beta\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}city/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}city"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] Mailer",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "trigger mailer",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/trigger/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"trigger",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/search/nameeq ind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"search",
+												"nameeq ind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "trigger mailer",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/trigger/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"trigger",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/search/subjecteqtes",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"search",
+												"subjecteqtes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"WET puSsy\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] Notification",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/search/nameeq ind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"search",
+												"nameeq ind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"mail_receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"tg_receiver\": \"12345,67890\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utilities}}{{asUser}}notif/id/",
+											"host": [
+												"{{local8100}}{{utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}notif/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}notif"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/search/subjecteqtes",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"search",
+												"subjecteqtes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"body\":\"TEST AHH Gude pok pk\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}notif/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}notif"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] Url Shortner",
+					"item": [
+						{
+							"name": "USER",
+							"item": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "[APP] Api",
+			"item": [
+				{
+					"name": "[MDL] Request",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Api}}{{asUser}}request/id/",
+											"host": [
+												"{{local8100}}{{utility_Api}}{{asUser}}request"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Api}}{{asUser}}request/id/2",
+											"host": [
+												"{{local8100}}{{utility_Api}}{{asUser}}request"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Api}}{{asUser}}request/search/emaileqtest@test.com",
+											"host": [
+												"{{local8100}}{{utility_Api}}{{asUser}}request"
+											],
+											"path": [
+												"search",
+												"emaileqtest@test.com"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"\",\n    \"phone_no\": \"\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Api}}{{asUser}}request/id/",
+											"host": [
+												"{{local8100}}{{utility_Api}}{{asUser}}request"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"\",\n    \"phone_no\": \"\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Api}}{{asUser}}request/id/1",
+											"host": [
+												"{{local8100}}{{utility_Api}}{{asUser}}request"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "checkserver",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{local8100}}{{check_server}}",
+					"host": [
+						"{{local8100}}{{check_server}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "jsonEnc",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"API\": {\n        \"ID\": 420,\n        \"JWT\": \"Ganja\"\n    },\n    \"USER\": {\n        \"ID\": 69,\n        \"JWT\": \"Position\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local8100}}{{token}}enc/1",
+					"host": [
+						"{{local8100}}{{token}}enc"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "json to b64",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"API\": {\n        \"ID\": 420,\n        \"JWT\": \"Ganja\"\n    },\n    \"USER\": {\n        \"ID\": 69,\n        \"JWT\": \"Position\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local8100}}{{token}}/1",
+							"host": [
+								"{{local8100}}{{token}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jun 2022 15:42:05 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "203"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"STATUS\": true,\n    \"DATA\": \"eyJBUEkiOiAiZXlKSlJDSTZJRFF5TUN3Z0lrcFhWQ0k2SUNKSFlXNXFZU0o5IiwgIlVTRVIiOiAiZXlKSlJDSTZJRFk1TENBaVNsZFVJam9nSWxCdmMybDBhVzl1SW4wPSJ9\",\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+				},
+				{
+					"name": "json to b64+encode",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"API\": {\n        \"ID\": 420,\n        \"JWT\": \"Ganja\"\n    },\n    \"USER\": {\n        \"ID\": 69,\n        \"JWT\": \"Position\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local8100}}{{token}}enc/1",
+							"host": [
+								"{{local8100}}{{token}}enc"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jun 2022 16:05:53 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "350"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"STATUS\": true,\n    \"DATA\": {\n        \"TOKEN\": \"gAAAAABir0lhHji1BvyFZeVEVcDsOT-uzVC038bnnT2nUsDIrlOXvWX5X5EKpSxKH4Mh17cb8t6N6L89Wp-QqQ911NUVhcIBqKCWzU3lpyIIZpMdqFT8Y7ukTyrhkE93-LDrFYe5pw21Yi1pmhOEhu2xRhuxkPMwNpMVgE-XIw2C-BnkDzytB19qVrwfiirXXyZi5v7O1h2hIHLPlMpJMPpcSsm8ZQ_L6PPpzYP1SEPj53JJ-RPIKrAgs2SQ5lTb5XFey7_p3nua\"\n    },\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+				}
+			]
+		},
+		{
+			"name": "jsonDec",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"TOKEN\" : \"gAAAAABir0lhHji1BvyFZeVEVcDsOT-uzVC038bnnT2nUsDIrlOXvWX5X5EKpSxKH4Mh17cb8t6N6L89Wp-QqQ911NUVhcIBqKCWzU3lpyIIZpMdqFT8Y7ukTyrhkE93-LDrFYe5pw21Yi1pmhOEhu2xRhuxkPMwNpMVgE-XIw2C-BnkDzytB19qVrwfiirXXyZi5v7O1h2hIHLPlMpJMPpcSsm8ZQ_L6PPpzYP1SEPj53JJ-RPIKrAgs2SQ5lTb5XFey7_p3nua\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{local8100}}{{token}}enc/2",
+					"host": [
+						"{{local8100}}{{token}}enc"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "b64 to json",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TOKEN\" : \"eyJBUEkiOiAiZXlKSlJDSTZJRFF5TUN3Z0lrcFhWQ0k2SUNKSFlXNXFZU0o5IiwgIlVTRVIiOiAiZXlKSlJDSTZJRFk1TENBaVNsZFVJam9nSWxCdmMybDBhVzl1SW4wPSJ9\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local8100}}{{token}}/2",
+							"host": [
+								"{{local8100}}{{token}}"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jun 2022 15:42:24 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "144"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"STATUS\": true,\n    \"DATA\": {\n        \"API\": {\n            \"ID\": 420,\n            \"JWT\": \"Ganja\"\n        },\n        \"USER\": {\n            \"ID\": 69,\n            \"JWT\": \"Position\"\n        }\n    },\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+				},
+				{
+					"name": "encB64 to json",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"TOKEN\" : \"gAAAAABir0lhHji1BvyFZeVEVcDsOT-uzVC038bnnT2nUsDIrlOXvWX5X5EKpSxKH4Mh17cb8t6N6L89Wp-QqQ911NUVhcIBqKCWzU3lpyIIZpMdqFT8Y7ukTyrhkE93-LDrFYe5pw21Yi1pmhOEhu2xRhuxkPMwNpMVgE-XIw2C-BnkDzytB19qVrwfiirXXyZi5v7O1h2hIHLPlMpJMPpcSsm8ZQ_L6PPpzYP1SEPj53JJ-RPIKrAgs2SQ5lTb5XFey7_p3nua\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local8100}}{{token}}enc/2",
+							"host": [
+								"{{local8100}}{{token}}enc"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Sun, 19 Jun 2022 16:10:14 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "OPTIONS, POST"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "144"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"STATUS\": true,\n    \"DATA\": {\n        \"API\": {\n            \"ID\": 420,\n            \"JWT\": \"Ganja\"\n        },\n        \"USER\": {\n            \"ID\": 69,\n            \"JWT\": \"Position\"\n        }\n    },\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "local8100",
+			"value": "127.0.0.1:8100/",
+			"type": "default"
+		},
+		{
+			"key": "utilities",
+			"value": "utilities/",
+			"type": "default"
+		},
+		{
+			"key": "checkServer",
+			"value": "checkserver/",
+			"type": "default"
+		},
+		{
+			"key": "api",
+			"value": "api/",
+			"type": "default"
+		},
+		{
+			"key": "token",
+			"value": "token/",
+			"type": "default"
+		},
+		{
+			"key": "asUser",
+			"value": "u/",
+			"type": "default"
+		},
+		{
+			"key": "asAdmin",
+			"value": "a/",
+			"type": "default"
+		}
+	]
+}

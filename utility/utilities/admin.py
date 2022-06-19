@@ -15,6 +15,7 @@ from utilities.models import (
     Mailer,
     Notification,
     Telegram,
+    UrlShort,
 )
 from utilities.views.utility.utility import Utility
 from utilities.views.utility.constant import Constant
@@ -221,5 +222,37 @@ class Telegram_AdminPanel(admin.ModelAdmin):
 
     def get_queryset(self, request):
         query = super(Telegram_AdminPanel, self).get_queryset(request)
+        filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
+        return filtered_query
+
+
+# -----------------------------------------
+@admin.register(UrlShort)
+class UrlShort_AdminPanel(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "key",
+        "model",
+        "type",
+        "updated_on",
+    )
+    list_display_links = (
+        "id",
+        "key",
+        "model",
+        "type",
+        "updated_on",
+    )
+    ordering = ["key"]
+    search_fields = ["key"]
+    empty_value_display = "NULL"
+    list_per_page = 25
+
+    def updated_on(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
+
+    def get_queryset(self, request):
+        query = super(Notificaiton_AdminPanel, self).get_queryset(request)
         filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query

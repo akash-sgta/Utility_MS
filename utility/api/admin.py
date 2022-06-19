@@ -29,7 +29,7 @@ class Request_AdminPanel(admin.ModelAdmin):
         "phone",
         "telegram",
         "status",
-        "creation",
+        "updated",
     )
     list_display_links = (
         "id",
@@ -37,7 +37,7 @@ class Request_AdminPanel(admin.ModelAdmin):
         "phone",
         "telegram",
         "status",
-        "creation",
+        "updated",
     )
     ordering = ("status", "created_on")
     search_fields = ["email", "phone_no"]
@@ -45,21 +45,17 @@ class Request_AdminPanel(admin.ModelAdmin):
     list_per_page = 25
 
     def telegram(self, obj):
-        if obj.tg_id in NULL:
-            _return = False
-        else:
-            _return = True
-        return _return
+        return obj.tg_id
 
     def phone(self, obj):
-        if obj.country in NULL:
+        if obj.isd == NULL:
             _return = f"{obj.phone_no}"
         else:
-            _return = f"+{obj.country.isd}-{obj.phone_no}"
+            _return = f"+{obj.isd}-{obj.phone_no}"
         return _return
 
-    def creation(self, obj):
-        return Utility.epochMsToDatetime(obj.created_on)
+    def updated(self, obj):
+        return Utility.epochMsToDatetime(obj.last_update)
 
 
 @admin.register(Api)

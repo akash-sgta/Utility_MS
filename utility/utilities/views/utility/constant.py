@@ -86,6 +86,7 @@ class Constant(object):
         pattern=r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$"
     )
     RE_TG = compile(pattern=r"^[0-9]+$")
+    REGEX_INTEGER = RegexValidator(regex=r"\d+", message="Should be numbers")
     # --------------------------------------------------
     #               CHOICES + SCHEMAS
     # --------------------------------------------------
@@ -123,6 +124,20 @@ class Constant(object):
         (SELF, "Self"),
         (IN, "Inbound"),
         (OUT, "Outbound"),
+    ]
+    # ---------------------
+    REQUEST = 0
+    API = 1
+    MODEL_MODEL_CHOICE = [
+        (REQUEST, "Request"),
+        (API, "Api"),
+    ]
+    # ---------------------
+    SEARCH = 0
+    ID = 1
+    MODEL_TYPE_CHOICE = [
+        (SEARCH, "Search"),
+        (ID, "Id"),
     ]
     # ---------------------
     API = "API"

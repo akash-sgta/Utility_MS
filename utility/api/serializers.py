@@ -23,18 +23,19 @@ class Request_Serializer(serializers.ModelSerializer):
         fields = (
             "id",
             "email",
-            "country",
+            "isd",
             "phone_no",
             "tg_id",
             "status",
             "reason",
             "created_on",
+            "last_update",
         )
         extra_kwargs = {
             "id": {"read_only": True},
             "sys": {"read_only": True},
-            "country": {"read_only": True},
             "created_on": {"read_only": True},
+            "last_update": {"read_only": True},
         }
         depth = 0
 
@@ -46,7 +47,7 @@ class Api_Serializer(serializers.ModelSerializer):
             "id",
             "direction",
             "email",
-            "country",
+            "isd",
             "phone_no",
             "tg_id",
             "name",
@@ -57,7 +58,6 @@ class Api_Serializer(serializers.ModelSerializer):
         extra_kwargs = {
             "id": {"read_only": True},
             "sys": {"read_only": True},
-            "country": {"read_only": True},
             "key": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},

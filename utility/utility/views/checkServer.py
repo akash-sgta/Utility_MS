@@ -30,6 +30,5 @@ def check_server_status(request):
     data[Constant.DATA] = {
         "SERVER NAME": Constant.SETTINGS_SYSTEM_NAME,
         "SERVER TIME": Utility.datetimeToStr(datetime.now()),
-        "SERVER TIMEZONE": Constant.SETTINGS_TIMEZONE,
     }
     return JsonResponse(data=data, status=status.HTTP_200_OK)

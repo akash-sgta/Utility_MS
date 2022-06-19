@@ -197,5 +197,50 @@ class Telegram(models.Model):
 
 
 # -----------------------------------------
+class UrlShort(models.Model):
+    id = models.AutoField(primary_key=True)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
+    )
+
+    key = models.CharField(max_length=31, unique=True)
+    model = models.IntegerField(
+        choices=Constant.MODEL_MODEL_CHOICE, default=Constant.REQUEST
+    )
+    type = models.IntegerField(
+        choices=Constant.MODEL_TYPE_CHOICE, default=Constant.ID
+    )
+    query = models.CharField(max_length=127)
+
+    created_on = models.PositiveBigIntegerField(blank=True, null=True)
+    last_update = models.PositiveBigIntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.created_on in Constant.NULL:
+            self.created_on = Utility.datetimeToEpochMs(datetime.now())
+            self.key = Utility.randomGenerator(length=15, no_symbol=True)
+        self.last_update = Utility.datetimeToEpochMs(datetime.now())
+        return super(UrlShort, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.id}-{self.key}"
+
 
 # -----------------------------------------
+class Log(models.Model):
+    id = models.AutoField(primary_key=True)
+    sys = models.IntegerField(
+        choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
+    )
+
+    body = models.TextField()
+
+    created_on = models.PositiveBigIntegerField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.created_on in Constant.NULL:
+            self.created_on = Utility.datetimeToEpochMs(datetime.now())
+        return super(Log, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.id}-{Utility.datetimeToStr(Utility.epochMsToDatetime(self.created_on))}"
