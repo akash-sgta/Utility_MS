@@ -23,8 +23,8 @@ from utilities.models import Notification
 from utilities.serializers import Notification_Serializer
 from utilities.views.utility.constant import Constant
 from utilities.views.utility.batchJob import BatchJob, TGBot
-from utilities.views.mailer import MailerView_asUser
-from utilities.views.telegram import TelegramView_asUser
+from utilities.views.mailer import MailerView_asAdmin
+from utilities.views.telegram import TelegramView_asAdmin
 
 # =========================================================================================
 #                                       CONSTANT
@@ -107,7 +107,7 @@ class NotificationView_asUser(NotificationView):
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
-    def post(self, request, word: str, pk: str, internal: bool = False):
+    def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         try:
             mailer_data = deepcopy(request.data["mailer"])
@@ -137,8 +137,10 @@ class NotificationView_asUser(NotificationView):
                         mailer_data[NOTIFICATION] = notification_id
                         request.data.clear()
                         request.data.update(mailer_data)
-                        mailer = MailerView_asUser().post(
-                            request=request, word=word, pk=pk, internal=True
+                        mailer = MailerView_asAdmin().post(
+                            request=request,
+                            word=word,
+                            pk=pk,
                         )
                         if mailer.data[Constant.STATUS]:
                             self.data_returned[Constant.DATA][0][
@@ -155,8 +157,10 @@ class NotificationView_asUser(NotificationView):
                         telegram_data[NOTIFICATION] = notification_id
                         request.data.clear()
                         request.data.update(telegram_data)
-                        telegram = TelegramView_asUser().post(
-                            request=request, word=word, pk=pk, internal=True
+                        telegram = TelegramView_asAdmin().post(
+                            request=request,
+                            word=word,
+                            pk=pk,
                         )
                         if telegram.data[Constant.STATUS]:
                             self.data_returned[Constant.DATA][0][

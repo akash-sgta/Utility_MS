@@ -108,93 +108,15 @@ class RequestView_asUser(RequestView):
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
-    def _read_specific(self) -> None:
-        try:
-            request_ref = Request.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
-        except Request.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        except ValueError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        except TypeError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        else:
-            request_ser = Request_Serializer(request_ref, many=False).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(request_ser)
-            self.status_returned = status.HTTP_200_OK
+    def __read_specific(self) -> None:
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
-    def _read_search(self) -> None:
-        try:
-            try:
-                request_ref = eval(
-                    f'Request.objects.filter({self._create_query()}).order_by("id")'
-                )
-            except NameError:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
-                self.status_returned = status.HTTP_400_BAD_REQUEST
-            except FieldError:
-                try:
-                    request_ref = eval(
-                        f'Request.objects.filter({self._create_query(flag=False)}).order_by("id")'
-                    )
-                except NameError:
-                    self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
-                    self.status_returned = status.HTTP_400_BAD_REQUEST
-            if len(request_ref) == 0:
-                raise Request.DoesNotExist
-        except Request.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
-            self.status_returned = status.HTTP_204_NO_CONTENT
-        else:
-            request_ser = Request_Serializer(request_ref, many=True).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = request_ser
-            self.status_returned = status.HTTP_200_OK
-        return
-
-    def get(self, request, word: str, pk: str, internal: bool = False):
+    def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if not internal:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-            self.status_returned = status.HTTP_403_FORBIDDEN
-        else:
-            try:
-                if self.query1 in self.SR_KEYS:
-                    if self.query1 == self.SR_KEYS[0]:  # id
-                        if self.query2 in Constant.NULL:
-                            raise Exception(Constant.INVALID_SPARAMS)
-                        else:
-                            self._read_specific()
-                    elif self.query1 == self.SR_KEYS[1]:  # search:
-                        if self.query2 in Constant.NULL:
-                            raise Exception(Constant.INVALID_SPARAMS)
-                        else:
-                            self._read_search()
-                    else:
-                        raise Exception(Constant.INVALID_SPARAMS)
-                else:
-                    raise Exception(Constant.INVALID_SPARAMS)
-            except Exception as e:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = str(e)
-                self.status_returned = status.HTTP_400_BAD_REQUEST
+        self.__read_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -253,6 +175,66 @@ class RequestView_asAdmin(RequestView_asUser):
             self.status_returned = status.HTTP_200_OK
         return
 
+    def __read_specific(self) -> None:
+        try:
+            request_ref = Request.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
+        except Request.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except ValueError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except TypeError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        else:
+            request_ser = Request_Serializer(request_ref, many=False).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(request_ser)
+            self.status_returned = status.HTTP_200_OK
+        return
+
+    def __read_search(self) -> None:
+        try:
+            try:
+                request_ref = eval(
+                    f'Request.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    request_ref = eval(
+                        f'Request.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
+            if len(request_ref) == 0:
+                raise Request.DoesNotExist
+        except Request.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        else:
+            request_ser = Request_Serializer(request_ref, many=True).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = request_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         flag = True
@@ -261,12 +243,12 @@ class RequestView_asAdmin(RequestView_asUser):
                 if self.query2 in Constant.NULL:
                     self.__read_all()
                 else:
-                    self._read_specific()
+                    self.__read_specific()
             elif self.query1 == self.SR_KEYS[1]:  # search
                 if self.query2 in Constant.NULL:
                     flag = False
                 else:
-                    self._read_search()
+                    self.__read_search()
             else:
                 flag = False
         else:

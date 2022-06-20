@@ -821,6 +821,309 @@
 										"method": "GET",
 										"header": [],
 										"url": {
+											"raw": "{{local8100}}{{utilities}}{{asUser}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "trigger mailer",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/trigger/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"trigger",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/search/nameeq ind",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"search",
+												"nameeq ind"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utilities}}{{asUser}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/1",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "trigger mailer",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/trigger/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"trigger",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/search/subjecteqtes",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"search",
+												"subjecteqtes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/2",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"WET puSsy\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer/id/3",
+											"host": [
+												"{{local8100}}{{utility_Utilities}}{{asAdmin}}mailer"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] Telegram",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
 											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
 											"host": [
 												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
@@ -912,7 +1215,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"sender\": \"test@test.com\",\n    \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\"\n}",
+											"raw": "{\n    \"receiver\": \"123456,654321\"\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -920,9 +1223,9 @@
 											}
 										},
 										"url": {
-											"raw": "{{local8100}}{{utility_Utilities}}{{asUser}}mailer/id/",
+											"raw": "{{local8100}}{{utilities}}{{asUser}}mailer/id/",
 											"host": [
-												"{{local8100}}{{utility_Utilities}}{{asUser}}mailer"
+												"{{local8100}}{{utilities}}{{asUser}}mailer"
 											],
 											"path": [
 												"id",
@@ -1197,7 +1500,7 @@
 										"header": [],
 										"body": {
 											"mode": "raw",
-											"raw": "{\n    \"mail_receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"tg_receiver\": \"12345,67890\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\":\"TEST AHH\"\n}",
+											"raw": "{\n    \"mail_receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"tg_receiver\": \"12345,67890\",\n    \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n    \"subject\": \"TEST MAIL\",\n    \"body\": \"TEST AHH\",\n    \"mailer\": {\n        \"receiver\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n        \"cc\": \"test@test.com,test@test.com,test@test.com,test@test.com\",\n        \"bcc\": \"test@test.com,test@test.com,test@test.com,test@test.com\"\n    },\n    \"telegram\": {\n        \"receiver\": \"123456,654321\"\n    }\n}",
 											"options": {
 												"raw": {
 													"language": "json"
@@ -1534,7 +1837,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"API\": {\n        \"ID\": 420,\n        \"JWT\": \"Ganja\"\n    },\n    \"USER\": {\n        \"ID\": 69,\n        \"JWT\": \"Position\"\n    }\n}",
+					"raw": "{\n    \"API\": {\n        \"ID\": 1,\n        \"JWT\": \"4eSUl8XYYqsD6H6iMSfsZxusD6QOVT21Ce2VtkehmtsKBXMNTqSVceyWJPRMLIIFH87FikvkUS3WtilWFQPgNsgF3lWJ9hVHtXBb7Fiutf3gkpGtah2KVSOfIV28z48sGtgj1KHgyKq9yZH289hzAePhK4oY58oiGbFgJXohXkIQHcv8R1xFyg6gXbBP0x6IBvTpTxiK9VTTz67OdPTSx6z0173AvCUsG\"\n    },\n    \"USER\": {\n        \"ID\": 0,\n        \"JWT\": null\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1705,7 +2008,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"TOKEN\" : \"gAAAAABir0lhHji1BvyFZeVEVcDsOT-uzVC038bnnT2nUsDIrlOXvWX5X5EKpSxKH4Mh17cb8t6N6L89Wp-QqQ911NUVhcIBqKCWzU3lpyIIZpMdqFT8Y7ukTyrhkE93-LDrFYe5pw21Yi1pmhOEhu2xRhuxkPMwNpMVgE-XIw2C-BnkDzytB19qVrwfiirXXyZi5v7O1h2hIHLPlMpJMPpcSsm8ZQ_L6PPpzYP1SEPj53JJ-RPIKrAgs2SQ5lTb5XFey7_p3nua\"\n}",
+					"raw": "{\n    \"TOKEN\" : \"gAAAAABisHXEym2fXNXgIZcfhhjRz5dBHdob_J_JOVfLH2Pb-aUVeUwUutA6DtkUmKdJqY4lj-5ipiFZuyV0HUsAhhIpQr2aL1K3zrRgLr92KgBcCzHPlWNHHZl3eP3HOeBF27bCP7060IqnshAZy-hx68yR_9yT5ivRD0hkoo0GCH41jrgM6DWRa9NIHwJXQ8AqFCnpdmXyRTTAitAu8eD_FrqFgQ-cMJ0s5LeSNHUsM_Eqwe-t_XQEhE-iC1DWhTMeQysQ3QWeuSaXkzczcSz-2D-OUeGvZRnV5m33-4-bkjFw6IzXYrCUckFMtTrFWmtvdEdm0Jolukpfs9CxfTuKX84JhQKVOAcuQqjIm0DSOwVD0NWmjwqck4IukeaXFLC6ZW-pCnUwEheMOCLL_baiBWw5tqA-qBFMyNRw-3LDrl1RTAQLR4j6SiXVaM9jTz42jAFbiva9i6WWnCcbd_pkLp5TbtV9i58cDPr49ImrQfY1VM0ovdA0A50FXMPZ4hBSLpwYtUhb3giPNEgGVEYbV5dI8egdGpDTgQ1s83RpU12fYLKJbOIrtPQsj0DCvjVB_3f3iMzjFA_8K33jUmTCKc_6IClmY-32llykUR6cjRsYyusbMBmafGdqqvZtGMVN4qVghSZJOTJFeH6aoervL8raa-x3ebgsUcarmxnk9Vh0MM7WW31Hh5mWOabpkvHj4xRb6f2G5eZMd5V5D2KP6GlaAfRYX1ycOQQCVCoLmBCQOZDZb83BJpeZnF-5hAFlXUe69zgi\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -1870,6 +2173,16 @@
 			]
 		}
 	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "gAAAAABisIKISJ4sJTppm4UyfhrMfdbw8a0iDLxry0UryZ1rD4JM-8DvieSV7cOcniXSKWWhAN8psr81owjETLc-0d9lBk_I3PGfcXioHXJk1_PmVqe0WGYy2fa_C2YngokKoJYxMfCsqA9duKC3o3ZgdHAcyVCjfjpv4L2QRue8Q0Xzj29VZX0Et-mJiVcFpgsTS3hyPDB9z2C9zB8g2zbknPwn-60RVI90bhP8orgU7rvLZo4GiG54tM-1Vz-JczSlW6ePaPzcuTPvyWSqITkn4oTrC_rjeMu5EV6lQhv_40Hrfyrc8UJXO4ykQQSsdbyCMIASqJNDsTWlGeoFYbq4r_g3vl3q04U8xUdYpXeTbnsWZznaPj0oPVTnyQdK4J0cYxegDv6F63pNVq982_lQ_0P0xxvVzQi0BmbtFB9CHZjxLsdidshPpYsY2CUIH1qVZHqe7MPCA2uhUC3n8JD5mlE6-hssJ-Fa9WSJwW8PHAW4DhhHBqDewNkgFZmb_tnKl8LKYc_4LGLS6VnOYpXa8R8YGPiyEA9adOpTsBSgfEK9oQdI_VzgLMgSPeeCNOXdLUbwVez61_Nr100bBQ7vms9v-RGOEaFmhicvk6-szBeU_o_2CekLSqS4kNWQYNnYiSKEfII2k9cnEsyq2M7sZ5Ik156YxC0rt0Fc5lex8DESl8bHFLEBprmIruhj-5a7GRllkC2V9rZ7gwag0rsM4P3TivT4Xjfpex-fhth7NreuCE3MLQCP-_4hWU_Mke0lWEmeh4vB",
+				"type": "string"
+			}
+		]
+	},
 	"event": [
 		{
 			"listen": "prerequest",

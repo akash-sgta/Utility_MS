@@ -22,7 +22,7 @@ from utilities.models import Telegram
 from utilities.serializers import Telegram_Serializer
 from utilities.views.utility.constant import Constant
 from utilities.views.utility.batchJob import BatchJob, TGBot
-
+from utility.views.authenticator import Authenticator
 
 # =========================================================================================
 #                                       CONSTANT
@@ -34,7 +34,7 @@ BOT_THREAD = TGBot()
 # =========================================================================================
 class TelegramView(APIView):
     renderer_classes = [JSONRenderer]
-    authentication_classes = []
+    authentication_classes = [Authenticator]
 
     def __init__(self, query1=None, query2=None):
         super(TelegramView, self).__init__()
@@ -55,7 +55,7 @@ class TelegramView(APIView):
         return
 
     def _create_query(self, flag=True) -> str:
-        _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
+        query = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
         if self.query2 not in Constant.NULL:
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
@@ -66,10 +66,10 @@ class TelegramView(APIView):
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
-                        _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+                        query += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
-        return _return
+                        query += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+        return query
 
 
 class TelegramView_asUser(TelegramView):
@@ -82,33 +82,14 @@ class TelegramView_asUser(TelegramView):
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        telegram_ser = Telegram_Serializer(data=data)
-        if telegram_ser.is_valid():
-            try:
-                telegram_ser.save()
-            except Exception as e:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = str(e)
-                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
-            else:
-                telegram_ser = telegram_ser.data
-                self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(telegram_ser)
-                self.status_returned = status.HTTP_201_CREATED
-        else:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = telegram_ser.errors
-            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
-    def post(self, request, word: str, pk: str, internal: bool = False):
+    def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if not internal:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-            self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
-        else:
-            self.__create_specific(data=request.data)
+        self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -157,10 +138,30 @@ class TelegramView_asAdmin(TelegramView_asUser):
         )
 
     # =============================================================
+    def __create_specific(self, data: dict) -> None:
+        telegram_ser = Telegram_Serializer(data=data)
+        if telegram_ser.is_valid():
+            try:
+                telegram_ser.save()
+            except Exception as e:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[Constant.MESSAGE] = str(e)
+                self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+            else:
+                telegram_ser = telegram_ser.data
+                self.data_returned[Constant.STATUS] = True
+                self.data_returned[Constant.DATA].append(telegram_ser)
+                self.status_returned = status.HTTP_201_CREATED
+        else:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = telegram_ser.errors
+            self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
+        return
+
     def post(self, request, word: str, pk: str):
-        return super(TelegramView_asAdmin, self).post(
-            request=request, word=word, pk=pk
-        )
+        self.__init__(query1=word, query2=pk)
+        self.__create_specific(data=request.data)
+        return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __read_all(self) -> None:
