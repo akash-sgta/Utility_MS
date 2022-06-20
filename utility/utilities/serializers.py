@@ -93,7 +93,6 @@ class Notification_Serializer(serializers.ModelSerializer):
         )
         extra_kwargs = {
             "id": {"read_only": True},
-            "api": {"read_only": True},
             "created_on": {"read_only": True},
             "last_update": {"read_only": True},
         }
@@ -127,8 +126,7 @@ class Telegram_Serializer(serializers.ModelSerializer):
         model = Telegram
         fields = (
             "id",
-            "api",
-            "notificaiton",
+            "notification",
             "receiver",
             "status",
             "reason",

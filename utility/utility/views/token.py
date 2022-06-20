@@ -49,7 +49,7 @@ def encToken(token_dict: dict, enc: bool = False) -> tuple:
         return e
     else:
         ret_data[Constant.STATUS] = True
-        ret_data[Constant.DATA] = token_str
+        ret_data[Constant.DATA].append(token_str)
         ret_status = status.HTTP_200_OK
     return (ret_data, ret_status)
 
@@ -71,7 +71,7 @@ def decToken(token_str: dict, enc: bool = False) -> dict:
         return e
     else:
         ret_data[Constant.STATUS] = True
-        ret_data[Constant.DATA] = token_dict
+        ret_data[Constant.DATA].append(token_dict)
         ret_status = status.HTTP_200_OK
     return (ret_data, ret_status)
 

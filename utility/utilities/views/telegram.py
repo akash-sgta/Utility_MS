@@ -101,39 +101,26 @@ class TelegramView_asUser(TelegramView):
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
-    def post(self, request, word: str, pk: str):
+    def post(self, request, word: str, pk: str, internal: bool = False):
         self.__init__(query1=word, query2=pk)
-        self.__create_specific(data=request.data)
+        if not internal:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+            self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
+        else:
+            self.__create_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
-    def _read_specific(self) -> None:
-        try:
-            telegram_ref = Telegram.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
-        except Telegram.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        except ValueError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        except TypeError:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        else:
-            telegram_ser = Telegram_Serializer(telegram_ref, many=False).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(telegram_ser)
-            self.status_returned = status.HTTP_200_OK
+    def __read_specific(self) -> None:
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        self._read_specific()
+        self.__read_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -214,6 +201,30 @@ class TelegramView_asAdmin(TelegramView_asUser):
             self.status_returned = status.HTTP_200_OK
         return
 
+    def __read_specific(self) -> None:
+        try:
+            telegram_ref = Telegram.objects.get(
+                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+            )
+        except Telegram.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except ValueError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        except TypeError:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        else:
+            telegram_ser = Telegram_Serializer(telegram_ref, many=False).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(telegram_ser)
+            self.status_returned = status.HTTP_200_OK
+        return
+
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         try:
@@ -222,7 +233,7 @@ class TelegramView_asAdmin(TelegramView_asUser):
                     if self.query2 in Constant.NULL:
                         self.__read_all()
                     else:
-                        self._read_specific()
+                        self.__read_specific()
                 elif self.query1.lower() == self.SR_KEYS[1]:  # search
                     if self.query2 in Constant.NULL:
                         raise Exception(Constant.INVALID_SPARAMS)

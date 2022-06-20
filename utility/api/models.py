@@ -68,6 +68,9 @@ class Request(models.Model):
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
         return super(Request, self).save()
 
+    def __str__(self) -> str:
+        return f"{self.id}-{self.email}"
+
 
 class Api(models.Model):
     id = models.AutoField(primary_key=True)
@@ -106,7 +109,7 @@ class Api(models.Model):
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
 
     def __refresh(self):
-        self.key = Utility.randomGenerator(length=225)
+        self.key = Utility.randomGenerator(length=225, no_symbol=True)
 
     def save(self, *args, **kwargs):
         if self.created_on in Constant.NULL:  # Only when item created
@@ -124,3 +127,6 @@ class Api(models.Model):
         self.__refresh()
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
         return super(Api, self).save()
+
+    def __str__(self) -> str:
+        return f"{self.id}-{self.name}"

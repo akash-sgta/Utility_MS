@@ -79,7 +79,7 @@ class Utility(object):
         3. Decode Byte_String => String
         """
         try:
-            key[:32].encode(Constant.UTF8)
+            key = key[:32].encode(Constant.UTF8)
             key = base64.urlsafe_b64encode(key)
             crypt = Fernet(key)
             # --------------------
@@ -264,13 +264,16 @@ class Utility(object):
         -------------------------------
         """
         emails = emails.split(Constant.COMA)
-        for i in len(emails):
+        for i in range(len(emails)):
             emails[i] = emails[i].strip()
             if Constant.RE_EMAIL.fullmatch(string=emails[i]):
                 emails[i] = emails[i].upper()
             else:
                 emails[i] = None
-        emails.remove(None)
+        try:
+            emails.remove(None)
+        except:
+            pass
         return emails
 
     @staticmethod
@@ -280,13 +283,17 @@ class Utility(object):
         -------------------------------------
         """
         users = users.split(Constant.COMA)
-        for i in len(users):
+        for i in range(len(users)):
             users[i] = users[i].strip()
             if not Constant.RE_TG.fullmatch(string=users[i]):
                 users[i] = None
-        users.remove(None)
+        try:
+            users.remove(None)
+        except:
+            pass
         return users
 
+    # --------------------------------------------------
     @staticmethod
     def log(exp: int, base: int) -> float:
         if exp == 0:

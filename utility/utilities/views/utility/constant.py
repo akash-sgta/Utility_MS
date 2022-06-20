@@ -48,6 +48,7 @@ class Constant(object):
     #               INVALID
     # --------------------------------------------------
     INVALID_SPARAMS = "INVALID SEARCH PARAMETERS"
+    INVALID_API = "INVALID API"
     INVALID_URL = "INVALID URL"
     INVALID_PAYLOAD = "INVALID DATA POSTED"
     INVALID_TOKEN = "INVALID API TOKEN"
@@ -153,11 +154,11 @@ class Constant(object):
         {
             API: {
                 "type": str,
-                "max_len": 255,
+                "max_len": 511,
             },
             USER: {
                 "type": str,
-                "max_len": 255,
+                "max_len": 511,
             },
         }
     )

@@ -54,7 +54,7 @@ class MailerView(APIView):
         return
 
     def _create_query(self, flag=True) -> str:
-        _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
+        query = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
         if self.query2 not in Constant.NULL:
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
@@ -65,10 +65,10 @@ class MailerView(APIView):
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
-                        _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+                        query += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
-        return _return
+                        query += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+        return query
 
 
 class MailerView_asUser(MailerView):
@@ -171,9 +171,7 @@ class MailerView_asAdmin(MailerView_asUser):
 
     # =============================================================
     def post(self, request, word: str, pk: str):
-        return super(MailerView_asAdmin, self).post(
-            request=request, word=word, pk=pk
-        )
+        return super(MailerView_asAdmin, self).post(request=request, word=word, pk=pk)
 
     # =============================================================
     def __read_all(self) -> None:
@@ -237,9 +235,7 @@ class MailerView_asAdmin(MailerView_asUser):
                     self.query2 = f"statuseq{_status}"
                     self.__read_search()
                     # ---------------------------------
-                    batch_thread = BatchJob(
-                        mailer=True, api=1, status=_status
-                    )
+                    batch_thread = BatchJob(mailer=True, api=1, status=_status)
                     batch_thread.start()
             else:
                 flag = False
@@ -268,9 +264,7 @@ class MailerView_asAdmin(MailerView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            mailer_ser = Mailer_Serializer(
-                instance=mailer_ref, data=data, partial=True
-            )
+            mailer_ser = Mailer_Serializer(instance=mailer_ref, data=data, partial=True)
             if mailer_ser.is_valid():
                 try:
                     mailer_ser.save()

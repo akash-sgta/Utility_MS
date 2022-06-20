@@ -65,7 +65,7 @@ class Authenticator(BaseAuthentication):
     def __verify_api(self, token: dict) -> Api:
         try:
             token = token[Constant.API]
-            api_ref = Api.objects.get(identity=int(token[Constant.ID]))
+            api_ref = Api.objects.get(id=int(token[Constant.ID]))
         except Api.DoesNotExist as e:
             raise Exception(f"{Constant.INVALID_CRED}")
         else:
@@ -77,16 +77,19 @@ class Authenticator(BaseAuthentication):
                 return api_ref
 
     def authenticate(self, request):
+        details = Constant.RETURN_JSON
+        api, user = None, None
         try:
-            details = Constant.BLANK_STR
             token_str = self.__extract_token(headers=request.headers)
             token_dict = self.__unpack_token(token=token_str)
             api = self.__verify_api(token=token_dict)
-            # user = self.__verify_user(token=token_dict)
+            user = self.__verify_user(token=token_dict)
+            details[Constant.STATUS] = True
         except Exception as e:
-            details = str(e)
+            details[Constant.STATUS] = False
+            details[Constant.MESSAGE] = str(e)
         finally:
-            if details != Constant.BLANK_STR:
+            if not details[Constant.STATUS]:
                 raise AuthenticationFailed(detail=details)
             else:
-                return api, None
+                return api, user

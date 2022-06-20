@@ -6,9 +6,7 @@
 #                                       LIBRARY
 # =========================================================================================
 from datetime import datetime
-from lib2to3.pgen2.token import COMMA
 from django.db import models
-from django.dispatch import receiver
 
 # -----------------------------------------
 from utilities.views.utility.utility import Utility
@@ -32,7 +30,11 @@ class Country(models.Model):
     )
 
     iso = models.CharField(max_length=3, unique=True, null=True, blank=True)
-    isd = models.IntegerField(unique=True)
+    isd = models.CharField(
+        unique=True,
+        max_length=7,
+        validators=[Constant.REGEX_INTEGER],
+    )
     name = models.CharField(max_length=127, unique=True)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
@@ -124,7 +126,7 @@ class Notification(models.Model):
         if self.attachment in Constant.NULL:
             self.attachment = None
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
-        return super(Mailer, self).save(*args, **kwargs)
+        return super(Notification, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id}-{self.subject[:16]}"
@@ -188,9 +190,11 @@ class Telegram(models.Model):
     def save(self, *args, **kwargs):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
-        self.receiver = Constant.COMA.join(Utility.tgUserListGen(self.cc))
+        self.receiver = Constant.COMA.join(
+            Utility.tgUserListGen(self.receiver)
+        )
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
-        return super(Notification, self).save(*args, **kwargs)
+        return super(Telegram, self).save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.id}-{self.notification.subject[:16]}"
