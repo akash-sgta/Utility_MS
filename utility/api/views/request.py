@@ -11,8 +11,6 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
-from math import fabs
-import re
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
@@ -22,23 +20,40 @@ from django.core.exceptions import FieldError
 # --------------------------------------------------
 
 from api.models import Request
+from utilities.models import Mailer, Telegram
 from api.serializers import Request_Serializer
-from utilities.views.mailer import MailerView_asUser
-from utilities.views.notification import NotificationView_asUser
-from utilities.views.utility.constant import Constant
-from utilities.views.utility.utility import Utility
-
+from utilities.views.notification import NotificationView_asAdmin
+from utilities.views.urlShort import UrlShortView_asAdmin
+from utilities.util.mailerUtil import Mailer_Thread
+from utilities.util.telegramUtil import Telegram_Thread
+from utilities.util.constant import Constant
+from utilities.util.utility import Utility
 
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
+SUBJECT = "DO NOT REPLY | UTILITY | API ACCESS REQUEST"
+BODY_HEADER = """
+==========[This is an auto generated email]==========
+"""
+BODY_MAIN = """
+Greetings,
+
+Your API access request has been generated.
+Description:
+"""
+BODY_FOOTER = """
+==========[ This is a unmonitored mailbox ]==========
+==========[      Please do not reply      ]==========
+"""
+STATUS = dict(map(reversed, Constant.STATUS_CHOICE))
 
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
 class RequestView(APIView):
     renderer_classes = [JSONRenderer]
-    authentication_classes = []
+    authenticnotifation_classes = []
 
     def __init__(self, query1=None, query2=None):
         super(RequestView, self).__init__()
@@ -102,9 +117,108 @@ class RequestView_asUser(RequestView):
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
+    def _send_notification(self, request) -> bool:
+        request_tmp = request
+        # ------------------------------------
+        # Post Notification
+        # ------------------------------------
+        request_tmp.data.clear()
+        notification_data = Constant.NOTIFICATION_DICT
+        notification_data[Constant.NOTIFICATION_SUBJECT] = SUBJECT
+        body = f"""
+        EMAIL       : {self.data_returned[Constant.DATA][0]["email"]}
+        TG          : {self.data_returned[Constant.DATA][0]["tg_id"]}
+        REASON      : {self.data_returned[Constant.DATA][0]["reason"]}
+        STATUS      : {STATUS[self.data_returned[Constant.DATA][0]["status"]]}
+        DATE        : {Utility.msToStr(self.data_returned[Constant.DATA][0]["created_on"])}
+        TIMEZONE    : {Constant.SETTINGS_TIMEZONE}
+        """
+        body = f"{BODY_HEADER}\n{BODY_MAIN}\n{body}\n{BODY_FOOTER}"
+        notification_data[Constant.NOTIFICATION_BODY] = body
+        notification_data[Constant.NOTIFICATION_MAILER][
+            Constant.NOTIFICATION_RECEIVER
+        ] = f'{self.data_returned[Constant.DATA][0]["email"]}'
+        notification_data[Constant.NOTIFICATION_TELEGRAM][
+            Constant.NOTIFICATION_RECEIVER
+        ] = f'{self.data_returned[Constant.DATA][0]["tg_id"]}'
+        request_tmp.data.update(notification_data)
+        notif = NotificationView_asAdmin().post(
+            request=request_tmp,
+            word=Constant.ID,
+            pk=Constant.BLANK_STR,
+        )
+        return_stat = notif.data[Constant.STATUS]
+        if return_stat:
+            # ------------------------------------
+            # Direct Mail through Thread
+            # ------------------------------------
+            body = notif.data[Constant.DATA][0]["body"]
+            # FIX : START - Add UrlShort reverse reference here
+            request_tmp.data.clear()
+            url_data = {}
+            request_tmp.data.update(url_data)
+            url = UrlShortView_asAdmin().post(
+                request=request_tmp,
+                word=Constant.ID,
+                pk=Constant.BLANK_STR,
+            )
+            body += f"\n\n\nLINK : TODO"
+            # FIX : END - Add UrlShort reverse reference here
+            if (
+                notif.data[Constant.DATA][0][Constant.NOTIFICATION_MAILER]
+                is not None
+            ):
+                mailer_id = notif.data[Constant.DATA][0][
+                    Constant.NOTIFICATION_MAILER
+                ][Constant.ID]
+                try:
+                    mailer_ref = Mailer.objects.get(
+                        sys=Constant.SETTINGS_SYSTEM,
+                        id=int(mailer_id),
+                    )
+                except Mailer.DoesNotExist:
+                    pass  # TODO : Nothing to do at this point
+                else:
+                    Mailer_Thread().run(
+                        receiver=mailer_ref.receiver.split(Constant.COMA),
+                        cc=mailer_ref.cc.split(Constant.COMA),
+                        bcc=mailer_ref.bcc.split(Constant.COMA),
+                        subject=notif.data[Constant.DATA][0]["subject"],
+                        body=body,
+                    )
+                    del mailer_ref
+            if (
+                notif.data[Constant.DATA][0][Constant.NOTIFICATION_TELEGRAM]
+                is not None
+            ):
+                telegram_id = notif.data[Constant.DATA][0][
+                    Constant.NOTIFICATION_TELEGRAM
+                ][Constant.ID]
+                try:
+                    telegram_ref = Telegram.objects.get(
+                        sys=Constant.SETTINGS_SYSTEM,
+                        id=telegram_id,
+                    )
+                except Telegram.DoesNotExist:
+                    pass  # TODO : Nothing to do at this point
+                else:
+                    message = f'{notif.data[Constant.DATA][0]["subject"]}'
+                    message += f"\n\n\n{body}"
+                    Telegram_Thread().run(
+                        chat_id=telegram_ref.receiver.split(Constant.COMA),
+                        message=message,
+                    )
+                    del telegram_ref
+        return return_stat
+
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         self._create_specific(data=request.data)
+        if self.data_returned[Constant.STATUS]:
+            try:
+                self._send_notification()
+            except Exception as e:
+                pass
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================

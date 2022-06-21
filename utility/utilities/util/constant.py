@@ -141,6 +141,27 @@ class Constant(object):
         (ID, "Id"),
     ]
     # ---------------------
+    NOTIFICATION = "notification"
+    NOTIFICATION_SUBJECT = "subject"
+    NOTIFICATION_BODY = "body"
+    NOTIFICATION_MAILER = "mailer"
+    NOTIFICATION_TELEGRAM = "telegram"
+    NOTIFICATION_RECEIVER = "receiver"
+    NOTIFICATION_CC = "cc"
+    NOTIFICATION_BCC = "bcc"
+    NOTIFICATION_DICT = {
+        NOTIFICATION_SUBJECT: BLANK_STR,
+        NOTIFICATION_BODY: BLANK_STR,
+        NOTIFICATION_MAILER: {
+            NOTIFICATION_RECEIVER: BLANK_STR,
+            NOTIFICATION_CC: BLANK_STR,
+            NOTIFICATION_BCC: BLANK_STR,
+        },
+        NOTIFICATION_TELEGRAM: {
+            NOTIFICATION_RECEIVER: BLANK_STR,
+        },
+    }
+    # ---------------------
     API = "API"
     USER = "USER"
     ID = "ID"

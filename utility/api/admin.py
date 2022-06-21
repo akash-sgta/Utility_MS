@@ -10,7 +10,7 @@ from django.contrib import admin
 # -------------------------------------------------
 
 from api.models import Request, Api
-from utilities.views.utility.utility import Utility
+from utilities.util.utility import Utility
 
 
 # =========================================================================================

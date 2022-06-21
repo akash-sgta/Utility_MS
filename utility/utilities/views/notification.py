@@ -19,10 +19,10 @@ from rest_framework.views import APIView
 # --------------------------------------------------
 
 from utility.views.authenticator import Authenticator
-from utilities.models import Notification
+from utilities.models import Mailer, Notification, Telegram
 from utilities.serializers import Notification_Serializer
-from utilities.views.utility.constant import Constant
-from utilities.views.utility.batchJob import BatchJob, TGBot
+from utilities.util.constant import Constant
+from utilities.util.batchJob import BatchJob, TGBot
 from utilities.views.mailer import MailerView_asAdmin
 from utilities.views.telegram import TelegramView_asAdmin
 
@@ -30,9 +30,7 @@ from utilities.views.telegram import TelegramView_asAdmin
 #                                       CONSTANT
 # =========================================================================================
 BOT_THREAD = TGBot()
-NOTIFICATION = "notification"
-MAILER = "mailer"
-TELEGRAM = "telegram"
+EDITED = "\n-----EDITED-----\n"
 
 # =========================================================================================
 #                                       CODE
@@ -107,11 +105,53 @@ class NotificationView_asUser(NotificationView):
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
+    def _post_mailer(self, request, notification_id: int, data: dict) -> bool:
+        request_tmp = request
+        request_tmp.data.clear()
+        data[Constant.NOTIFICATION] = notification_id
+        request_tmp.data.update(data)
+        mailer = MailerView_asAdmin().post(
+            request=request,
+            word=Constant.ID,
+            pk=Constant.BLANK_STR,
+        )
+        return_stat = mailer.data[Constant.STATUS]
+        if return_stat:
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_MAILER
+            ] = mailer.data[Constant.DATA][0]
+        else:
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_MAILER
+            ] = None
+        return return_stat
+
+    def _post_telegram(
+        self, request, notification_id: int, data: dict
+    ) -> bool:
+        request_tmp = request
+        request_tmp.data.clear()
+        data[Constant.NOTIFICATION] = notification_id
+        request_tmp.data.update(data)
+        telegram = TelegramView_asAdmin().post(
+            request=request,
+            word=Constant.ID,
+            pk=Constant.BLANK_STR,
+        )
+        return_stat = telegram.data[Constant.STATUS]
+        if return_stat:
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_TELEGRAM
+            ] = telegram.data[Constant.DATA][0]
+        else:
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_TELEGRAM
+            ] = None
+        return return_stat
+
     def post(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         try:
-            mailer_data = deepcopy(request.data["mailer"])
-            telegram_data = deepcopy(request.data["telegram"])
             request.data["api"] = request.user.id
             if request.data["api"] is None:
                 raise Exception(Constant.INVALID_API)
@@ -126,59 +166,30 @@ class NotificationView_asUser(NotificationView):
                     notification_id = self.data_returned[Constant.DATA][0][
                         "id"
                     ]
-                else:
-                    notification_id = None
-
-                if notification_id is not None:
-                    # -------------------------------------
-                    # Mailer Post
-                    # -------------------------------------
-                    if mailer_data not in Constant.NULL:
-                        mailer_data[NOTIFICATION] = notification_id
-                        request.data.clear()
-                        request.data.update(mailer_data)
-                        mailer = MailerView_asAdmin().post(
-                            request=request,
-                            word=word,
-                            pk=pk,
+                    try:
+                        mailer_data = deepcopy(
+                            request.data[Constant.NOTIFICATION_MAILER]
                         )
-                        if mailer.data[Constant.STATUS]:
-                            self.data_returned[Constant.DATA][0][
-                                MAILER
-                            ] = mailer.data[Constant.DATA][0]
-                        else:
-                            self.data_returned[Constant.DATA][0][
-                                MAILER
-                            ] = None
-                    # -------------------------------------
-                    # Telegram Post
-                    # -------------------------------------
-                    if telegram_data not in Constant.NULL:
-                        telegram_data[NOTIFICATION] = notification_id
-                        request.data.clear()
-                        request.data.update(telegram_data)
-                        telegram = TelegramView_asAdmin().post(
-                            request=request,
-                            word=word,
-                            pk=pk,
+                        telegram_data = deepcopy(
+                            request.data[Constant.NOTIFICATION_TELEGRAM]
                         )
-                        if telegram.data[Constant.STATUS]:
-                            self.data_returned[Constant.DATA][0][
-                                TELEGRAM
-                            ] = telegram.data[Constant.DATA][0]
+                    except Exception as e:
+                        raise e
+                    else:
+                        mail_flag = self._post_mailer(
+                            request=request,
+                            notification_id=notification_id,
+                            data=mailer_data,
+                        )
+                        telegram_flag = self._post_telegram(
+                            request=request,
+                            notification_id=notification_id,
+                            data=telegram_data,
+                        )
+                        if mail_flag or telegram_flag:
+                            pass
                         else:
-                            self.data_returned[Constant.DATA][0][
-                                TELEGRAM
-                            ] = None
-                    # -------------------------------------
-                    # Check if any leaf is created
-                    # -------------------------------------
-                    if (
-                        self.data_returned[Constant.DATA][0][MAILER]
-                        == self.data_returned[Constant.DATA][0][TELEGRAM]
-                        == None
-                    ):
-                        raise Exception("Notification not generated")
+                            raise Exception("Notification not generated")
             except Exception as e:
                 # -------------------------------------
                 # Rollback
@@ -235,43 +246,21 @@ class NotificationView_asUser(NotificationView):
         self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
-    def put(self, request, word: str, pk: str, internal: bool = False):
+    def put(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if not internal:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-            self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
-        else:
-            self.__update_specific(data=request.data)
+        self.__update_specific(data=request.data)
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __delete_specific(self):
-        try:
-            notification_ref = Notification.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
-        except Notification.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_404_NOT_FOUND
-        else:
-            notification_ser = Notification_Serializer(
-                notification_ref, many=False
-            ).data
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.DATA].append(notification_ser)
-            notification_ref.delete()
+        self.data_returned[Constant.STATUS] = False
+        self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
+        self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
         return
 
-    def delete(self, request, word: str, pk: str, internal: bool = False):
+    def delete(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if not internal:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.METHOD_NOT_ALLOWED
-            self.status_returned = status.HTTP_405_METHOD_NOT_ALLOWED
-        else:
-            self.__delete_specific()
+        self.__delete_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
 
@@ -409,6 +398,41 @@ class NotificationView_asAdmin(NotificationView_asUser):
                     self.data_returned[Constant.STATUS] = True
                     self.data_returned[Constant.DATA].append(Notification_ser)
                     self.status_returned = status.HTTP_201_CREATED
+
+                    # ----------------------------------------------
+                    # Update mail references
+                    # ----------------------------------------------
+                    mailer_ref = Mailer.objects.filter(
+                        sys=Constant.SETTINGS_SYSTEM,
+                        notification=int(self.query2),
+                    )
+                    if len(mailer_ref) > 0:
+                        for mail in mailer_ref:
+                            mail.status = Constant.PARTIAL
+                            if mail.reason is None:
+                                mail.reason = EDITED
+                            else:
+                                mail.reason += EDITED
+                            mail.save()
+                    # ----------------------------------------------
+                    # Update telegram references
+                    # ----------------------------------------------
+                    telegram_ref = Telegram.objects.filter(
+                        sys=Constant.SETTINGS_SYSTEM,
+                        notification=int(self.query2),
+                    )
+                    if len(telegram_ref) > 0:
+                        for tg in telegram_ref:
+                            tg.status = Constant.PARTIAL
+                            if tg.reason is None:
+                                tg.reason = EDITED
+                            else:
+                                tg.reason += EDITED
+                            tg.save()
+                    del mailer_ref
+                    del telegram_ref
+                    del mail
+                    del tg
             else:
                 self.data_returned[Constant.STATUS] = False
                 self.data_returned[Constant.MESSAGE] = Notification_ser.errors
@@ -451,10 +475,5 @@ class NotificationView_asAdmin(NotificationView_asUser):
 
     def delete(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        if self.query2 in Constant.NULL:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
-        else:
-            self.__delete_specific()
+        self.__delete_specific()
         return Response(data=self.data_returned, status=self.status_returned)

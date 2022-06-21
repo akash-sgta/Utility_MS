@@ -148,9 +148,7 @@ class UrlShort_Serializer(serializers.ModelSerializer):
         fields = (
             "id",
             "key",
-            "model",
-            "type",
-            "query",
+            "url",
             "created_on",
             "last_update",
         )

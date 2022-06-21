@@ -17,8 +17,8 @@ from utilities.models import (
     Telegram,
     UrlShort,
 )
-from utilities.views.utility.utility import Utility
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
+from utilities.util.utility import Utility
 
 
 # =========================================================================================
@@ -233,15 +233,13 @@ class UrlShort_AdminPanel(admin.ModelAdmin):
     list_display = (
         "id",
         "key",
-        "model",
-        "type",
+        "url_tree",
         "updated_on",
     )
     list_display_links = (
         "id",
         "key",
-        "model",
-        "type",
+        "url_tree",
         "updated_on",
     )
     ordering = ["key"]
@@ -249,10 +247,13 @@ class UrlShort_AdminPanel(admin.ModelAdmin):
     empty_value_display = "NULL"
     list_per_page = 25
 
+    def url_tree(self, obj):
+        return obj.url.split("/")
+
     def updated_on(self, obj):
         return Utility.epochMsToDatetime(obj.last_update)
 
     def get_queryset(self, request):
-        query = super(Notificaiton_AdminPanel, self).get_queryset(request)
+        query = super(UrlShort_AdminPanel, self).get_queryset(request)
         filtered_query = query.filter(sys=Constant.SETTINGS_SYSTEM)
         return filtered_query

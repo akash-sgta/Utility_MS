@@ -10,9 +10,8 @@ from rest_framework.authentication import BaseAuthentication
 from rest_framework.exceptions import AuthenticationFailed
 
 # --------------------------------------------------
-
-from utilities.views.utility.utility import Utility
-from utilities.views.utility.constant import Constant
+from utilities.util.utility import Utility
+from utilities.util.constant import Constant
 from api.models import Api
 
 # =========================================================================================

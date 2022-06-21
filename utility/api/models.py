@@ -9,8 +9,8 @@ from django.db import models
 from datetime import datetime
 
 # --------------------------------------------------
-from utilities.views.utility.utility import Utility
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
+from utilities.util.utility import Utility
 
 
 # =========================================================================================

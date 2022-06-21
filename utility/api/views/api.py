@@ -23,7 +23,7 @@ from django.core.exceptions import FieldError
 from utility.views.authenticator import Authenticator
 from api.models import Api
 from api.serializers import Api_Serializer
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
 
 
 # =========================================================================================

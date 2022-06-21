@@ -20,8 +20,8 @@ from rest_framework.views import APIView
 
 from utilities.models import Mailer
 from utilities.serializers import Mailer_Serializer
-from utilities.views.utility.constant import Constant
-from utilities.views.utility.batchJob import BatchJob
+from utilities.util.constant import Constant
+from utilities.util.batchJob import BatchJob
 from utility.views.authenticator import Authenticator
 
 # =========================================================================================
@@ -39,8 +39,9 @@ class MailerView(APIView):
         super(MailerView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "subject",
-            "sender",
+            "receiver",
+            "cc",
+            "bcc",
         )
         self.SR_KEYS = (
             "id",

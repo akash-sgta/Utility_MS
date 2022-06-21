@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 from cryptography.fernet import Fernet
 
 # --------------------------------------------------
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
 
 # ==============================================================================
 #                                       CONSTANT

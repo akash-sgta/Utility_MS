@@ -20,7 +20,7 @@ from rest_framework.views import APIView
 
 from utilities.models import Country
 from utilities.serializers import Country_Serializer
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
 
 

@@ -9,8 +9,8 @@ from datetime import datetime
 from django.db import models
 
 # -----------------------------------------
-from utilities.views.utility.utility import Utility
-from utilities.views.utility.constant import Constant
+from utilities.util.utility import Utility
+from utilities.util.constant import Constant
 from api.models import Api
 
 # =========================================================================================
@@ -148,7 +148,7 @@ class Mailer(models.Model):
     status = models.IntegerField(
         choices=Constant.STATUS_CHOICE, default=Constant.PENDING
     )
-    reason = models.TextField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True, default=None)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
@@ -182,7 +182,7 @@ class Telegram(models.Model):
     status = models.IntegerField(
         choices=Constant.STATUS_CHOICE, default=Constant.PENDING
     )
-    reason = models.TextField(null=True, blank=True)
+    reason = models.TextField(null=True, blank=True, default=None)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
@@ -207,14 +207,8 @@ class UrlShort(models.Model):
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
 
-    key = models.CharField(max_length=31, unique=True)
-    model = models.IntegerField(
-        choices=Constant.MODEL_MODEL_CHOICE, default=Constant.REQUEST
-    )
-    type = models.IntegerField(
-        choices=Constant.MODEL_TYPE_CHOICE, default=Constant.ID
-    )
-    query = models.CharField(max_length=127)
+    key = models.CharField(max_length=31, unique=True, blank=True, null=True)
+    url = models.CharField(max_length=225)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
     last_update = models.PositiveBigIntegerField(blank=True, null=True)

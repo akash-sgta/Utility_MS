@@ -14,9 +14,9 @@ from utilities.serializers import (
     Mailer_Serializer,
     Telegram_Serializer,
 )
-from utilities.views.utility.mailerUtil import Mailer_Util
-from utilities.views.utility.telegramUtil import Telegram_Util
-from utilities.views.utility.constant import Constant
+from utilities.util.mailerUtil import Mailer_Util
+from utilities.util.telegramUtil import Telegram_Util
+from utilities.util.constant import Constant
 
 
 # ==============================================================================

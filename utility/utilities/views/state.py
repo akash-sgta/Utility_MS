@@ -21,7 +21,7 @@ from django.core.exceptions import FieldError
 
 from utilities.models import State
 from utilities.serializers import State_Serializer
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
 
 

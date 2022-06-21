@@ -12,8 +12,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from datetime import datetime
 
-from utilities.views.utility.utility import Utility
-from utilities.views.utility.constant import Constant
+from utilities.util.utility import Utility
+from utilities.util.constant import Constant
 
 
 # =========================================================================================

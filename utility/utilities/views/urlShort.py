@@ -19,8 +19,8 @@ from django.core.exceptions import FieldError
 
 # --------------------------------------------------
 
-from utilities.models import City
-from utilities.serializers import City_Serializer
+from utilities.models import UrlShort
+from utilities.serializers import UrlShort_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
 
@@ -32,29 +32,35 @@ from utility.views.authenticator import Authenticator
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
-class CityView(APIView):
+class UrlShortView(APIView):
     renderer_classes = [JSONRenderer]
     authentication_classes = [Authenticator]
 
     def __init__(self, query1=None, query2=None):
-        super(CityView, self).__init__()
+        super(UrlShortView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "country",
-            "name",
+            "key",
+            "url",
         )
         self.SR_KEYS = (
             "id",
+            "key",
             "search",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
         self.query1 = query1.lower() if query1 not in Constant.NULL else None
-        self.query2 = query2.lower() if query2 not in Constant.NULL else None
+        if self.query1 == self.SR_KEYS[2]:  # search
+            self.query2 = (
+                query2.lower() if query2 not in Constant.NULL else None
+            )
+        else:
+            self.query2 = query2 if query2 not in Constant.NULL else None
         return
 
     def _create_query(self, flag=True) -> str:
-        _return = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
+        query = f"sys={Constant.SETTINGS_SYSTEM}{Constant.COMA}"
         if self.query2 not in Constant.NULL:
             word = self.query2.split(Constant.COMA)
             for i in range(len(word)):
@@ -65,17 +71,19 @@ class CityView(APIView):
                 word[i][1] = word[i][1].strip()
                 if word[i][0] in self.DB_KEYS:
                     if flag:
-                        _return += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+                        query += f"{word[i][0]}__icontains{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
                     else:
-                        _return += f"{word[i][0]}__in{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
-        return _return
+                        query += f"{word[i][0]}{Constant.EQUAL2}'{word[i][1]}'{Constant.COMA}"
+        return query
 
 
-class CityView_asUser(CityView):
+class UrlShortView_asUser(UrlShortView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(CityView_asUser, self).__init__(query1=query1, query2=query2)
+        super(UrlShortView_asUser, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -89,12 +97,19 @@ class CityView_asUser(CityView):
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
-    def __read_specific(self) -> None:
+    def _read_specific(self) -> None:
         try:
-            city_ref = City.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
-        except City.DoesNotExist:
+            if self.query1 == self.SR_KEYS[0]:  # id
+                urlShort_ref = UrlShort.objects.get(
+                    sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
+                )
+            elif self.query1 == self.SR_KEYS[1]:  # key
+                urlShort_ref = UrlShort.objects.get(
+                    sys=Constant.SETTINGS_SYSTEM, key=self.query2
+                )
+            else:
+                raise UrlShort.DoesNotExist
+        except UrlShort.DoesNotExist as e:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -107,88 +122,20 @@ class CityView_asUser(CityView):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            city_ser = City_Serializer(city_ref, many=False).data
+            urlShort_ser = UrlShort_Serializer(urlShort_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(city_ser)
-            self.status_returned = status.HTTP_200_OK
-        return
-
-    def __read_all(self) -> None:
-        try:
-            city_ref = City.objects.all().order_by("id")
-            if len(city_ref) == 0:
-                raise City.DoesNotExist
-        except City.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
-            self.status_returned = status.HTTP_204_NO_CONTENT
-        else:
-            city_ser = City_Serializer(city_ref, many=True).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = city_ser
-            self.status_returned = status.HTTP_200_OK
-        return
-
-    def __read_search(self) -> None:
-        try:
-            try:
-                city_ref = eval(
-                    f'City.objects.filter({self._create_query()}).order_by("id")'
-                )
-            except NameError:
-                self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
-                self.status_returned = status.HTTP_400_BAD_REQUEST
-            except FieldError:
-                try:
-                    city_ref = eval(
-                        f'City.objects.filter({self._create_query(flag=False)}).order_by("id")'
-                    )
-                except NameError:
-                    self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
-                    self.status_returned = status.HTTP_400_BAD_REQUEST
-            if len(city_ref) == 0:
-                raise City.DoesNotExist
-        except City.DoesNotExist:
-            self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
-            self.status_returned = status.HTTP_204_NO_CONTENT
-        else:
-            city_ser = City_Serializer(city_ref, many=True).data
-            self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA] = city_ser
+            self.data_returned[Constant.DATA].append(urlShort_ser)
             self.status_returned = status.HTTP_200_OK
         return
 
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    self.__read_all()
-                else:
-                    self.__read_specific()
-            elif self.query1 == self.SR_KEYS[1]:  # search
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self.__read_search()
-            else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
+        if self.query1 not in self.SR_KEYS:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
-            self.status_returned = status.HTTP_400_BAD_REQUEST
-
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_URL
+            self.status_returned = status.HTTP_404_NOT_FOUND
+        else:
+            self._read_specific()
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -216,30 +163,32 @@ class CityView_asUser(CityView):
         return Response(data=self.data_returned, status=self.status_returned)
 
 
-class CityView_asAdmin(CityView_asUser):
+class UrlShortView_asAdmin(UrlShortView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(CityView_asAdmin, self).__init__(query1=query1, query2=query2)
+        super(UrlShortView_asAdmin, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
-        city_ser = City_Serializer(data=data)
-        if city_ser.is_valid():
+        urlShort_ser = UrlShort_Serializer(data=data)
+        if urlShort_ser.is_valid():
             try:
-                city_ser.save()
+                urlShort_ser.save()
             except Exception as e:
                 self.data_returned[Constant.STATUS] = False
                 self.data_returned[Constant.MESSAGE] = str(e)
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
             else:
-                city_ser = city_ser.data
+                urlShort_ser = urlShort_ser.data
                 self.data_returned[Constant.STATUS] = True
-                self.data_returned[Constant.DATA].append(city_ser)
+                self.data_returned[Constant.DATA].append(urlShort_ser)
                 self.status_returned = status.HTTP_201_CREATED
         else:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = city_ser.errors
+            self.data_returned[Constant.MESSAGE] = urlShort_ser.errors
             self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -249,18 +198,91 @@ class CityView_asAdmin(CityView_asUser):
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
+    def __read_all(self) -> None:
+        try:
+            urlShort_ref = UrlShort.objects.all().order_by("id")
+            if len(urlShort_ref) == 0:
+                raise UrlShort.DoesNotExist
+        except UrlShort.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        else:
+            urlShort_ser = UrlShort_Serializer(urlShort_ref, many=True).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = urlShort_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
+    def __read_search(self) -> None:
+        try:
+            try:
+                urlShort_ref = eval(
+                    f'UrlShort.objects.filter({self._create_query()}).order_by("id")'
+                )
+            except NameError:
+                self.data_returned[Constant.STATUS] = False
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
+                self.status_returned = status.HTTP_400_BAD_REQUEST
+            except FieldError:
+                try:
+                    urlShort_ref = eval(
+                        f'UrlShort.objects.filter({self._create_query(flag=False)}).order_by("id")'
+                    )
+                except NameError:
+                    self.data_returned[Constant.STATUS] = False
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
+                    self.status_returned = status.HTTP_400_BAD_REQUEST
+            if len(urlShort_ref) == 0:
+                raise UrlShort.DoesNotExist
+        except UrlShort.DoesNotExist:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
+            self.status_returned = status.HTTP_204_NO_CONTENT
+        else:
+            urlShort_ser = UrlShort_Serializer(urlShort_ref, many=True).data
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA] = urlShort_ser
+            self.status_returned = status.HTTP_200_OK
+        return
+
     def get(self, request, word: str, pk: str):
-        return super(CityView_asAdmin, self).get(
-            request=request, word=word, pk=pk
-        )
+        self.__init__(query1=word, query2=pk)
+        flag = True
+        if self.query1 in self.SR_KEYS:
+            if self.query1 in self.SR_KEYS[0:2]:  # id
+                if self.query2 in Constant.NULL:
+                    self.__read_all()
+                else:
+                    self._read_specific()
+            elif self.query1 == self.SR_KEYS[2]:  # search
+                if self.query2 in Constant.NULL:
+                    flag = False
+                else:
+                    self.__read_search()
+            else:
+                flag = False
+        else:
+            flag = False
+
+        if not flag:
+            self.data_returned[Constant.STATUS] = False
+            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.status_returned = status.HTTP_400_BAD_REQUEST
+
+        return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            city_ref = City.objects.get(
+            urlShort_ref = UrlShort.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except City.DoesNotExist:
+        except UrlShort.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -269,24 +291,24 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            city_ser = City_Serializer(
-                instance=city_ref, data=data, partial=True
+            urlShort_ser = UrlShort_Serializer(
+                instance=urlShort_ref, data=data, partial=True
             )
-            if city_ser.is_valid():
+            if urlShort_ser.is_valid():
                 try:
-                    city_ser.save()
+                    urlShort_ser.save()
                 except Exception as e:
                     self.data_returned[Constant.STATUS] = False
                     self.data_returned[Constant.MESSAGE] = str(e)
                     self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
                 else:
-                    city_ser = city_ser.data
+                    urlShort_ser = urlShort_ser.data
                     self.data_returned[Constant.STATUS] = True
-                    self.data_returned[Constant.DATA].append(city_ser)
+                    self.data_returned[Constant.DATA].append(urlShort_ser)
                     self.status_returned = status.HTTP_201_CREATED
             else:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = city_ser.errors
+                self.data_returned[Constant.MESSAGE] = urlShort_ser.errors
                 self.status_returned = status.HTTP_406_NOT_ACCEPTABLE
         return
 
@@ -303,10 +325,10 @@ class CityView_asAdmin(CityView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            city_ref = City.objects.get(
+            urlShort_ref = UrlShort.objects.get(
                 sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
             )
-        except City.DoesNotExist:
+        except UrlShort.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
@@ -315,10 +337,10 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            city_ser = City_Serializer(city_ref, many=False).data
-            city_ref.delete()
+            urlShort_ser = UrlShort_Serializer(urlShort_ref, many=False).data
+            urlShort_ref.delete()
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(city_ser)
+            self.data_returned[Constant.DATA].append(urlShort_ser)
             self.status_returned = status.HTTP_200_OK
         return
 

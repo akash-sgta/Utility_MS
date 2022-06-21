@@ -20,8 +20,8 @@ from rest_framework.views import APIView
 
 from utilities.models import Telegram
 from utilities.serializers import Telegram_Serializer
-from utilities.views.utility.constant import Constant
-from utilities.views.utility.batchJob import BatchJob, TGBot
+from utilities.util.constant import Constant
+from utilities.util.batchJob import BatchJob, TGBot
 from utility.views.authenticator import Authenticator
 
 # =========================================================================================
@@ -40,7 +40,7 @@ class TelegramView(APIView):
         super(TelegramView, self).__init__()
         self.DB_KEYS = (
             "id",
-            "subject",
+            "receiver",
         )
         self.SR_KEYS = (
             "id",

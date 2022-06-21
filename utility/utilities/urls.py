@@ -20,13 +20,21 @@ from utilities.views.city import (
     CityView_asUser,
     CityView_asAdmin,
 )
+from utilities.views.notification import (
+    NotificationView_asUser,
+    NotificationView_asAdmin,
+)
 from utilities.views.mailer import (
     MailerView_asUser,
     MailerView_asAdmin,
 )
-from utilities.views.notification import (
-    NotificationView_asUser,
-    NotificationView_asAdmin,
+from utilities.views.telegram import (
+    TelegramView_asUser,
+    TelegramView_asAdmin,
+)
+from utilities.views.urlShort import (
+    UrlShortView_asUser,
+    UrlShortView_asAdmin,
 )
 
 # =========================================================================================
@@ -39,6 +47,8 @@ ID = r"(id){1}"
 PK = r"[A-Za-z0-9_@,\s]*"
 WORD_2 = r"(search|id|trigger){1}"
 WORD_3 = r"(search|id|trigger|bot){1}"
+WORD_4 = r"(key|id){1}"
+WORD_5 = r"(key|id|search){1}"
 # --------------------------------------------------
 
 
@@ -80,6 +90,17 @@ urlpatterns = [
     ),
     # --------------------------------------------------
     re_path(
+        rf"u/notif/(?P<word>{ID})/(?P<pk>{PK})",
+        NotificationView_asUser.as_view(),
+        name="NOTIFICATION_AS_USER",
+    ),
+    re_path(
+        rf"a/notif/(?P<word>{WORD})/(?P<pk>{PK})",
+        NotificationView_asAdmin.as_view(),
+        name="NOTIFICATION_AS_ADMIN",
+    ),
+    # --------------------------------------------------
+    re_path(
         rf"u/mailer/(?P<word>{ID})/(?P<pk>{PK})",
         MailerView_asUser.as_view(),
         name="MAILER_AS_USER",
@@ -91,13 +112,24 @@ urlpatterns = [
     ),
     # --------------------------------------------------
     re_path(
-        rf"u/notif/(?P<word>{ID})/(?P<pk>{PK})",
-        NotificationView_asUser.as_view(),
-        name="NOTIFICATION_AS_USER",
+        rf"u/tg/(?P<word>{ID})/(?P<pk>{PK})",
+        TelegramView_asUser.as_view(),
+        name="TG_AS_USER",
     ),
     re_path(
-        rf"a/notif/(?P<word>{WORD_3})/(?P<pk>{PK})",
-        NotificationView_asAdmin.as_view(),
-        name="NOTIFICATION_AS_ADMIN",
+        rf"a/tg/(?P<word>{WORD_3})/(?P<pk>{PK})",
+        TelegramView_asAdmin.as_view(),
+        name="TG_AS_ADMIN",
+    ),
+    # --------------------------------------------------
+    re_path(
+        rf"u/url/(?P<word>{WORD_4})/(?P<pk>{PK})",
+        UrlShortView_asUser.as_view(),
+        name="URLSHORT_AS_USER",
+    ),
+    re_path(
+        rf"a/url/(?P<word>{WORD_5})/(?P<pk>{PK})",
+        UrlShortView_asAdmin.as_view(),
+        name="URLSHORT_AS_ADMIN",
     ),
 ]

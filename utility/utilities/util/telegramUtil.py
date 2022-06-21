@@ -8,9 +8,10 @@
 from time import sleep
 from telegram.ext import *
 from telegram import *
+from threading import Thread
 
 # --------------------------------------------------
-from utilities.views.utility.constant import Constant
+from utilities.util.constant import Constant
 
 # ==============================================================================
 #                                       CONSTANT
@@ -96,4 +97,11 @@ class Telegram_Util(Bot):
             print(f"ERROR : {str(e)}")
         else:
             print("POLLING STOPPED...")
+        return
+
+
+class Telegram_Thread(Thread):
+    def run(self, chat_id: list, message: str) -> None:
+        for id in chat_id:
+            Telegram_Util().send(chat_id=id, message=message)
         return
