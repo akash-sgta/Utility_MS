@@ -47,17 +47,3 @@ class Mailer_Util(object):
             return str(e)
         else:
             return None
-
-
-class Mailer_Thread(Thread):
-    def run(
-        self, receiver: list, cc: list, bcc: list, subject: str, body: str
-    ) -> None:
-        Mailer_Util().send(
-            receiver=receiver,
-            cc=cc,
-            bcc=bcc,
-            subject=subject.upper(),
-            message=body,
-        )
-        return

@@ -11,6 +11,7 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
+from unicodedata import name
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
@@ -27,6 +28,7 @@ from utility.views.authenticator import Authenticator
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
+THREAD_NAME = "MAIL_TRG"
 
 # =========================================================================================
 #                                       CODE
@@ -42,6 +44,7 @@ class MailerView(APIView):
             "receiver",
             "cc",
             "bcc",
+            "status",
         )
         self.SR_KEYS = (
             "id",
@@ -222,41 +225,47 @@ class MailerView_asAdmin(MailerView_asUser):
             self.status_returned = status.HTTP_200_OK
         return
 
+    def __mailer_trigger(self, api: int) -> None:
+        try:
+            status_id = int(self.query2)
+        except Exception as e:
+            status_id = Constant.PENDING
+        finally:
+            self.query2 = f"statuseq{status_id}"
+            self.__read_search()
+            # ---------------------------------
+            batch_thread = BatchJob(
+                tname=THREAD_NAME, mailer=True, api=api, status=status_id
+            )
+            batch_thread.start()
+        return
+
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
-        flag = True
-        if self.query1 in self.SR_KEYS:
-            if self.query1 == self.SR_KEYS[0]:  # id
-                if self.query2 in Constant.NULL:
-                    self.__read_all()
+        try:
+            if self.query1 in self.SR_KEYS:
+                if self.query1 == self.SR_KEYS[0]:  # id
+                    if self.query2 in Constant.NULL:
+                        self.__read_all()
+                    else:
+                        self.__read_specific()
+                elif self.query1 == self.SR_KEYS[1]:  # search
+                    if self.query2 in Constant.NULL:
+                        raise Exception(Constant.INVALID_SPARAMS)
+                    else:
+                        self.__read_search()
+                elif self.query1 == self.SR_KEYS[2]:  # trigger
+                    if int(self.query2) == Constant.START:
+                        self.__mailer_trigger(api=request.user.id)
+                    else:
+                        raise Exception(Constant.INVALID_SPARAMS)
                 else:
-                    self.__read_specific()
-            elif self.query1 == self.SR_KEYS[1]:  # search
-                if self.query2 in Constant.NULL:
-                    flag = False
-                else:
-                    self.__read_search()
-            elif self.query1 == self.SR_KEYS[2]:  # trigger
-                try:
-                    _status = int(self.query2)
-                except Exception as e:
-                    _status = Constant.PENDING
-                finally:
-                    self.query2 = f"statuseq{_status}"
-                    self.__read_search()
-                    # ---------------------------------
-                    batch_thread = BatchJob(
-                        mailer=True, api=1, status=_status
-                    )
-                    batch_thread.start()
+                    raise Exception(Constant.INVALID_SPARAMS)
             else:
-                flag = False
-        else:
-            flag = False
-
-        if not flag:
+                raise Exception(Constant.INVALID_SPARAMS)
+        except Exception as e:
             self.data_returned[Constant.STATUS] = False
-            self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+            self.data_returned[Constant.MESSAGE] = str(e)
             self.status_returned = status.HTTP_400_BAD_REQUEST
 
         return Response(data=self.data_returned, status=self.status_returned)

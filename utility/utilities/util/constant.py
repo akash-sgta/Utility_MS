@@ -71,6 +71,9 @@ class Constant(object):
     AUTHORIZATION = "Authorization"
     BEARER = "Bearer"
     JWT = "Jwt"
+    START = 0
+    CHECK = 1
+    STOP = 2
     # --------------------------------------------------
     #               VALIDATOR
     # --------------------------------------------------
@@ -86,7 +89,7 @@ class Constant(object):
     RE_EMAIL = compile(
         pattern=r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$"
     )
-    RE_TG = compile(pattern=r"^[0-9]+$")
+    RE_TELEGRAM = compile(r"^\d+$")
     REGEX_INTEGER = RegexValidator(regex=r"\d+", message="Should be numbers")
     # --------------------------------------------------
     #               CHOICES + SCHEMAS

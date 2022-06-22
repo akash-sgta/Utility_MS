@@ -98,10 +98,3 @@ class Telegram_Util(Bot):
         else:
             print("POLLING STOPPED...")
         return
-
-
-class Telegram_Thread(Thread):
-    def run(self, chat_id: list, message: str) -> None:
-        for id in chat_id:
-            Telegram_Util().send(chat_id=id, message=message)
-        return

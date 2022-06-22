@@ -27,8 +27,9 @@ from utility.views.authenticator import Authenticator
 # =========================================================================================
 #                                       CONSTANT
 # =========================================================================================
-BOT_THREAD = TGBot()
-
+THREAD_NAME_TRG = "TG_TRG"
+THREAD_NAME_BOT = "TG_BOT"
+TG_BOT_THREAD = TGBot(tname=THREAD_NAME_BOT)
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
@@ -41,6 +42,7 @@ class TelegramView(APIView):
         self.DB_KEYS = (
             "id",
             "receiver",
+            "status",
         )
         self.SR_KEYS = (
             "id",
@@ -226,6 +228,54 @@ class TelegramView_asAdmin(TelegramView_asUser):
             self.status_returned = status.HTTP_200_OK
         return
 
+    def __tg_trigger(self, api: int) -> None:
+        try:
+            status_id = int(self.query2)
+        except Exception as e:
+            status_id = Constant.PENDING
+        finally:
+            self.query2 = f"statuseq{status_id}"
+            self.__read_search()
+            # ---------------------------------
+            batch_thread = BatchJob(
+                tname=THREAD_NAME_TRG,
+                mailer=False,
+                api=api,
+                status=status_id,
+            )
+            batch_thread.start()
+            self.status_returned = status.HTTP_202_ACCEPTED
+        return
+
+    def __tg_bot(
+        self, start: bool = False, check: bool = False, stop: bool = False
+    ) -> None:
+        self.status_returned = status.HTTP_202_ACCEPTED
+        if start:
+            TG_BOT_THREAD.start()
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(
+                {Constant.STATUS: "Started"},
+            )
+        elif check:
+            self.data_returned[Constant.STATUS] = True
+            if TG_BOT_THREAD.check():
+                self.data_returned[Constant.DATA].append(
+                    {Constant.STATUS: "Running"},
+                )
+            else:
+                self.data_returned[Constant.DATA].append(
+                    {Constant.STATUS: "Not Running"},
+                )
+
+        elif stop:
+            TG_BOT_THREAD.stop()
+            self.data_returned[Constant.STATUS] = True
+            self.data_returned[Constant.DATA].append(
+                {Constant.STATUS: "Stopped"},
+            )
+        return
+
     def get(self, request, word: str, pk: str):
         self.__init__(query1=word, query2=pk)
         try:
@@ -242,24 +292,22 @@ class TelegramView_asAdmin(TelegramView_asUser):
                         self.__read_search()
                 elif self.query1 == self.SR_KEYS[2]:  # trigger
                     try:
-                        _status = int(self.query2)
-                    except Exception as e:
-                        _status = Constant.PENDING
-                    finally:
-                        self.query2 = f"statuseq{_status}"
-                        self.__read_search()
-                        # ---------------------------------
-                        batch_thread = BatchJob(
-                            mailer=False, api=1, status=_status
-                        )
-                        batch_thread.start()
-                    self.status_returned = status.HTTP_202_ACCEPTED
+                        if int(self.query2) == Constant.START:
+                            self.__tg_trigger(api=request.user.id)
+                    except TypeError:
+                        raise Exception(Constant.INVALID_SPARAMS)
                 elif self.query1 == self.SR_KEYS[3]:  # bot
-                    if not BOT_THREAD.is_alive():
-                        BOT_THREAD.start()
-                    else:
-                        BOT_THREAD.stop()
-                    self.status_returned = status.HTTP_202_ACCEPTED
+                    try:
+                        if int(self.query2) == Constant.START:
+                            self.__tg_bot(start=True)
+                        elif int(self.query2) == Constant.CHECK:
+                            self.__tg_bot(check=True)
+                        elif int(self.query2) == Constant.STOP:
+                            self.__tg_bot(stop=True)
+                        else:
+                            raise Exception(Constant.INVALID_SPARAMS)
+                    except TypeError:
+                        raise Exception(Constant.INVALID_SPARAMS)
                 else:
                     raise Exception(Constant.INVALID_SPARAMS)
             else:

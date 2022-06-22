@@ -285,7 +285,7 @@ class Utility(object):
         users = users.split(Constant.COMA)
         for i in range(len(users)):
             users[i] = users[i].strip()
-            if not Constant.RE_TG.fullmatch(string=users[i]):
+            if not Constant.RE_TELEGRAM.fullmatch(string=users[i]):
                 users[i] = None
         try:
             users.remove(None)

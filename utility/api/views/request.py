@@ -16,6 +16,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.core.exceptions import FieldError
+from django.urls import reverse
 
 # --------------------------------------------------
 
@@ -24,10 +25,9 @@ from utilities.models import Mailer, Telegram
 from api.serializers import Request_Serializer
 from utilities.views.notification import NotificationView_asAdmin
 from utilities.views.urlShort import UrlShortView_asAdmin
-from utilities.util.mailerUtil import Mailer_Thread
-from utilities.util.telegramUtil import Telegram_Thread
 from utilities.util.constant import Constant
 from utilities.util.utility import Utility
+from utilities.util.batchJob import BatchJob
 
 # =========================================================================================
 #                                       CONSTANT
@@ -47,7 +47,8 @@ BODY_FOOTER = """
 ==========[      Please do not reply      ]==========
 """
 STATUS = dict(map(reversed, Constant.STATUS_CHOICE))
-
+THREAD_M = "MAIL_TRG_REQ"
+THREAD_T = "TG_TRG_REQ"
 # =========================================================================================
 #                                       CODE
 # =========================================================================================
@@ -122,7 +123,6 @@ class RequestView_asUser(RequestView):
         # ------------------------------------
         # Post Notification
         # ------------------------------------
-        request_tmp.data.clear()
         notification_data = Constant.NOTIFICATION_DICT
         notification_data[Constant.NOTIFICATION_SUBJECT] = SUBJECT
         body = f"""
@@ -133,7 +133,41 @@ class RequestView_asUser(RequestView):
         DATE        : {Utility.msToStr(self.data_returned[Constant.DATA][0]["created_on"])}
         TIMEZONE    : {Constant.SETTINGS_TIMEZONE}
         """
-        body = f"{BODY_HEADER}\n{BODY_MAIN}\n{body}\n{BODY_FOOTER}"
+        url_txt = Constant.BLANK_STR
+        try:
+            url_data = {
+                "url": reverse(
+                    viewname="REQUEST_AS_ADMIN",
+                    kwargs={
+                        "word": "id",
+                        "pk": f'{request_tmp.data[Constant.DATA][0]["id"]}',
+                    },
+                ),
+            }
+        except Exception as e:
+            pass
+        else:
+            request_tmp.data.clear()
+            request_tmp.data.update(url_data)
+            url_post = UrlShortView_asAdmin().post(
+                request=request_tmp,
+                word=Constant.ID,
+                pk=Constant.BLANK_STR,
+            )
+            if url_post[Constant.STATUS]:
+                try:
+                    rev_url = reverse(
+                        viewname="URLSHORT_AS_ADMIN",
+                        kwargs={
+                            "word": "key",
+                            "pk": f'{url_post[Constant.DATA][0]["key"]}',
+                        },
+                    )
+                except Exception as e:
+                    pass
+                else:
+                    url_txt = f"\nLINK : {rev_url}"
+        body = f"{BODY_HEADER}\n{BODY_MAIN}\n{body}{url_txt}\n{BODY_FOOTER}"
         notification_data[Constant.NOTIFICATION_BODY] = body
         notification_data[Constant.NOTIFICATION_MAILER][
             Constant.NOTIFICATION_RECEIVER
@@ -141,6 +175,7 @@ class RequestView_asUser(RequestView):
         notification_data[Constant.NOTIFICATION_TELEGRAM][
             Constant.NOTIFICATION_RECEIVER
         ] = f'{self.data_returned[Constant.DATA][0]["tg_id"]}'
+        request_tmp.data.clear()
         request_tmp.data.update(notification_data)
         notif = NotificationView_asAdmin().post(
             request=request_tmp,
@@ -149,21 +184,10 @@ class RequestView_asUser(RequestView):
         )
         return_stat = notif.data[Constant.STATUS]
         if return_stat:
+            notif_id = notif.data[Constant.DATA][0]["id"]
             # ------------------------------------
             # Direct Mail through Thread
             # ------------------------------------
-            body = notif.data[Constant.DATA][0]["body"]
-            # FIX : START - Add UrlShort reverse reference here
-            request_tmp.data.clear()
-            url_data = {}
-            request_tmp.data.update(url_data)
-            url = UrlShortView_asAdmin().post(
-                request=request_tmp,
-                word=Constant.ID,
-                pk=Constant.BLANK_STR,
-            )
-            body += f"\n\n\nLINK : TODO"
-            # FIX : END - Add UrlShort reverse reference here
             if (
                 notif.data[Constant.DATA][0][Constant.NOTIFICATION_MAILER]
                 is not None
@@ -172,21 +196,15 @@ class RequestView_asUser(RequestView):
                     Constant.NOTIFICATION_MAILER
                 ][Constant.ID]
                 try:
-                    mailer_ref = Mailer.objects.get(
-                        sys=Constant.SETTINGS_SYSTEM,
-                        id=int(mailer_id),
-                    )
-                except Mailer.DoesNotExist:
+                    BatchJob(
+                        tname=THREAD_M,
+                        mailer=True,
+                        api=request.user.id,
+                        obj_id=(notif_id, mailer_id),
+                    ).start()
+                except Exception as e:
+                    print(f"ERROR : {str(e)}")
                     pass  # TODO : Nothing to do at this point
-                else:
-                    Mailer_Thread().run(
-                        receiver=mailer_ref.receiver.split(Constant.COMA),
-                        cc=mailer_ref.cc.split(Constant.COMA),
-                        bcc=mailer_ref.bcc.split(Constant.COMA),
-                        subject=notif.data[Constant.DATA][0]["subject"],
-                        body=body,
-                    )
-                    del mailer_ref
             if (
                 notif.data[Constant.DATA][0][Constant.NOTIFICATION_TELEGRAM]
                 is not None
@@ -195,20 +213,15 @@ class RequestView_asUser(RequestView):
                     Constant.NOTIFICATION_TELEGRAM
                 ][Constant.ID]
                 try:
-                    telegram_ref = Telegram.objects.get(
-                        sys=Constant.SETTINGS_SYSTEM,
-                        id=telegram_id,
-                    )
-                except Telegram.DoesNotExist:
+                    BatchJob(
+                        tname=THREAD_T,
+                        mailer=False,
+                        api=request.user.id,
+                        obj_id=(notif_id, telegram_id),
+                    ).start()
+                except Exception as e:
+                    print(f"ERROR : {str(e)}")
                     pass  # TODO : Nothing to do at this point
-                else:
-                    message = f'{notif.data[Constant.DATA][0]["subject"]}'
-                    message += f"\n\n\n{body}"
-                    Telegram_Thread().run(
-                        chat_id=telegram_ref.receiver.split(Constant.COMA),
-                        message=message,
-                    )
-                    del telegram_ref
         return return_stat
 
     def post(self, request, word: str, pk: str):

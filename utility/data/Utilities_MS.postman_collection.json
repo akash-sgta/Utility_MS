@@ -4120,13 +4120,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{local8100}}{{utilities}}{{asUser}}mailer/trigger/",
+											"raw": "{{local8100}}{{utilities}}{{asUser}}mailer/trigger/0",
 											"host": [
 												"{{local8100}}{{utilities}}{{asUser}}mailer"
 											],
 											"path": [
 												"trigger",
-												""
+												"0"
 											]
 										}
 									},
@@ -4734,17 +4734,146 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{local8100}}{{utilities}}{{asAdmin}}mailer/trigger/",
+											"raw": "{{local8100}}{{utilities}}{{asAdmin}}mailer/trigger/0",
 											"host": [
 												"{{local8100}}{{utilities}}{{asAdmin}}mailer"
 											],
 											"path": [
 												"trigger",
-												""
+												"0"
 											]
 										}
 									},
-									"response": []
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}mailer/trigger/0",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"trigger",
+														"0"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 13:17:05 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "562"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 17,\n            \"notification\": 38,\n            \"receiver\": \"ALPHATRIONAKASH@GMAIL.COM,TEST@TEST.COM,TEST@TEST.COM,TEST@TEST.COM\",\n            \"cc\": \"ALPHATRIONAKASH@GMAIL.COM,TEST@TEST.COM,TEST@TEST.COM\",\n            \"bcc\": \"ALPHATRIONAKASH@GMAIL.COM,TEST@TEST.COM,TEST@TEST.COM\",\n            \"status\": 0,\n            \"reason\": \"---Notification Foreign Key not present---\\r\\n\\r\\n\\r\\nField 'id' expected a number but got <Notification: 38-TEST MAIL>.\\r\\n---Notification Foreign Key not present---\\r\\nInvalid Foreign key\",\n            \"created_on\": 1655835820050,\n            \"last_update\": 1655903819737\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid false",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}mailer/trigger/0",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}mailer"
+													],
+													"path": [
+														"trigger",
+														"0"
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 13:17:25 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "81"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"NO CONTENT FOUND\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
 								},
 								{
 									"name": "read specific",
@@ -6048,22 +6177,426 @@
 									]
 								},
 								{
+									"name": "bot",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/bot/2",
+											"host": [
+												"{{local8100}}{{utilities}}{{asAdmin}}tg"
+											],
+											"path": [
+												"bot",
+												"2"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid start",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/bot/0",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"bot",
+														"0"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:32:52 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "84"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"STATUS\": \"Started\"\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid check true",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/bot/1",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"bot",
+														"1"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:37:49 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "84"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"STATUS\": \"Running\"\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid check false",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/bot/1",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"bot",
+														"1"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:45:21 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "88"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"STATUS\": \"Not Running\"\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid stop",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/bot/2",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"bot",
+														"2"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:55:21 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "84"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"STATUS\": \"Stopped\"\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
 									"name": "trigger",
 									"request": {
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/trigger/",
+											"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/trigger/0",
 											"host": [
 												"{{local8100}}{{utilities}}{{asAdmin}}tg"
 											],
 											"path": [
 												"trigger",
-												""
+												"0"
 											]
 										}
 									},
-									"response": []
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/trigger/0",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"trigger",
+														"0"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:08:19 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "255"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 5,\n            \"notification\": 38,\n            \"receiver\": \"123456,654321\",\n            \"status\": 0,\n            \"reason\": \"[('123456', 'Chat not found'), ('654321', 'Chat not found')]\",\n            \"created_on\": 1655835820066,\n            \"last_update\": 1655906896033\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid false",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/trigger/0",
+													"host": [
+														"{{local8100}}{{utilities}}{{asAdmin}}tg"
+													],
+													"path": [
+														"trigger",
+														"0"
+													]
+												}
+											},
+											"status": "Accepted",
+											"code": 202,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Wed, 22 Jun 2022 14:08:37 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "80"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [],\n    \"MESSAGE\": \"NO CONTENT FOUND\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
 								},
 								{
 									"name": "read specific",
@@ -6071,13 +6604,13 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/id/2",
+											"raw": "{{local8100}}{{utilities}}{{asAdmin}}tg/id/7",
 											"host": [
 												"{{local8100}}{{utilities}}{{asAdmin}}tg"
 											],
 											"path": [
 												"id",
-												"2"
+												"7"
 											]
 										}
 									},
