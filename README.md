@@ -11,3 +11,5 @@ Steps to migrate changes (Windows):
 python manage.py makemigrations api utilities
 python manage.py migrate
 ```
+
+![SCHEMA](http://url/to/img.png)
