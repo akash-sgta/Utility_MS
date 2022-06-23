@@ -30,6 +30,13 @@ from data.key import *
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 try:
+    os.mkdir(os.path.join(BASE_DIR, "staticfiles"))
+    os.mkdir(os.path.join(BASE_DIR, "data"))
+except Exception as e:
+    print(f"ERROR : {str(e)}")
+DB_PATH = os.path.join(BASE_DIR, "data", "db.sqlite3")
+
+try:
     with open(os.path.join(BASE_DIR, "data", "keys.json"), "r") as secret:
         json_secret = json.load(secret)
         if not validateKey(json_secret=json_secret):
@@ -44,15 +51,14 @@ try:
         EMAIL_HOST_PORT = json_secret[K_ADMIN][K_EMAIL][K_HOST_PORT]
         TELEGRAM_NAME = json_secret[K_ADMIN][K_TELEGRAM][K_NAME]
         TELEGRAM_KEY = json_secret[K_ADMIN][K_TELEGRAM][K_KEY]
+        DATABASES = {"default": json_secret[K_SYSTEM][K_DATABASES]["default"]}
+        if DATABASES["default"]["name"] is None:
+            DATABASES["default"]["name"] = DB_PATH
         del json_secret
 except Exception as e:
     print(f"ERROR : {str(e)}")
     exit()
 
-try:
-    os.mkdir(os.path.join(BASE_DIR, "staticfiles"))
-except Exception as e:
-    print(f"ERROR : {str(e)}")
 
 # Application definition
 
@@ -101,17 +107,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "utility.wsgi.application"
-
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DB_PATH = os.path.join(BASE_DIR, "data", "db.sqlite3")
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": DB_PATH,
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

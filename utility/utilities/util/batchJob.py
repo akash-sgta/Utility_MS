@@ -60,13 +60,17 @@ class BatchJob(Thread):
 
     def _mailer(self) -> bool:
         try:
-            mailer_ref = Mailer.objects.filter(
-                sys=Constant.SETTINGS_SYSTEM,
-                status=self.status,
-            )
-            if self.obj_id is not None:  # Extra filter for solo post
-                mailer_ref = mailer_ref.filter(
-                    notification_id=self.obj_id[0], id=self.obj_id[1]
+            if self.obj_id is None:  # Extra filter for solo post
+                mailer_ref = Mailer.objects.filter(
+                    sys=Constant.SETTINGS_SYSTEM,
+                    status=self.status,
+                )
+            else:
+                mailer_ref = Mailer.objects.filter(
+                    sys=Constant.SETTINGS_SYSTEM,
+                    status=self.status,
+                    notification_id=self.obj_id[0],
+                    id=self.obj_id[1],
                 )
             if len(mailer_ref) == 0:
                 return True
@@ -124,13 +128,17 @@ class BatchJob(Thread):
 
     def _tg(self) -> bool:
         try:
-            tg_ref = Telegram.objects.filter(
-                sys=Constant.SETTINGS_SYSTEM,
-                status=self.status,
-            )
-            if self.obj_id is not None:  # Extra filter for solo post
-                tg_ref = tg_ref.filter(
-                    notification_id=self.obj_id[0], id=self.obj_id[1]
+            if self.obj_id is None:  # Extra filter for solo post
+                tg_ref = Telegram.objects.filter(
+                    sys=Constant.SETTINGS_SYSTEM,
+                    status=self.status,
+                )
+            else:
+                tg_ref = Telegram.objects.filter(
+                    sys=Constant.SETTINGS_SYSTEM,
+                    status=self.status,
+                    notification_id=self.obj_id[0],
+                    id=self.obj_id[1],
                 )
             if len(tg_ref) == 0:
                 return True

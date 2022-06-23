@@ -33,8 +33,8 @@ from utility.views.authenticator import Authenticator
 #                                       CODE
 # =========================================================================================
 class UrlShortView(APIView):
-    renderer_classes = [JSONRenderer]
     authentication_classes = [Authenticator]
+    renderer_classes = [JSONRenderer]
 
     def __init__(self, query1=None, query2=None):
         super(UrlShortView, self).__init__()
@@ -124,8 +124,9 @@ class UrlShortView_asUser(UrlShortView):
         else:
             urlShort_ser = UrlShort_Serializer(urlShort_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            self.data_returned[Constant.DATA].append(urlShort_ser)
-            self.status_returned = status.HTTP_200_OK
+            # self.data_returned[Constant.DATA].append(urlShort_ser)
+            self.data_returned[Constant.DATA].append(urlShort_ser["url"])
+            self.status_returned = status.HTTP_302_FOUND
         return
 
     def get(self, request, word: str, pk: str):

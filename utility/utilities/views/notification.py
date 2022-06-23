@@ -48,8 +48,6 @@ class NotificationView(APIView):
         self.SR_KEYS = (
             "id",
             "search",
-            "trigger",
-            "bot",
         )
         self.data_returned = deepcopy(Constant.RETURN_JSON)
         self.status_returned = status.HTTP_400_BAD_REQUEST
@@ -334,26 +332,6 @@ class NotificationView_asAdmin(NotificationView_asUser):
                         raise Exception(Constant.INVALID_SPARAMS)
                     else:
                         self.__read_search()
-                elif self.query1 == self.SR_KEYS[2]:  # trigger
-                    try:
-                        _status = int(self.query2)
-                    except Exception as e:
-                        _status = Constant.PENDING
-                    finally:
-                        self.query2 = f"statuseq{_status}"
-                        self.__read_search()
-                        # ---------------------------------
-                        batch_thread = BatchJob(
-                            mailer=False, api=1, status=_status
-                        )
-                        batch_thread.start()
-                    self.status_returned = status.HTTP_202_ACCEPTED
-                elif self.query1 == self.SR_KEYS[3]:  # bot
-                    if not BOT_THREAD.is_alive():
-                        BOT_THREAD.start()
-                    else:
-                        BOT_THREAD.stop()
-                    self.status_returned = status.HTTP_202_ACCEPTED
                 else:
                     raise Exception(Constant.INVALID_SPARAMS)
             else:

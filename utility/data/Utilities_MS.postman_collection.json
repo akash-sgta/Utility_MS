@@ -10073,6 +10073,1752 @@
 									]
 								}
 							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:49:11 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1233"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 28,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655988931258,\n            \"last_update\": 1655988931258\n        },\n        {\n            \"id\": 29,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989515675,\n            \"last_update\": 1655989515675\n        },\n        {\n            \"id\": 30,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989551551,\n            \"last_update\": 1655989551551\n        },\n        {\n            \"id\": 31,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989619429,\n            \"last_update\": 1655989619429\n        },\n        {\n            \"id\": 32,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989880817,\n            \"last_update\": 1655989880817\n        },\n        {\n            \"id\": 33,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655990140032,\n            \"last_update\": 1655990140032\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/28",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"id",
+												"28"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid false",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/25",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														"25"
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:49:42 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "90"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"INVALID SEARCH PARAMETERS\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid true",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/28",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														"28"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:50:03 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "258"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 28,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655988931258,\n            \"last_update\": 1655988931258\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/search/emaileqalpha",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"search",
+												"emaileqalpha"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid false",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/search/emaileqtest@test.com",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"search",
+														"emaileqtest@test.com"
+													]
+												}
+											},
+											"status": "No Content",
+											"code": 204,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:50:38 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "81"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"NO CONTENT FOUND\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										},
+										{
+											"name": "valid true",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/search/emaileqalpha",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"search",
+														"emaileqalpha"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:50:55 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "1233"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 28,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655988931258,\n            \"last_update\": 1655988931258\n        },\n        {\n            \"id\": 29,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989515675,\n            \"last_update\": 1655989515675\n        },\n        {\n            \"id\": 30,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989551551,\n            \"last_update\": 1655989551551\n        },\n        {\n            \"id\": 31,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989619429,\n            \"last_update\": 1655989619429\n        },\n        {\n            \"id\": 32,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655989880817,\n            \"last_update\": 1655989880817\n        },\n        {\n            \"id\": 33,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655990140032,\n            \"last_update\": 1655990140032\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:51:42 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "258"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 34,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 0,\n            \"reason\": \"I want big booty chicks\",\n            \"created_on\": 1655992295424,\n            \"last_update\": 1655992295424\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"status\":2\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/34",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"id",
+												"34"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"status\":2\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/34",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														"34"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:53:30 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "263"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 34,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 2,\n            \"reason\": \"I want big booty chicks Ahhh\",\n            \"created_on\": 1655992295424,\n            \"last_update\": 1655992410104\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/34",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}request"
+											],
+											"path": [
+												"id",
+												"34"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}request/id/34",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}request"
+													],
+													"path": [
+														"id",
+														"34"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 13:53:48 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin, Cookie"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "263"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 34,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"status\": 2,\n            \"reason\": \"I want big booty chicks Ahhh\",\n            \"created_on\": 1655992295424,\n            \"last_update\": 1655992410104\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "[MDL] Api",
+					"item": [
+						{
+							"name": "USER",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "Method Not Allowed",
+											"code": 405,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:00:57 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "83"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"METHOD NOT ALLOWED\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"status": "Method Not Allowed",
+											"code": 405,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:02:56 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "83"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"METHOD NOT ALLOWED\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/search/emaileqtest@test.com",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"search",
+												"emaileqtest@test.com"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/search/emaileqtest@test.com",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"search",
+														"emaileqtest@test.com"
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "html",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:03:09 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/html"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "3583"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\">\n        <title>Page not found at /api/u/api/search/emaileqtest@test.com</title>\n        <meta name=\"robots\" content=\"NONE,NOARCHIVE\">\n        <style type=\"text/css\">\n    html * { padding:0; margin:0; }\n    body * { padding:10px 20px; }\n    body * * { padding:0; }\n    body { font:small sans-serif; background:#eee; color:#000; }\n    body>div { border-bottom:1px solid #ddd; }\n    h1 { font-weight:normal; margin-bottom:.4em; }\n    h1 span { font-size:60%; color:#666; font-weight:normal; }\n    table { border:none; border-collapse: collapse; width:100%; }\n    td, th { vertical-align:top; padding:2px 3px; }\n    th { width:12em; text-align:right; color:#666; padding-right:.5em; }\n    #info { background:#f6f6f6; }\n    #info ol { margin: 0.5em 4em; }\n    #info ol li { font-family: monospace; }\n    #summary { background: #ffc; }\n    #explanation { background:#eee; border-bottom: 0px none; }\n    pre.exception_value { font-family: sans-serif; color: #575757; font-size: 1.5em; margin: 10px 0 10px 0; }\n  </style>\n    </head>\n    <body>\n        <div id=\"summary\">\n            <h1>Page not found \n                <span>(404)</span>\n            </h1>\n            <table class=\"meta\">\n                <tr>\n                    <th>Request Method:</th>\n                    <td>GET</td>\n                </tr>\n                <tr>\n                    <th>Request URL:</th>\n                    <td>http://127.0.0.1:8100/api/u/api/search/emaileqtest@test.com</td>\n                </tr>\n            </table>\n        </div>\n        <div id=\"info\">\n            <p>\n      Using the URLconf defined in \n                <code>utility.urls</code>,\n      Django tried these URL patterns, in this order:\n            </p>\n            <ol>\n                <li>\n            \n                ^django-admin/\n                \n            \n          </li>\n                <li>\n            \n                ^checkserver/\n                [name='CHECK_SERVER_STATUS']\n            \n          </li>\n                <li>\n            \n                ^token/(?P&lt;word&gt;(enc){0,1})/(?P&lt;pk&gt;(1|2){1})\n                [name='TOKEN']\n            \n          </li>\n                <li>\n            \n                ^utilities/\n                \n            \n          </li>\n                <li>\n            \n                ^api/\n                \n            \n                u/request/(?P&lt;word&gt;(id){1})/(?P&lt;pk&gt;[A-Za-z0-9_@,\\s]*)\n                [name='REQUEST_AS_USER']\n            \n          </li>\n                <li>\n            \n                ^api/\n                \n            \n                a/request/(?P&lt;word&gt;(search|id){1})/(?P&lt;pk&gt;[A-Za-z0-9_@,\\s]*)\n                [name='REQUEST_AS_ADMIN']\n            \n          </li>\n                <li>\n            \n                ^api/\n                \n            \n                u/api/(?P&lt;word&gt;(id){1})/(?P&lt;pk&gt;[A-Za-z0-9_@,\\s]*)\n                [name='API_AS_USER']\n            \n          </li>\n                <li>\n            \n                ^api/\n                \n            \n                a/api/(?P&lt;word&gt;(search|id){1})/(?P&lt;pk&gt;[A-Za-z0-9_@,\\s]*)\n                [name='API_AS_ADMIN']\n            \n          </li>\n            </ol>\n            <p>\n        \n          The current path, \n                <code>api/u/api/search/emaileqtest@test.com</code>,\n        \n        didn’t match any of these.\n            </p>\n        </div>\n        <div id=\"explanation\">\n            <p>\n      You’re seeing this error because you have \n                <code>DEBUG = True</code> in\n      your Django settings file. Change that to\n                <code>False</code>, and Django\n      will display a standard 404 page.\n            </p>\n        </div>\n    </body>\n</html>"
+										}
+									]
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"name\":\"AHH UHH\",\n    \"direction\" : 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"name\":\"AHH UHH\",\n    \"direction\" : 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "Method Not Allowed",
+											"code": 405,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:01:50 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "83"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"METHOD NOT ALLOWED\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"69\",\n    \"phone_no\": \"9874563210\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"69\",\n    \"phone_no\": \"9874563210\",\n    \"tg_id\": null,\n    \"reason\":\"I want big booty chicks\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"status": "Method Not Allowed",
+											"code": 405,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:02:29 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "83"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"METHOD NOT ALLOWED\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+											"host": [
+												"{{local8100}}{{api}}{{asUser}}api"
+											],
+											"path": [
+												"id",
+												"1"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asUser}}api/id/1",
+													"host": [
+														"{{local8100}}{{api}}{{asUser}}api"
+													],
+													"path": [
+														"id",
+														"1"
+													]
+												}
+											},
+											"status": "Method Not Allowed",
+											"code": 405,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:02:42 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "83"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": false,\n    \"DATA\": [],\n    \"MESSAGE\": \"METHOD NOT ALLOWED\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "ADMIN",
+							"item": [
+								{
+									"name": "read all",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:11:09 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "896"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 1,\n            \"direction\": 0,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AKASH SENGUPTA\",\n            \"key\": \"4eSUl8XYYqsD6H6iMSfsZxusD6QOVT21Ce2VtkehmtsKBXMNTqSVceyWJPRMLIIFH87FikvkUS3WtilWFQPgNsgF3lWJ9hVHtXBb7Fiutf3gkpGtah2KVSOfIV28z48sGtgj1KHgyKq9yZH289hzAePhK4oY58oiGbFgJXohXkIQHcv8R1xFyg6gXbBP0x6IBvTpTxiK9VTTz67OdPTSx6z0173AvCUsG\",\n            \"created_on\": 1655731164259,\n            \"last_update\": 1655731267838\n        },\n        {\n            \"id\": 3,\n            \"direction\": 1,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AHH UHH\",\n            \"key\": \"SlFqSFyGG5RqDBtv6dREKMQwJKL1KxLbRujYqw7orF6DbymhDzWP0z8oEnjSx6Vm4K40yhECVUDsmII69LHYf5R5s9jUNwkQf59Vnrz4OpqPxUYeCmPnkW9g8uxUukQc5Jw0GKB98bsgF6Uaf7aVEaEnMnSnXjdEQRQnZtUc1l43KctYKLndmnYFHLDCADkEamQchIzIXZUR8E7fOUvDgLZUB65N5veRO\",\n            \"created_on\": 1655993401942,\n            \"last_update\": 1655993401942\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "read specific",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:10:44 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "476"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 3,\n            \"direction\": 1,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AHH UHH\",\n            \"key\": \"SlFqSFyGG5RqDBtv6dREKMQwJKL1KxLbRujYqw7orF6DbymhDzWP0z8oEnjSx6Vm4K40yhECVUDsmII69LHYf5R5s9jUNwkQf59Vnrz4OpqPxUYeCmPnkW9g8uxUukQc5Jw0GKB98bsgF6Uaf7aVEaEnMnSnXjdEQRQnZtUc1l43KctYKLndmnYFHLDCADkEamQchIzIXZUR8E7fOUvDgLZUB65N5veRO\",\n            \"created_on\": 1655993401942,\n            \"last_update\": 1655993401942\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "search query",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/search/emaileqalpha",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"search",
+												"emaileqalpha"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/search/emaileqalpha",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"search",
+														"emaileqalpha"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:14:10 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "483"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 1,\n            \"direction\": 0,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AKASH SENGUPTA\",\n            \"key\": \"4eSUl8XYYqsD6H6iMSfsZxusD6QOVT21Ce2VtkehmtsKBXMNTqSVceyWJPRMLIIFH87FikvkUS3WtilWFQPgNsgF3lWJ9hVHtXBb7Fiutf3gkpGtah2KVSOfIV28z48sGtgj1KHgyKq9yZH289hzAePhK4oY58oiGbFgJXohXkIQHcv8R1xFyg6gXbBP0x6IBvTpTxiK9VTTz67OdPTSx6z0173AvCUsG\",\n            \"created_on\": 1655731164259,\n            \"last_update\": 1655731267838\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "create specific",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"name\":\"AHH UHH\",\n    \"direction\" : 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"id",
+												""
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"email\": \"alphatrionakash@gmail.com\",\n    \"isd\": \"91\",\n    \"phone_no\": \"8617282141\",\n    \"tg_id\": null,\n    \"name\":\"AHH UHH\",\n    \"direction\" : 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"id",
+														""
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:10:05 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "476"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 3,\n            \"direction\": 1,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AHH UHH\",\n            \"key\": \"SlFqSFyGG5RqDBtv6dREKMQwJKL1KxLbRujYqw7orF6DbymhDzWP0z8oEnjSx6Vm4K40yhECVUDsmII69LHYf5R5s9jUNwkQf59Vnrz4OpqPxUYeCmPnkW9g8uxUukQc5Jw0GKB98bsgF6Uaf7aVEaEnMnSnXjdEQRQnZtUc1l43KctYKLndmnYFHLDCADkEamQchIzIXZUR8E7fOUvDgLZUB65N5veRO\",\n            \"created_on\": 1655993401942,\n            \"last_update\": 1655993401942\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "update specific",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"direction\" : 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"direction\" : 0\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"status": "Created",
+											"code": 201,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:12:29 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "476"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 3,\n            \"direction\": 0,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AHH UHH\",\n            \"key\": \"pkKIThJuL41YI5cM54HFFxtk4LtKG3AACyQFGXEyng5fZbqwTcNvGEJPKCpmsbCWBPLbmrJyCD7GgJ50AMkqrOALhhlPBoDJ5E7CTKza9OAoW2SCwyUaKhwjU85wsGomIvAWz4aLRC8BnNEvJpmhKAwPtHhoCJYNJudmxPjNb0IHqNV95tJGYo7QGdZdTIMPFHAin58dqRn14YaOooHWgzxaMROgcvGBf\",\n            \"created_on\": 1655993401942,\n            \"last_update\": 1655993549797\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								},
+								{
+									"name": "delete specific",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+											"host": [
+												"{{local8100}}{{api}}{{asAdmin}}api"
+											],
+											"path": [
+												"id",
+												"3"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "valid",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{local8100}}{{api}}{{asAdmin}}api/id/3",
+													"host": [
+														"{{local8100}}{{api}}{{asAdmin}}api"
+													],
+													"path": [
+														"id",
+														"3"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Thu, 23 Jun 2022 14:12:53 GMT"
+												},
+												{
+													"key": "Server",
+													"value": "WSGIServer/0.2 CPython/3.8.10"
+												},
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												},
+												{
+													"key": "Allow",
+													"value": "GET, POST, PUT, DELETE, HEAD, OPTIONS"
+												},
+												{
+													"key": "Vary",
+													"value": "Origin"
+												},
+												{
+													"key": "X-Frame-Options",
+													"value": "DENY"
+												},
+												{
+													"key": "Content-Length",
+													"value": "476"
+												},
+												{
+													"key": "X-Content-Type-Options",
+													"value": "nosniff"
+												},
+												{
+													"key": "Referrer-Policy",
+													"value": "same-origin"
+												},
+												{
+													"key": "Cross-Origin-Opener-Policy",
+													"value": "same-origin"
+												}
+											],
+											"cookie": [],
+											"body": "{\n    \"STATUS\": true,\n    \"DATA\": [\n        {\n            \"id\": 3,\n            \"direction\": 1,\n            \"email\": \"ALPHATRIONAKASH@GMAIL.COM\",\n            \"isd\": \"91\",\n            \"phone_no\": \"8617282141\",\n            \"tg_id\": null,\n            \"name\": \"AHH UHH\",\n            \"key\": \"IJWmZ0mnmElLKa5Al0mPTgk9PvwZSzk72Sl7nEVtmxuFjRXkgfYUhDccrpI6Rp1ojZvNcQfbaQDVEpSo9U4rHTXawPzZ51PHTERrQCKUGk5JzRvx5UjXPEUDYXfER4au4yNBSigmL8GxCY32zS37hX5h447rb4TRqafsu406c8TiZexE5vHNLAwSjZXzrCdQUFd4Y59KOAny0judyApAZ3SyqVTqbVAPU\",\n            \"created_on\": 1655993401942,\n            \"last_update\": 1655993563367\n        }\n    ],\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+										}
+									]
+								}
+							]
 						}
 					]
 				}
@@ -10084,13 +11830,74 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{local8100}}{{check_server}}",
+					"raw": "{{local8100}}{{checkServer}}",
 					"host": [
-						"{{local8100}}{{check_server}}"
+						"{{local8100}}{{checkServer}}"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "valid",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{local8100}}{{checkServer}}",
+							"host": [
+								"{{local8100}}{{checkServer}}"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Thu, 23 Jun 2022 14:14:45 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.8.10"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, Origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "GET, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "148"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"STATUS\": true,\n    \"DATA\": {\n        \"SERVER NAME\": \"Utility Micro Service\",\n        \"SERVER TIME\": \"06/23/2022, 19:44:45\"\n    },\n    \"MESSAGE\": \"\",\n    \"TIMEZONE\": \"Asia/Kolkata\"\n}"
+				}
+			]
 		},
 		{
 			"name": "jsonEnc",

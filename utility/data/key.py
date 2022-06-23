@@ -22,6 +22,7 @@ K_HOST_PASSWORD = "HOST_PASSWORD"
 K_HOST_PORT = "HOST_PORT"
 K_TELEGRAM = "TELEGRAM"
 K_KEY = "KEY"
+K_DATABASES = "DATABASES"
 
 SCHEMA_SYSTEM = schemadict(
     {
@@ -45,6 +46,9 @@ SCHEMA_SYSTEM = schemadict(
             "item_schema": {
                 "type": str,
             },
+        },
+        K_DATABASES: {
+            "type": dict,
         },
     }
 )
