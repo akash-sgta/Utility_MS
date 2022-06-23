@@ -15,3 +15,6 @@ python manage.py migrate
 \
 ![ER](/utility/data/Schema-ER.jpg)\
 ![SCHEMA](/utility/data/Schema-URL.jpg)
+\
+\
+[Postman Import](/utility/data/Utilities_MS.postman_collection.json)
