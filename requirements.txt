@@ -17,3 +17,6 @@ tomli==1.2.3
 typing-utils==0.1.0
 typing_extensions==4.0.1
 tzdata==2021.5
+schemadict>=0.0.12
+yagmail>=0.15.277
+cryptography>=37.0.2
