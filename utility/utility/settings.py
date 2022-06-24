@@ -52,8 +52,8 @@ try:
         TELEGRAM_NAME = json_secret[K_ADMIN][K_TELEGRAM][K_NAME]
         TELEGRAM_KEY = json_secret[K_ADMIN][K_TELEGRAM][K_KEY]
         DATABASES = {"default": json_secret[K_SYSTEM][K_DATABASES]["default"]}
-        if DATABASES["default"]["name"] is None:
-            DATABASES["default"]["name"] = DB_PATH
+        if DATABASES["default"]["NAME"] is None:
+            DATABASES["default"]["NAME"] = DB_PATH
         del json_secret
 except Exception as e:
     print(f"ERROR : {str(e)}")
@@ -171,9 +171,7 @@ REFRESH_TOKEN_LEN = 255
 ACCESS_TOKEN_LIMIT = (120, "m")
 ACCESS_TOKEN_LEN = 127
 
-REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]
-}
+REST_FRAMEWORK = {"DEFAULT_PERMISSION_CLASSES": ["rest_framework.permissions.AllowAny"]}
 # =========================================================================================
 #                                       CODE
 # =========================================================================================

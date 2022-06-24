@@ -213,21 +213,13 @@ class ApiView_asAdmin(ApiView_asUser):
             notif_post = deepcopy(notif_post.data)
             if notif_post[Constant.DATA]:
                 notif_id = notif_post[Constant.DATA][0]["id"]
-                if (
-                    notif_post[Constant.DATA][0][Constant.NOTIFICATION_MAILER]
-                    is None
-                ):
+                if notif_post[Constant.DATA][0][Constant.NOTIFICATION_MAILER] is None:
                     mailer_id = None
                 else:
                     mailer_id = notif_post[Constant.DATA][0][
                         Constant.NOTIFICATION_MAILER
                     ]["id"]
-                if (
-                    notif_post[Constant.DATA][0][
-                        Constant.NOTIFICATION_TELEGRAM
-                    ]
-                    is None
-                ):
+                if notif_post[Constant.DATA][0][Constant.NOTIFICATION_TELEGRAM] is None:
                     tg_id = None
                 else:
                     tg_id = notif_post[Constant.DATA][0][
@@ -374,9 +366,7 @@ class ApiView_asAdmin(ApiView_asUser):
             else:
                 api_ref = api_ref[0]
             request_tmp.user = api_ref
-            notif_id, mailer_id, tg_id = self.__post_notification(
-                request=request_tmp
-            )
+            notif_id, mailer_id, tg_id = self.__post_notification(request=request_tmp)
             if notif_id is not None:
                 request_id = self.data_returned[Constant.DATA][0]["id"]
                 url_id, url_txt = self.__post_urlShort(
@@ -392,9 +382,7 @@ class ApiView_asAdmin(ApiView_asUser):
                 )
                 if not update_bool:
                     if url_id is not None:
-                        self.__delete_urlShort(
-                            request=request_tmp, url_id=url_id
-                        )
+                        self.__delete_urlShort(request=request_tmp, url_id=url_id)
                     self.__delete_notification(
                         request=request_tmp, notificaiton_id=notif_id
                     )
@@ -426,9 +414,7 @@ class ApiView_asAdmin(ApiView_asUser):
     # =============================================================
     def __read_specific(self) -> None:
         try:
-            api_ref = Api.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
+            api_ref = Api.objects.get(sys=Constant.SETTINGS_SYSTEM, id=int(self.query2))
         except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
@@ -472,9 +458,7 @@ class ApiView_asAdmin(ApiView_asUser):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
+                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -483,9 +467,7 @@ class ApiView_asAdmin(ApiView_asUser):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
+                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(api_ref) == 0:
                 raise Api.DoesNotExist
@@ -529,9 +511,7 @@ class ApiView_asAdmin(ApiView_asUser):
     # =============================================================
     def __update_specific(self, data: dict) -> None:
         try:
-            api_ref = Api.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
+            api_ref = Api.objects.get(sys=Constant.SETTINGS_SYSTEM, id=int(self.query2))
         except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
@@ -541,9 +521,7 @@ class ApiView_asAdmin(ApiView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            api_ser = Api_Serializer(
-                instance=api_ref, data=data, partial=True
-            )
+            api_ser = Api_Serializer(instance=api_ref, data=data, partial=True)
             if api_ser.is_valid():
                 try:
                     api_ser.save()
@@ -575,9 +553,7 @@ class ApiView_asAdmin(ApiView_asUser):
     # =============================================================
     def __delete_specific(self):
         try:
-            api_ref = Api.objects.get(
-                sys=Constant.SETTINGS_SYSTEM, id=int(self.query2)
-            )
+            api_ref = Api.objects.get(sys=Constant.SETTINGS_SYSTEM, id=int(self.query2))
         except Api.DoesNotExist:
             self.data_returned[Constant.STATUS] = False
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS

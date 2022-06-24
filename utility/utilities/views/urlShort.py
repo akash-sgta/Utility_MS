@@ -52,9 +52,7 @@ class UrlShortView(APIView):
         self.status_returned = status.HTTP_400_BAD_REQUEST
         self.query1 = query1.lower() if query1 not in Constant.NULL else None
         if self.query1 == self.SR_KEYS[2]:  # search
-            self.query2 = (
-                query2.lower() if query2 not in Constant.NULL else None
-            )
+            self.query2 = query2.lower() if query2 not in Constant.NULL else None
         else:
             self.query2 = query2 if query2 not in Constant.NULL else None
         return
@@ -81,9 +79,7 @@ class UrlShortView_asUser(UrlShortView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(UrlShortView_asUser, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(UrlShortView_asUser, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -168,9 +164,7 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(UrlShortView_asAdmin, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(UrlShortView_asAdmin, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -223,9 +217,7 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
+                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -234,9 +226,7 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
+                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(urlShort_ref) == 0:
                 raise UrlShort.DoesNotExist

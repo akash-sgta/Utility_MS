@@ -137,9 +137,7 @@ class StateView_asUser(StateView):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
+                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -148,9 +146,7 @@ class StateView_asUser(StateView):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
+                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(state_ref) == 0:
                 raise State.DoesNotExist
@@ -250,9 +246,7 @@ class StateView_asAdmin(StateView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(StateView_asAdmin, self).get(
-            request=request, word=word, pk=pk
-        )
+        return super(StateView_asAdmin, self).get(request=request, word=word, pk=pk)
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
@@ -269,9 +263,7 @@ class StateView_asAdmin(StateView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            state_ser = State_Serializer(
-                instance=state_ref, data=data, partial=True
-            )
+            state_ser = State_Serializer(instance=state_ref, data=data, partial=True)
             if state_ser.is_valid():
                 try:
                     state_ser.save()

@@ -137,9 +137,7 @@ class CityView_asUser(CityView):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
+                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -148,9 +146,7 @@ class CityView_asUser(CityView):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
+                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(city_ref) == 0:
                 raise City.DoesNotExist
@@ -250,9 +246,7 @@ class CityView_asAdmin(CityView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(CityView_asAdmin, self).get(
-            request=request, word=word, pk=pk
-        )
+        return super(CityView_asAdmin, self).get(request=request, word=word, pk=pk)
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
@@ -269,9 +263,7 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            city_ser = City_Serializer(
-                instance=city_ref, data=data, partial=True
-            )
+            city_ser = City_Serializer(instance=city_ref, data=data, partial=True)
             if city_ser.is_valid():
                 try:
                     city_ser.save()

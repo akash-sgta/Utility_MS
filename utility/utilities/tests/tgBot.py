@@ -56,9 +56,7 @@ class Telegram_Util(Bot):
         self.dispatcher.add_handler(CommandHandler("start", self.__start))
         self.dispatcher.add_handler(CommandHandler("exit", self.__exit))
         self.dispatcher.add_handler(
-            MessageHandler(
-                Filters.text & ~Filters.command, self.__parse_message
-            )
+            MessageHandler(Filters.text & ~Filters.command, self.__parse_message)
         )
         return
 

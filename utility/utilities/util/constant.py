@@ -86,9 +86,7 @@ class Constant(object):
         regex=r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b",
         message="Email Id is invalid.",
     )
-    RE_EMAIL = compile(
-        pattern=r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$"
-    )
+    RE_EMAIL = compile(pattern=r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}$")
     RE_TELEGRAM = compile(r"^\d+$")
     REGEX_INTEGER = RegexValidator(regex=r"\d+", message="Should be numbers")
     # --------------------------------------------------

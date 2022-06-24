@@ -209,9 +209,7 @@ class CountryView_asAdmin(CountryView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(CountryView_asAdmin, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(CountryView_asAdmin, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -241,9 +239,7 @@ class CountryView_asAdmin(CountryView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(CountryView_asAdmin, self).get(
-            request=request, word=word, pk=pk
-        )
+        return super(CountryView_asAdmin, self).get(request=request, word=word, pk=pk)
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:

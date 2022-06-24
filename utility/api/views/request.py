@@ -156,21 +156,13 @@ class RequestView_asUser(RequestView):
             notif_post = deepcopy(notif_post.data)
             if notif_post[Constant.DATA]:
                 notif_id = notif_post[Constant.DATA][0]["id"]
-                if (
-                    notif_post[Constant.DATA][0][Constant.NOTIFICATION_MAILER]
-                    is None
-                ):
+                if notif_post[Constant.DATA][0][Constant.NOTIFICATION_MAILER] is None:
                     mailer_id = None
                 else:
                     mailer_id = notif_post[Constant.DATA][0][
                         Constant.NOTIFICATION_MAILER
                     ]["id"]
-                if (
-                    notif_post[Constant.DATA][0][
-                        Constant.NOTIFICATION_TELEGRAM
-                    ]
-                    is None
-                ):
+                if notif_post[Constant.DATA][0][Constant.NOTIFICATION_TELEGRAM] is None:
                     tg_id = None
                 else:
                     tg_id = notif_post[Constant.DATA][0][
@@ -317,9 +309,7 @@ class RequestView_asUser(RequestView):
             else:
                 api_ref = api_ref[0]
             request_tmp.user = api_ref
-            notif_id, mailer_id, tg_id = self.__post_notification(
-                request=request_tmp
-            )
+            notif_id, mailer_id, tg_id = self.__post_notification(request=request_tmp)
             if notif_id is not None:
                 request_id = self.data_returned[Constant.DATA][0]["id"]
                 url_id, url_txt = self.__post_urlShort(
@@ -335,9 +325,7 @@ class RequestView_asUser(RequestView):
                 )
                 if not update_bool:
                     if url_id is not None:
-                        self.__delete_urlShort(
-                            request=request_tmp, url_id=url_id
-                        )
+                        self.__delete_urlShort(request=request_tmp, url_id=url_id)
                     self.__delete_notification(
                         request=request_tmp, notificaiton_id=notif_id
                     )
@@ -407,15 +395,11 @@ class RequestView_asAdmin(RequestView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(RequestView_asAdmin, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(RequestView_asAdmin, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def post(self, request, word: str, pk: str):
-        return super(RequestView_asAdmin, self).post(
-            request=request, word=word, pk=pk
-        )
+        return super(RequestView_asAdmin, self).post(request=request, word=word, pk=pk)
 
     # =============================================================
     def __read_all(self) -> None:
@@ -466,9 +450,7 @@ class RequestView_asAdmin(RequestView_asUser):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[
-                    Constant.MESSAGE
-                ] = Constant.INVALID_SPARAMS
+                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -477,9 +459,7 @@ class RequestView_asAdmin(RequestView_asUser):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[
-                        Constant.MESSAGE
-                    ] = Constant.INVALID_SPARAMS
+                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(request_ref) == 0:
                 raise Request.DoesNotExist

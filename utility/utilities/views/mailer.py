@@ -285,9 +285,7 @@ class MailerView_asAdmin(MailerView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            mailer_ser = Mailer_Serializer(
-                instance=mailer_ref, data=data, partial=True
-            )
+            mailer_ser = Mailer_Serializer(instance=mailer_ref, data=data, partial=True)
             if mailer_ser.is_valid():
                 try:
                     mailer_ser.save()

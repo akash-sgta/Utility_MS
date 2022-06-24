@@ -82,8 +82,7 @@ class BatchJob(Thread):
                             raise Exception("Invalid Foreign key")
                         else:
                             if (
-                                notification_ref.sys
-                                != Constant.SETTINGS_SYSTEM
+                                notification_ref.sys != Constant.SETTINGS_SYSTEM
                                 or notification_ref.api.id != self.api
                             ):
                                 raise Exception("Invalid Foreign key")
@@ -97,9 +96,7 @@ class BatchJob(Thread):
                         continue
                     else:
                         # filter email list
-                        receivers = self.__get_emails(
-                            emails=mailer_ref[i].receiver
-                        )
+                        receivers = self.__get_emails(emails=mailer_ref[i].receiver)
                         cc = self.__get_emails(emails=mailer_ref[i].cc)
                         bcc = self.__get_emails(emails=mailer_ref[i].bcc)
                         # Send email
@@ -150,8 +147,7 @@ class BatchJob(Thread):
                             raise Exception("Invalid Foreign key")
                         else:
                             if (
-                                notification_ref.sys
-                                != Constant.SETTINGS_SYSTEM
+                                notification_ref.sys != Constant.SETTINGS_SYSTEM
                                 or notification_ref.api.id != self.api
                             ):
                                 raise Exception("Invalid Foreign key")

@@ -78,9 +78,7 @@ class TelegramView_asUser(TelegramView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(TelegramView_asUser, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(TelegramView_asUser, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -135,9 +133,7 @@ class TelegramView_asAdmin(TelegramView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(TelegramView_asAdmin, self).__init__(
-            query1=query1, query2=query2
-        )
+        super(TelegramView_asAdmin, self).__init__(query1=query1, query2=query2)
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:

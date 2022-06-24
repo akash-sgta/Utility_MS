@@ -84,22 +84,14 @@ def token(request, word: str, pk: int):
     try:
         if int(pk) == JSON_2_STR:
             if word.upper() == ENC:
-                ret_data, ret_status = encToken(
-                    token_dict=request.data, enc=True
-                )
+                ret_data, ret_status = encToken(token_dict=request.data, enc=True)
             else:
-                ret_data, ret_status = encToken(
-                    token_dict=request.data, enc=False
-                )
+                ret_data, ret_status = encToken(token_dict=request.data, enc=False)
         else:
             if word.upper() == ENC:
-                ret_data, ret_status = decToken(
-                    token_str=request.data, enc=True
-                )
+                ret_data, ret_status = decToken(token_str=request.data, enc=True)
             else:
-                ret_data, ret_status = decToken(
-                    token_str=request.data, enc=False
-                )
+                ret_data, ret_status = decToken(token_str=request.data, enc=False)
     except Exception as e:
         ret_data[Constant.STATUS] = False
         ret_data[Constant.MESSAGE] = str(e)

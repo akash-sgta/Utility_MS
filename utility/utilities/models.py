@@ -110,9 +110,7 @@ class Notification(models.Model):
     subject = models.CharField(max_length=63)
     body = models.TextField(blank=True, null=True)
     attachment = models.TextField(blank=True, null=True)
-    type = models.IntegerField(
-        choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW
-    )
+    type = models.IntegerField(choices=Constant.EMAIL_TYPE_CHOICE, default=Constant.RAW)
 
     created_on = models.PositiveBigIntegerField(blank=True, null=True)
     last_update = models.PositiveBigIntegerField(blank=True, null=True)
@@ -137,9 +135,7 @@ class Mailer(models.Model):
     sys = models.IntegerField(
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
-    notification = models.ForeignKey(
-        Notification, on_delete=models.CASCADE, null=False
-    )
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE, null=False)
 
     receiver = models.TextField()
     cc = models.TextField(null=True, blank=True)
@@ -156,9 +152,7 @@ class Mailer(models.Model):
     def save(self, *args, **kwargs):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
-        self.receiver = Constant.COMA.join(
-            Utility.emailListGen(self.receiver)
-        )
+        self.receiver = Constant.COMA.join(Utility.emailListGen(self.receiver))
         self.cc = Constant.COMA.join(Utility.emailListGen(self.cc))
         self.bcc = Constant.COMA.join(Utility.emailListGen(self.bcc))
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
@@ -173,9 +167,7 @@ class Telegram(models.Model):
     sys = models.IntegerField(
         choices=Constant.SYSTEM_CHOICE, default=Constant.SETTINGS_SYSTEM
     )
-    notification = models.ForeignKey(
-        Notification, on_delete=models.CASCADE, null=False
-    )
+    notification = models.ForeignKey(Notification, on_delete=models.CASCADE, null=False)
 
     receiver = models.TextField(null=False, blank=False)
 
@@ -190,9 +182,7 @@ class Telegram(models.Model):
     def save(self, *args, **kwargs):
         if self.created_on in Constant.NULL:
             self.created_on = Utility.datetimeToEpochMs(datetime.now())
-        self.receiver = Constant.COMA.join(
-            Utility.tgUserListGen(self.receiver)
-        )
+        self.receiver = Constant.COMA.join(Utility.tgUserListGen(self.receiver))
         self.last_update = Utility.datetimeToEpochMs(datetime.now())
         return super(Telegram, self).save(*args, **kwargs)
 

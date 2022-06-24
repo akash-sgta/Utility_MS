@@ -30,9 +30,7 @@ class Authenticator(BaseAuthentication):
         if Constant.AUTHORIZATION not in headers.keys():
             raise Exception(f"{Constant.AUTHORIZATION} : Header Missing")
         else:
-            access_token = headers[Constant.AUTHORIZATION].split(
-                Constant.SPACE
-            )
+            access_token = headers[Constant.AUTHORIZATION].split(Constant.SPACE)
             if len(access_token) != 2:
                 raise Exception(
                     f"{Constant.BEARER} Token:string / {Constant.JWT} Token:string"
