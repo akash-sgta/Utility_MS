@@ -2,14 +2,22 @@
 Usage : Micro Service for Utility functions
 \
 \
-**Editor Used**         : VS Code\
+**Editor Used**         : VS Code
+\
 **Syntax Formatter**    : Black
 \
 \
-Steps to migrate changes (Windows):
+Steps (Direct):
 ```
+python -m install -r requirements.txt
 python manage.py makemigrations api utilities
 python manage.py migrate
+```
+\
+\
+Steps (Docker):
+```
+docker-compose up --remove-orphans
 ```
 \
 \

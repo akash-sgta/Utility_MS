@@ -1,0 +1,24 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8100:8000
+    volumes:
+      - .:/app
+    # depends_on:
+    #   - db
+    # db:
+    #   image: mysql:5.7.22
+    #   restart: always
+    #   environment:
+    #     MYSQL_DATABASE: utility_ms
+    #     MYSQL_USER: RESU
+    #     MYSQL_PASSWORD: DROWSSAP
+    #     MYSQL_ROOT_PASSWORD: root
+    #   volumes:
+    #     - .dbdata:/var/lib/mysql
+    #   ports:
+    #     - 6969:3306
