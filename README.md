@@ -17,6 +17,7 @@ python manage.py migrate
 \
 Steps (Docker):
 ```
+docker system prune
 docker-compose up --remove-orphans
 ```
 \
