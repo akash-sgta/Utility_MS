@@ -11,6 +11,7 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
+from django.http import HttpResponseRedirect
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
@@ -52,7 +53,9 @@ class UrlShortView(APIView):
         self.status_returned = status.HTTP_400_BAD_REQUEST
         self.query1 = query1.lower() if query1 not in Constant.NULL else None
         if self.query1 == self.SR_KEYS[2]:  # search
-            self.query2 = query2.lower() if query2 not in Constant.NULL else None
+            self.query2 = (
+                query2.lower() if query2 not in Constant.NULL else None
+            )
         else:
             self.query2 = query2 if query2 not in Constant.NULL else None
         return
@@ -79,7 +82,9 @@ class UrlShortView_asUser(UrlShortView):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(UrlShortView_asUser, self).__init__(query1=query1, query2=query2)
+        super(UrlShortView_asUser, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -120,8 +125,9 @@ class UrlShortView_asUser(UrlShortView):
         else:
             urlShort_ser = UrlShort_Serializer(urlShort_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            # self.data_returned[Constant.DATA].append(urlShort_ser)
-            self.data_returned[Constant.DATA].append(urlShort_ser["url"])
+            self.data_returned[Constant.DATA].append(
+                {"url": urlShort_ser["url"]}
+            )
             self.status_returned = status.HTTP_302_FOUND
         return
 
@@ -133,6 +139,18 @@ class UrlShortView_asUser(UrlShortView):
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
             self._read_specific()
+            # TODO: TEST Funcitonality to directly return redirect data
+            try:
+                if self.data_returned[Constant.STATUS]:
+                    view_ret = HttpResponseRedirect(
+                        redirect_to=self.data_returned[Constant.DATA][0][
+                            "url"
+                        ]
+                    )
+                    view_ret = view_ret.get(header=request.headers)
+                    self.data_returned[Constant.DATA][0] = view_ret
+            except Exception as e:
+                print(f"ERROR : {str(e)}")
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -164,7 +182,9 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
     permission_classes = []
 
     def __init__(self, query1=None, query2=None):
-        super(UrlShortView_asAdmin, self).__init__(query1=query1, query2=query2)
+        super(UrlShortView_asAdmin, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -217,7 +237,9 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -226,7 +248,9 @@ class UrlShortView_asAdmin(UrlShortView_asUser):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(urlShort_ref) == 0:
                 raise UrlShort.DoesNotExist

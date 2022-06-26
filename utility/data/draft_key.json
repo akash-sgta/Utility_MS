@@ -1,0 +1,36 @@
+{
+    "SYSTEM": {
+        "ID": 0,
+        "NAME": "NAME OF SYSTEM",
+        "SECRET_KEY": "SECRET KEY",
+        "DEBUG": true,
+        "ALLOWED_HOSTS": [
+            "*"
+        ],
+        "DATABASES": {
+            "test": {
+                "ENGINE": "django.db.backends.sqlite3",
+                "NAME": null
+            },
+            "default": {
+                "ENGINE": "django.db.backends.mysql",
+                "NAME": "DB NAME",
+                "USER": "DB USER",
+                "PASSWORD": "DB PASSWORD",
+                "HOST": "DB HOST",
+                "PORT": "DB PORT"
+            }
+        }
+    },
+    "ADMIN": {
+        "EMAIL": {
+            "HOST_USER": "HOST EMAIL",
+            "HOST_PASSWORD": "HOST APP KEY",
+            "HOST_PORT": 465
+        },
+        "TELEGRAM": {
+            "NAME": "HOST BOT NAME",
+            "KEY": "HOST BOT KEY"
+        }
+    }
+}
