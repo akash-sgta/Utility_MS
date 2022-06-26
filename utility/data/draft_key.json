@@ -17,8 +17,8 @@
                 "NAME": "DB NAME",
                 "USER": "DB USER",
                 "PASSWORD": "DB PASSWORD",
-                "HOST": "DB HOST",
-                "PORT": "DB PORT"
+                "HOST": "DB CONTAINER NAME/HOST DB NAME",
+                "PORT": "DB CONTAINER PORT/HOST DB PORT"
             }
         }
     },
