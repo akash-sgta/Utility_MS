@@ -14,8 +14,4 @@ RUN apk add --no-cache libffi-dev
 RUN python -m pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# WORKDIR /app/utility
-# RUN python manage.py makemigrations api utilities
-# RUN python manage.py migrate
-
 CMD ["sh", "/app/run_me.sh"]
