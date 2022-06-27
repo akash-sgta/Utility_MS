@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    container_name: utility_ms_db
+    image: mysql:5.7.22
+    restart: always
+    environment:
+      MYSQL_DATABASE: utility_ms
+      MYSQL_USER: USER_NAME
+      MYSQL_PASSWORD: PASSWORD
+      MYSQL_ROOT_PASSWORD: ROOT_PASSWORD
+    volumes:
+      - .dbdata:/var/lib/mysql
+    ports:
+      - 6969:3306
+  backend:
+    container_name: utility_ms_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8100:8000
+    volumes:
+      - .:/app
+    depends_on:
+      - db
