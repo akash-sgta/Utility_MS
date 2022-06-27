@@ -22,9 +22,12 @@ from utility.views.authenticator import Authenticator
 from utilities.models import Mailer, Notification, Telegram
 from utilities.serializers import Notification_Serializer
 from utilities.util.constant import Constant
-from utilities.util.batchJob import BatchJob, TGBot
 from utilities.views.mailer import MailerView_asAdmin
 from utilities.views.telegram import TelegramView_asAdmin
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -74,7 +77,7 @@ class NotificationView(APIView):
 
 
 class NotificationView_asUser(NotificationView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(NotificationView_asUser, self).__init__(
@@ -262,7 +265,7 @@ class NotificationView_asUser(NotificationView):
 
 
 class NotificationView_asAdmin(NotificationView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(NotificationView_asAdmin, self).__init__(

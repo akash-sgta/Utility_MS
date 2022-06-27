@@ -144,16 +144,12 @@ class Utility(object):
         """
         try:
             choices = list()
-            choices.extend(
-                list(string.ascii_lowercase + string.ascii_uppercase)
-            )
+            choices.extend(list(string.ascii_lowercase + string.ascii_uppercase))
             if not only_num:
                 choices.extend(list(string.digits))
             if not no_symbol:
                 choices.extend(list(string.punctuation))
-            ranom_str = "".join(
-                [random.choice(choices) for _ in range(length)]
-            )
+            ranom_str = "".join([random.choice(choices) for _ in range(length)])
         except Exception as e:
             raise e
         return ranom_str
@@ -236,9 +232,7 @@ class Utility(object):
                 token_b64 = data
             token_dict = Utility.b64ToDict(token_b64)
             Constant.TOKEN_ROOT.validate(token_dict)
-            token_dict[Constant.API] = Utility.b64ToDict(
-                data=token_dict[Constant.API]
-            )
+            token_dict[Constant.API] = Utility.b64ToDict(data=token_dict[Constant.API])
             token_dict[Constant.USER] = Utility.b64ToDict(
                 data=token_dict[Constant.USER]
             )
@@ -307,9 +301,7 @@ class Utility(object):
         if n == 1:
             _return = False
         else:
-            _return = math.ceil(Utility.log(n, 2)) == math.floor(
-                Utility.log(n, 2)
-            )
+            _return = math.ceil(Utility.log(n, 2)) == math.floor(Utility.log(n, 2))
         return _return
 
     @staticmethod

@@ -21,13 +21,16 @@ from django.urls import reverse
 # --------------------------------------------------
 
 from api.models import Request, Api
-from utilities.models import Notification
 from api.serializers import Request_Serializer
 from utilities.views.notification import NotificationView_asAdmin
 from utilities.views.urlShort import UrlShortView_asAdmin
 from utilities.util.constant import Constant
 from utilities.util.utility import Utility
 from utilities.util.batchJob import BatchJob
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -404,7 +407,7 @@ class RequestView_asUser(RequestView):
 
 
 class RequestView_asAdmin(RequestView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(RequestView_asAdmin, self).__init__(

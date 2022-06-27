@@ -134,3 +134,4 @@ dmypy.json
 *xml.bkp
 .vscode/
 .*.xml.*
+.dbdata/

@@ -24,6 +24,10 @@ from utilities.serializers import Mailer_Serializer
 from utilities.util.constant import Constant
 from utilities.util.batchJob import BatchJob
 from utility.views.authenticator import Authenticator
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -76,7 +80,7 @@ class MailerView(APIView):
 
 
 class MailerView_asUser(MailerView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(MailerView_asUser, self).__init__(query1=query1, query2=query2)
@@ -131,7 +135,7 @@ class MailerView_asUser(MailerView):
 
 
 class MailerView_asAdmin(MailerView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(MailerView_asAdmin, self).__init__(query1=query1, query2=query2)

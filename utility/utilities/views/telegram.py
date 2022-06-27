@@ -23,6 +23,10 @@ from utilities.serializers import Telegram_Serializer
 from utilities.util.constant import Constant
 from utilities.util.batchJob import BatchJob, TGBot
 from utility.views.authenticator import Authenticator
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -75,7 +79,7 @@ class TelegramView(APIView):
 
 
 class TelegramView_asUser(TelegramView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(TelegramView_asUser, self).__init__(
@@ -132,7 +136,7 @@ class TelegramView_asUser(TelegramView):
 
 
 class TelegramView_asAdmin(TelegramView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(TelegramView_asAdmin, self).__init__(

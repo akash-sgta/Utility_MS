@@ -29,7 +29,10 @@ from utilities.util.utility import Utility
 from utilities.views.notification import NotificationView_asAdmin
 from utilities.views.urlShort import UrlShortView_asAdmin
 from utilities.util.batchJob import BatchJob
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -101,7 +104,7 @@ class ApiView(APIView):
 
 
 class ApiView_asUser(ApiView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(ApiView_asUser, self).__init__(query1=query1, query2=query2)
@@ -156,7 +159,7 @@ class ApiView_asUser(ApiView):
 
 
 class ApiView_asAdmin(ApiView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(ApiView_asAdmin, self).__init__(query1=query1, query2=query2)

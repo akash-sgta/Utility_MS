@@ -44,9 +44,7 @@ class Converter(object):
             doc = aw.Document(os.path.join(BASE_DIR, path))
             save_options = aw.saving.PdfSaveOptions()
             save_options.compliance = aw.saving.PdfCompliance.PDF17
-            save_options.image_compression[0] = (
-                aw.saving.PdfImageCompression.JPEG,
-            )
+            save_options.image_compression[0] = (aw.saving.PdfImageCompression.JPEG,)
             save_options.jpeg_quality = Converter.QUALITY - img_compression
             doc.save(
                 os.path.join(path, Converter.genFileName(path, "PDF")),

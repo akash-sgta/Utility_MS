@@ -23,7 +23,10 @@ from utilities.models import State
 from utilities.serializers import State_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -72,7 +75,7 @@ class StateView(APIView):
 
 
 class StateView_asUser(StateView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(StateView_asUser, self).__init__(query1=query1, query2=query2)
@@ -217,7 +220,7 @@ class StateView_asUser(StateView):
 
 
 class StateView_asAdmin(StateView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(StateView_asAdmin, self).__init__(query1=query1, query2=query2)

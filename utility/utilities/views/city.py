@@ -23,7 +23,10 @@ from utilities.models import City
 from utilities.serializers import City_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -72,7 +75,7 @@ class CityView(APIView):
 
 
 class CityView_asUser(CityView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(CityView_asUser, self).__init__(query1=query1, query2=query2)
@@ -217,7 +220,7 @@ class CityView_asUser(CityView):
 
 
 class CityView_asAdmin(CityView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(CityView_asAdmin, self).__init__(query1=query1, query2=query2)

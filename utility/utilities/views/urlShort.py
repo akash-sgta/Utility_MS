@@ -11,6 +11,7 @@ Naming Convention
 #                                       LIBRARY
 # =========================================================================================
 from copy import deepcopy
+from django.http import HttpResponseRedirect
 from rest_framework.renderers import JSONRenderer
 from rest_framework import status
 from rest_framework.response import Response
@@ -23,7 +24,10 @@ from utilities.models import UrlShort
 from utilities.serializers import UrlShort_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -78,7 +82,7 @@ class UrlShortView(APIView):
 
 
 class UrlShortView_asUser(UrlShortView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(UrlShortView_asUser, self).__init__(
@@ -124,8 +128,9 @@ class UrlShortView_asUser(UrlShortView):
         else:
             urlShort_ser = UrlShort_Serializer(urlShort_ref, many=False).data
             self.data_returned[Constant.STATUS] = True
-            # self.data_returned[Constant.DATA].append(urlShort_ser)
-            self.data_returned[Constant.DATA].append(urlShort_ser["url"])
+            self.data_returned[Constant.DATA].append(
+                {"url": urlShort_ser["url"]}
+            )
             self.status_returned = status.HTTP_302_FOUND
         return
 
@@ -137,6 +142,18 @@ class UrlShortView_asUser(UrlShortView):
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
             self._read_specific()
+            # TODO: TEST Funcitonality to directly return redirect data
+            try:
+                if self.data_returned[Constant.STATUS]:
+                    view_ret = HttpResponseRedirect(
+                        redirect_to=self.data_returned[Constant.DATA][0][
+                            "url"
+                        ]
+                    )
+                    view_ret = view_ret.get(header=request.headers)
+                    self.data_returned[Constant.DATA][0] = view_ret
+            except Exception as e:
+                print(f"ERROR : {str(e)}")
         return Response(data=self.data_returned, status=self.status_returned)
 
     # =============================================================
@@ -165,7 +182,7 @@ class UrlShortView_asUser(UrlShortView):
 
 
 class UrlShortView_asAdmin(UrlShortView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(UrlShortView_asAdmin, self).__init__(
