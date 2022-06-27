@@ -22,9 +22,12 @@ from utility.views.authenticator import Authenticator
 from utilities.models import Mailer, Notification, Telegram
 from utilities.serializers import Notification_Serializer
 from utilities.util.constant import Constant
-from utilities.util.batchJob import BatchJob, TGBot
 from utilities.views.mailer import MailerView_asAdmin
 from utilities.views.telegram import TelegramView_asAdmin
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -74,10 +77,12 @@ class NotificationView(APIView):
 
 
 class NotificationView_asUser(NotificationView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
-        super(NotificationView_asUser, self).__init__(query1=query1, query2=query2)
+        super(NotificationView_asUser, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def __create_specific(self, data: dict) -> None:
@@ -116,10 +121,14 @@ class NotificationView_asUser(NotificationView):
                 Constant.NOTIFICATION_MAILER
             ] = mailer.data[Constant.DATA][0]
         else:
-            self.data_returned[Constant.DATA][0][Constant.NOTIFICATION_MAILER] = None
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_MAILER
+            ] = None
         return return_stat
 
-    def _post_telegram(self, request, notification_id: int, data: dict) -> bool:
+    def _post_telegram(
+        self, request, notification_id: int, data: dict
+    ) -> bool:
         request_tmp = request
         request_tmp.data.clear()
         data[Constant.NOTIFICATION] = notification_id
@@ -135,7 +144,9 @@ class NotificationView_asUser(NotificationView):
                 Constant.NOTIFICATION_TELEGRAM
             ] = telegram.data[Constant.DATA][0]
         else:
-            self.data_returned[Constant.DATA][0][Constant.NOTIFICATION_TELEGRAM] = None
+            self.data_returned[Constant.DATA][0][
+                Constant.NOTIFICATION_TELEGRAM
+            ] = None
         return return_stat
 
     def post(self, request, word: str, pk: str):
@@ -152,7 +163,9 @@ class NotificationView_asUser(NotificationView):
             self.__create_specific(data=request.data)
             try:
                 if self.data_returned[Constant.STATUS]:
-                    notification_id = self.data_returned[Constant.DATA][0]["id"]
+                    notification_id = self.data_returned[Constant.DATA][0][
+                        "id"
+                    ]
                     try:
                         mailer_data = deepcopy(
                             request.data[Constant.NOTIFICATION_MAILER]
@@ -252,10 +265,12 @@ class NotificationView_asUser(NotificationView):
 
 
 class NotificationView_asAdmin(NotificationView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
-        super(NotificationView_asAdmin, self).__init__(query1=query1, query2=query2)
+        super(NotificationView_asAdmin, self).__init__(
+            query1=query1, query2=query2
+        )
 
     # =============================================================
     def post(self, request, word: str, pk: str):
@@ -274,7 +289,9 @@ class NotificationView_asAdmin(NotificationView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.NO_CONTENT
             self.status_returned = status.HTTP_204_NO_CONTENT
         else:
-            notification_ser = Notification_Serializer(notification_ref, many=True).data
+            notification_ser = Notification_Serializer(
+                notification_ref, many=True
+            ).data
             self.data_returned[Constant.STATUS] = True
             self.data_returned[Constant.DATA] = notification_ser
             self.status_returned = status.HTTP_200_OK
@@ -296,7 +313,9 @@ class NotificationView_asAdmin(NotificationView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_400_BAD_REQUEST
         else:
-            notification_ser = Notification_Serializer(notification_ref, many=True).data
+            notification_ser = Notification_Serializer(
+                notification_ref, many=True
+            ).data
             self.data_returned[Constant.STATUS] = True
             self.data_returned[Constant.DATA] = notification_ser
             self.status_returned = status.HTTP_200_OK

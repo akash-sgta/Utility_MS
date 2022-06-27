@@ -24,7 +24,10 @@ from utilities.models import UrlShort
 from utilities.serializers import UrlShort_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -79,7 +82,7 @@ class UrlShortView(APIView):
 
 
 class UrlShortView_asUser(UrlShortView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(UrlShortView_asUser, self).__init__(
@@ -179,7 +182,7 @@ class UrlShortView_asUser(UrlShortView):
 
 
 class UrlShortView_asAdmin(UrlShortView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(UrlShortView_asAdmin, self).__init__(

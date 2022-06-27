@@ -23,7 +23,10 @@ from utilities.models import City
 from utilities.serializers import City_Serializer
 from utilities.util.constant import Constant
 from utility.views.authenticator import Authenticator
-
+from utility.views.authorizer import (
+    Authoriser_asUser,
+    Authoriser_asAdmin,
+)
 
 # =========================================================================================
 #                                       CONSTANT
@@ -72,7 +75,7 @@ class CityView(APIView):
 
 
 class CityView_asUser(CityView):
-    permission_classes = []
+    permission_classes = [Authoriser_asUser]
 
     def __init__(self, query1=None, query2=None):
         super(CityView_asUser, self).__init__(query1=query1, query2=query2)
@@ -137,7 +140,9 @@ class CityView_asUser(CityView):
                 )
             except NameError:
                 self.data_returned[Constant.STATUS] = False
-                self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+                self.data_returned[
+                    Constant.MESSAGE
+                ] = Constant.INVALID_SPARAMS
                 self.status_returned = status.HTTP_400_BAD_REQUEST
             except FieldError:
                 try:
@@ -146,7 +151,9 @@ class CityView_asUser(CityView):
                     )
                 except NameError:
                     self.data_returned[Constant.STATUS] = False
-                    self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
+                    self.data_returned[
+                        Constant.MESSAGE
+                    ] = Constant.INVALID_SPARAMS
                     self.status_returned = status.HTTP_400_BAD_REQUEST
             if len(city_ref) == 0:
                 raise City.DoesNotExist
@@ -213,7 +220,7 @@ class CityView_asUser(CityView):
 
 
 class CityView_asAdmin(CityView_asUser):
-    permission_classes = []
+    permission_classes = [Authoriser_asAdmin]
 
     def __init__(self, query1=None, query2=None):
         super(CityView_asAdmin, self).__init__(query1=query1, query2=query2)
@@ -246,7 +253,9 @@ class CityView_asAdmin(CityView_asUser):
 
     # =============================================================
     def get(self, request, word: str, pk: str):
-        return super(CityView_asAdmin, self).get(request=request, word=word, pk=pk)
+        return super(CityView_asAdmin, self).get(
+            request=request, word=word, pk=pk
+        )
 
     # =============================================================
     def __update_specific(self, data: dict) -> None:
@@ -263,7 +272,9 @@ class CityView_asAdmin(CityView_asUser):
             self.data_returned[Constant.MESSAGE] = Constant.INVALID_SPARAMS
             self.status_returned = status.HTTP_404_NOT_FOUND
         else:
-            city_ser = City_Serializer(instance=city_ref, data=data, partial=True)
+            city_ser = City_Serializer(
+                instance=city_ref, data=data, partial=True
+            )
             if city_ser.is_valid():
                 try:
                     city_ser.save()
